@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}Scout Videography Jamaica | Book a Session{% endblock %}
+{% block description %}Book a match recording or VR training session with Scout Videography Jamaica. Serving athletes in Kingston & St. Andrew.{% endblock %}
+{% block extra_css %}
+<style>
+.booking-grid { display: grid; grid-template-columns: 1fr; gap: 28px; max-width: 900px; margin: 0 auto; }
+.booking-form { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 28px; }
+.booking-form h3 { font-size: 22px; color: var(--slate-900); margin-bottom: 20px; }
+.booking-sidebar { display: flex; flex-direction: column; gap: 16px; }
+.field-row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #64748B; margin-bottom: 5px; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 11px 14px; font-size: 15px; font-family: Inter, sans-serif;
+  border: 1.5px solid #E2E8F0; border-radius: 8px; background: #fff; color: #1E293B; outline: none; transition: 0.2s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--teal, #0D4A7A); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.field input::placeholder, .field textarea::placeholder { color: #94A3B8; }
+.submit-btn {
+  width: 100%; padding: 14px; font-size: 15px; font-weight: 600; font-family: Inter, sans-serif;
+  color: #fff; background: var(--green, #26C96F); border: none; border-radius: 50px; cursor: pointer; transition: 0.2s ease;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.submit-btn:hover { background: var(--green-dark, #1DA85C); transform: translateY(-2px); }
+.wa-card { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 24px; text-align: center; }
+.wa-card-title { font-size: 16px; font-weight: 700; color: #15803D; margin-bottom: 6px; }
+.wa-card-sub { font-size: 13px; color: #64748B; margin-bottom: 14px; line-height: 1.6; }
+.info-card { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 18px; }
+.info-card h4 { font-size: 14px; color: var(--slate-900); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.info-card h4 i { color: var(--teal, #0D4A7A); }
+.info-card p { font-size: 13px; color: #64748B; line-height: 1.6; }
+
+@media (min-width: 768px) { .booking-grid { grid-template-columns: 1.4fr 1fr; } .field-row { grid-template-columns: 1fr 1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero" style="min-height:auto;padding:48px 24px 36px">
+  <h2 style="font-size:36px">Ready to level up?<br><span>Book your session.</span></h2>
+  <p>Tell us about your match or training needs. Currently serving Kingston, St. Andrew, and surrounding parishes.</p>
+</section>
+
+<section class="section" style="padding:40px 24px 64px">
+  <div class="booking-grid">
+
+    <!-- FORM -->
+    <div class="booking-form">
+      <h3><i class="fas fa-calendar-check" style="color:var(--teal, #0D4A7A);margin-right:8px"></i> Booking Request</h3>
+
+      <form id="contactForm">
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" placeholder="Your full name" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone / WhatsApp</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (876) ..." required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com">
+          </div>
+          <div class="field">
+            <label for="sport">Sport</label>
+            <input type="text" id="sport" name="sport" placeholder="e.g. Soccer" value="Soccer">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="package">Package type</label>
+          <select id="package" name="package" required>
+            <option value="">Select a package...</option>
+            <optgroup label="Match Recording (Veo)">
+              <option value="veo-single">Videography: Single Match</option>
+              <option value="veo-season">Videography: Season Package</option>
+            </optgroup>
+            <optgroup label="VR Training (Rezzil)">
+              <option value="vr-single">VR Training: Single Session</option>
+              <option value="vr-block">VR Training: 6-Session Block</option>
+            </optgroup>
+            <optgroup label="Bundles">
+              <option value="combo">Combination Package (Video + VR)</option>
+              <option value="club">Club / Team Deal</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="match-date">Match / session date</label>
+            <input type="date" id="match-date" name="match_date" required>
+          </div>
+          <div class="field">
+            <label for="match-time">Kick-off / preferred time</label>
+            <input type="time" id="match-time" name="match_time">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="venue">Venue / location</label>
+          <input type="text" id="venue" name="venue" placeholder="e.g. Barbican Sports Turf, Kingston">
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes / special requirements</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Number of players, club name, any special requirements..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Request Booking</button>
+      </form>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="booking-sidebar">
+
+      <!-- WhatsApp card -->
+      <div class="wa-card">
+        <div class="wa-card-title"><i class="fab fa-whatsapp"></i> Prefer WhatsApp?</div>
+        <div class="wa-card-sub">Message us directly for the fastest response — usually within 1 hour. It's the quickest way to lock in your date.</div>
+        <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%27d%20like%20to%20book%20a%20session" target="_blank" rel="noopener" class="btn btn-secondary" style="background:#25D366;width:100%"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+      </div>
+
+      <!-- Instagram -->
+      <div class="info-card">
+        <h4><i class="fab fa-instagram"></i> Instagram</h4>
+        <p><a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" style="color:var(--teal, #0D4A7A);font-weight:600">@scoutvideoja</a><br>DM us to book or see our latest work</p>
+      </div>
+
+      <!-- Service area -->
+      <div class="info-card">
+        <h4><i class="fas fa-map-marker-alt"></i> Service area</h4>
+        <p>Kingston &amp; St. Andrew<br>Surrounding parishes available on request</p>
+      </div>
+
+      <!-- Response time -->
+      <div class="info-card">
+        <h4><i class="fas fa-clock"></i> Response time</h4>
+        <p>WhatsApp: Within 1 hour<br>Form submissions: Within 24 hours</p>
+      </div>
+
+      <!-- Equipment -->
+      <div class="info-card">
+        <h4><i class="fas fa-video"></i> Our equipment</h4>
+        <p>Veo Camera &middot; HD Recording &middot; AI Tracking<br>HTC Vive Pro &middot; Rezzil Player &middot; Full Pitch Coverage</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+{% endblock %}

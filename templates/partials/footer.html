@@ -1,0 +1,43 @@
+<!-- Footer partial — included by base.html -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="{{ url_for('pages.services') }}">Match Recording</a></li>
+        <li><a href="{{ url_for('pages.train') }}">VR Training</a></li>
+        <li><a href="{{ url_for('analyst.analyse') }}">AI Analyst</a></li>
+        <li><a href="{{ url_for('booking.contact') }}">Book a Session</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="{{ url_for('shop.products') }}#socks">Socks</a></li>
+        <li><a href="{{ url_for('shop.products') }}#shin-guards">Shin Guards</a></li>
+        <li><a href="{{ url_for('shop.products') }}#grip-socks">Grip Socks</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="{{ url_for('pages.about') }}">About Us</a></li>
+        <li><a href="{{ url_for('pages.portfolio') }}">Our Work</a></li>
+        <li><a href="{{ url_for('pages.faq') }}">FAQ</a></li>
+        <li><a href="{{ url_for('pages.shipping') }}">Shipping &amp; Returns</a></li>
+        <li><a href="{{ url_for('booking.contact') }}">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Follow Us</h4>
+      <ul>
+        <li><a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> @scoutvideoja</a></li>
+        <li><a href="https://wa.me/18768092519" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp Us</a></li>
+      </ul>
+      <p style="font-size:12px;color:#94A3B8;margin-top:12px">Currently serving Kingston,<br>St. Andrew, and surrounding parishes.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Scout Videography Jamaica. All rights reserved. &nbsp;<i class="fas fa-lock" style="font-size:11px"></i> Secure payments by Stripe.</p>
+  </div>
+</footer>

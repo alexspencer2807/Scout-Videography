@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Scout Videography Jamaica | VR Training — Rezzil + HTC Vive Pro{% endblock %}
+{% block description %}Train smarter with VR. Rezzil football training on the HTC Vive Pro — cognitive drills, reaction speed, and tactical awareness. Book a VR session in Kingston & St. Andrew.{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/train.css') }}">{% endblock %}
+
+{% block content %}
+<section class="train-hero">
+  <div class="train-badge"><div class="train-badge-dot"></div><span>Powered by Rezzil &amp; HTC Vive Pro</span></div>
+  <h1>Train smarter,<br>not just <em>harder.</em></h1>
+  <p class="train-hero-sub">Your Veo match footage tells us where to improve. Rezzil trains those exact skills. Every drill produces measurable data that feeds into our AI analytics layer to track your progress.</p>
+  <div class="train-hero-btns">
+    <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a VR Session</a>
+    <a href="#technology" class="btn btn-white"><i class="fas fa-play-circle"></i> See the Technology</a>
+  </div>
+</section>
+
+<!-- THE LOOP -->
+<section class="train-loop" id="how-it-works">
+  <div class="container" style="text-align:center">
+    <div class="section-label">The Development Cycle</div>
+    <h2 class="section-title">The Athlete Development Loop</h2>
+    <p class="section-sub mx-auto">VR training isn't standalone — it's the third step in a cycle that starts with real match footage and ends with measurable improvement.</p>
+  </div>
+  <div class="loop-steps">
+    <div class="loop-step"><div class="loop-icon loop-icon-record"><i class="fas fa-video"></i></div><div class="loop-num">Step 01</div><div class="loop-title">Record</div><p class="loop-body">Veo captures your match with AI-powered full-pitch coverage</p></div>
+    <div class="loop-arrow"><i class="fas fa-chevron-right"></i></div>
+    <div class="loop-step"><div class="loop-icon loop-icon-analyse"><i class="fas fa-chart-line"></i></div><div class="loop-num">Step 02</div><div class="loop-title">Analyse</div><p class="loop-body">AI identifies your strengths, weaknesses, and focus areas</p></div>
+    <div class="loop-arrow"><i class="fas fa-chevron-right"></i></div>
+    <div class="loop-step"><div class="loop-icon loop-icon-train"><i class="fas fa-vr-cardboard"></i></div><div class="loop-num">Step 03</div><div class="loop-title">Train</div><p class="loop-body">Rezzil VR drills target exactly what the analysis revealed</p></div>
+    <div class="loop-arrow"><i class="fas fa-chevron-right"></i></div>
+    <div class="loop-step"><div class="loop-icon loop-icon-repeat"><i class="fas fa-redo-alt"></i></div><div class="loop-num">Step 04</div><div class="loop-title">Repeat</div><p class="loop-body">Next match, the cycle continues — with measurable progress</p></div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<section class="train-tech" id="technology">
+  <div class="train-tech-inner">
+    <div>
+      <div class="section-label">Our Technology</div>
+      <h2 class="section-title">Pro-Level Training, Now in Kingston</h2>
+      <p class="section-sub">Step onto the virtual pitch with the HTC Vive Pro and Rezzil — the exact sport-specific VR training software used by professional clubs worldwide, including Manchester City and Leicester City. The Vive Pro's precise, room-scale tracking ensures you move naturally, allowing for a comfortable 45-minute session without the motion sickness of cheaper VR headsets.</p>
+      <ul class="tech-features">
+        <li><i class="fas fa-check-circle"></i><div><strong>HTC Vive Pro</strong> — High-fidelity VR headset with millimetre-precision tracking for realistic movement and spatial awareness</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Rezzil Player</strong> — The same VR training software trusted by Manchester City, Leicester City, and other professional clubs worldwide</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Measurable results</strong> — Every drill produces data: reaction time, decision accuracy, peripheral awareness scores</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Safe &amp; comfortable</strong> — Train cognitive skills at match intensity without physical fatigue, injury risk, or motion sickness</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>AI integration</strong> — Your VR performance data feeds directly into the Scout AI Analyst alongside your Veo match footage</div></li>
+      </ul>
+    </div>
+    <div class="tech-visual"><i class="fas fa-vr-cardboard"></i><span>VR Session Demo</span></div>
+  </div>
+</section>
+
+<!-- DRILLS -->
+<section class="train-drills">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Training Categories</div>
+    <h2 class="section-title">Targeted Repetitions. Zero Physical Fatigue.</h2>
+    <p class="section-sub mx-auto">Three categories of drills that build the mental and technical edge separating good players from great ones.</p>
+  </div>
+  <div class="drills-grid">
+    <div class="drill-card">
+      <div class="drill-icon drill-icon-cognitive"><i class="fas fa-brain"></i></div>
+      <h3>Cognitive Drills</h3>
+      <p>Train your brain to process the game faster. Focus on decision-making speed, reaction time, and peripheral awareness in match-realistic scenarios.</p>
+      <div class="drill-tags"><span class="drill-tag">Decision speed</span><span class="drill-tag">Reaction time</span><span class="drill-tag">Peripheral vision</span></div>
+    </div>
+    <div class="drill-card">
+      <div class="drill-icon drill-icon-technical"><i class="fas fa-bullseye"></i></div>
+      <h3>Technical Drills</h3>
+      <p>Master the fundamentals. Get hundreds of repetitions in first touch, passing accuracy, and finishing without the physical exhaustion of a traditional pitch session.</p>
+      <div class="drill-tags"><span class="drill-tag">First touch</span><span class="drill-tag">Passing accuracy</span><span class="drill-tag">Finishing</span></div>
+    </div>
+    <div class="drill-card">
+      <div class="drill-icon drill-icon-tactical"><i class="fas fa-chess"></i></div>
+      <h3>Tactical Drills</h3>
+      <p>Improve your game intelligence. Learn to read the pitch like a veteran by experiencing realistic tactical situations and spatial awareness drills from a first-person perspective.</p>
+      <div class="drill-tags"><span class="drill-tag">Positioning</span><span class="drill-tag">Game reading</span><span class="drill-tag">Spatial awareness</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="train-packages" id="packages">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Choose Your Training Path</h2>
+    <p class="section-sub mx-auto">Every session includes Rezzil drills on the HTC Vive Pro with full performance tracking. Your data feeds into the Scout AI Analyst to map your progress over time.</p>
+  </div>
+  <div class="packages-grid">
+    <div class="pkg-card">
+      <div class="pkg-name">Single VR Session</div>
+      <div class="pkg-price">Contact Us <span>for pricing</span></div>
+      <ul class="pkg-features">
+        <li><i class="fas fa-check"></i> 45-minute VR training session</li>
+        <li><i class="fas fa-check"></i> Cognitive + technical drills</li>
+        <li><i class="fas fa-check"></i> Performance score report</li>
+        <li><i class="fas fa-check"></i> Data fed to AI analytics</li>
+        <li><i class="fas fa-check"></i> Progress comparison (returning)</li>
+      </ul>
+      <a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a>
+    </div>
+    <div class="pkg-card featured">
+      <div class="pkg-badge">Most Popular</div>
+      <div class="pkg-name">6-Session Training Block</div>
+      <div class="pkg-price">Contact Us <span>for pricing</span></div>
+      <ul class="pkg-features">
+        <li><i class="fas fa-check"></i> 6 x 45-minute VR sessions</li>
+        <li><i class="fas fa-check"></i> Full drill programme (all categories)</li>
+        <li><i class="fas fa-check"></i> Detailed progress tracking over time</li>
+        <li><i class="fas fa-check"></i> Priority scheduling</li>
+        <li><i class="fas fa-check"></i> 10% off gear shop</li>
+        <li><i class="fas fa-check"></i> AI Analyst progress reports</li>
+      </ul>
+      <a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a>
+    </div>
+    <div class="pkg-card">
+      <div class="pkg-name">Club Programme</div>
+      <div class="pkg-price">Custom <span>pricing</span></div>
+      <ul class="pkg-features">
+        <li><i class="fas fa-check"></i> Multiple athletes covered</li>
+        <li><i class="fas fa-check"></i> Tailored drill programmes per player</li>
+        <li><i class="fas fa-check"></i> Team-level analytics dashboard</li>
+        <li><i class="fas fa-check"></i> Combined with Veo match recording</li>
+        <li><i class="fas fa-check"></i> Dedicated account manager</li>
+      </ul>
+      <a href="{{ url_for('booking.contact') }}" class="pkg-btn">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECTION BANNER -->
+<section class="train-connect">
+  <h2>VR Training + Match Footage = <em>Complete Development</em></h2>
+  <p>Your Veo footage tells us where to improve. Rezzil trains those exact skills. Book a combination package and get the full athlete development loop at a discount.</p>
+  <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a Session</a>
+</section>
+{% endblock %}

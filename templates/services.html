@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Scout Videography Jamaica | Match Recording Services{% endblock %}
+{% block description %}Professional soccer match recording with Veo AI camera technology. Highlight reels for athletes in Kingston & St. Andrew, Jamaica.{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/train.css') }}">{% endblock %}
+
+{% block content %}
+<section class="train-hero">
+  <div class="train-badge"><div class="train-badge-dot"></div><span>Powered by Veo Camera Technology</span></div>
+  <h1>Your highlights.<br>Your story. <em>Captured.</em></h1>
+  <p class="train-hero-sub">Professional match footage and personalised highlight reels for soccer athletes in Jamaica. AI-powered recording — no camera operator needed.</p>
+  <div class="train-hero-btns">
+    <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a Session</a>
+    <a href="#how-it-works" class="btn btn-white"><i class="fas fa-play-circle"></i> How It Works</a>
+  </div>
+</section>
+
+<!-- VEO EXPLAINER -->
+<section class="train-tech" id="how-it-works">
+  <div class="train-tech-inner">
+    <div>
+      <div class="section-label">Our Technology</div>
+      <h2 class="section-title">Powered by Veo</h2>
+      <p class="section-sub">The Veo Camera is one of the world's leading AI-powered sports cameras. It delivers full-pitch automated recording without a dedicated camera operator — capturing every moment of your match.</p>
+      <ul class="tech-features">
+        <li><i class="fas fa-check-circle"></i><div><strong>AI-powered player tracking</strong> — automatic camera movement follows the action</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Full 180° panoramic pitch coverage</strong> — nothing is missed</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Automatic highlight clip generation</strong> — key moments identified by AI</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>HD video delivery within 24 hours</strong> — ready to share with coaches and scouts</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Feeds into AI analytics</strong> — your footage becomes data for personalised training plans</div></li>
+      </ul>
+    </div>
+    <div class="tech-visual"><i class="fas fa-video"></i><span>Veo Camera Demo</span></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="train-loop">
+  <div class="container" style="text-align:center">
+    <div class="section-label">The Process</div>
+    <h2 class="section-title">How It Works</h2>
+  </div>
+  <div class="loop-steps">
+    <div class="loop-step"><div class="loop-icon loop-icon-record"><i class="fas fa-calendar-check"></i></div><div class="loop-num">Step 01</div><div class="loop-title">Book a Session</div><p class="loop-body">Choose a package and send your match details via WhatsApp or our booking form. We confirm availability and lock in your date.</p></div>
+    <div class="loop-arrow"><i class="fas fa-chevron-right"></i></div>
+    <div class="loop-step"><div class="loop-icon loop-icon-train"><i class="fas fa-video"></i></div><div class="loop-num">Step 02</div><div class="loop-title">We Record Your Match</div><p class="loop-body">We arrive with the Veo camera, set up pitchside, and capture the full match. No camera operator needed during play.</p></div>
+    <div class="loop-arrow"><i class="fas fa-chevron-right"></i></div>
+    <div class="loop-step"><div class="loop-icon loop-icon-analyse"><i class="fas fa-film"></i></div><div class="loop-num">Step 03</div><div class="loop-title">Receive Your Highlights</div><p class="loop-body">You receive a professional highlight reel within 24 hours — ready to share with coaches, scouts, academies, and fans.</p></div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="train-packages" id="packages">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Choose Your Package</h2>
+  </div>
+  <div class="packages-grid">
+    <div class="pkg-card"><div class="pkg-name">30-Min Game</div><div class="pkg-price">$5,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> 30-minute match recording</li><li><i class="fas fa-check"></i> HD video delivery</li><li><i class="fas fa-check"></i> Delivered within 24hrs</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
+    <div class="pkg-card"><div class="pkg-name">Single Match</div><div class="pkg-price">$10,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> Full match recording</li><li><i class="fas fa-check"></i> HD video delivery</li><li><i class="fas fa-check"></i> Delivered within 24hrs</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
+    <div class="pkg-card featured"><div class="pkg-badge">Best Value</div><div class="pkg-name">3-Match Package</div><div class="pkg-price">$25,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> 3 full match recordings</li><li><i class="fas fa-check"></i> HD video delivery per match</li><li><i class="fas fa-check"></i> Priority scheduling</li><li><i class="fas fa-check"></i> Save $5,000 vs single</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
+    <div class="pkg-card"><div class="pkg-name">5-Match Package</div><div class="pkg-price">$40,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> 5 full match recordings</li><li><i class="fas fa-check"></i> HD video delivery per match</li><li><i class="fas fa-check"></i> Priority scheduling</li><li><i class="fas fa-check"></i> Save $10,000 vs single</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
+  </div>
+
+  <div style="max-width:400px;margin:24px auto 0;background:var(--white);border:2px solid var(--green);border-radius:var(--radius);padding:24px;text-align:left">
+    <div style="font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--green-dark);margin-bottom:16px"><i class="fas fa-plus-circle" style="margin-right:8px"></i> Add-on Services</div>
+    <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>Highlight reel</span><strong style="color:var(--green-dark)">$20,000</strong></div>
+    <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>Live streaming</span><strong style="color:var(--green-dark)">$2,000</strong></div>
+    <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px"><span>AI Analytics report</span><strong style="color:var(--green-dark)">$10,000</strong></div>
+  </div>
+</section>
+
+<section class="train-connect">
+  <h2>Match Footage + VR Training = <em>Complete Development</em></h2>
+  <p>Your Veo footage tells us where to improve. Rezzil VR drills train those exact skills. Pair both services for the full athlete development loop.</p>
+  <a href="{{ url_for('pages.train') }}" class="btn btn-primary"><i class="fas fa-vr-cardboard"></i> Explore VR Training</a>
+</section>
+{% endblock %}

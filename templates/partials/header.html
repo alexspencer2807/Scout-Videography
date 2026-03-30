@@ -1,0 +1,38 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{{ url_for('pages.home') }}" class="header-logo-link">
+      <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" class="header-logo" alt="Scout Videography Jamaica Logo">
+      <span class="header-brand">Scout Videography</span>
+    </a>
+
+    <nav>
+      <ul class="nav-list" id="navList">
+        <li><a href="{{ url_for('pages.home') }}">Home</a></li>
+        <li><a href="{{ url_for('pages.services') }}">Services</a></li>
+        <li><a href="{{ url_for('pages.train') }}">VR Training</a></li>
+        <li><a href="{{ url_for('analyst.analyse') }}">AI Analyst</a></li>
+        <li><a href="{{ url_for('pages.portfolio') }}">Portfolio</a></li>
+        <li><a href="{{ url_for('shop.products') }}">Shop</a></li>
+        <li><a href="{{ url_for('pages.about') }}">About</a></li>
+        <li><a href="{{ url_for('booking.contact') }}" class="nav-cta"><i class="fas fa-calendar-check"></i> Book Now</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div class="cart-icon" id="cartIcon">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="cart-dropdown" id="cartDropdown">
+      <h3>Your Cart</h3>
+      <ul id="cartItems"></ul>
+      <p>Total: $<span id="cartTotal">0</span></p>
+      <button type="button" class="btn btn-secondary" id="cartCheckoutBtn" style="width:100%">Checkout</button>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Scout Videography Jamaica | Checkout{% endblock %}
+{% block content %}
+<section class="section">
+  <form class="checkout-form" id="payment-form">
+    <h1>Checkout</h1>
+    <div id="cart-summary"></div>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="text" id="address" placeholder="Shipping Address" required>
+    <input type="text" id="city" placeholder="City / Parish" required>
+    <div id="card-element"></div>
+    <button type="submit"><i class="fas fa-lock"></i> Pay Securely</button>
+    <p id="payment-message" style="text-align:center;font-size:13px;color:#64748B;margin-top:8px"></p>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>const stripePublicKey = "{{ stripe_public_key }}";</script>
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}

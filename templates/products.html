@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Scout Videography Jamaica | Gear Shop{% endblock %}
+{% block description %}Premium sports socks, shin guards, and grip gear for athletes. All prices in JMD. Free shipping on all orders.{% endblock %}
+{% block content %}
+<section class="hero" style="min-height:auto;padding:48px 24px 40px">
+  <h2 style="font-size:36px">Athlete <span>Gear</span> Shop</h2>
+  <p>Premium socks, shin guards, and grip gear for athletes who train hard and compete harder. All prices in JMD, shipping included.</p>
+</section>
+
+<section class="section" id="socks">
+  <div class="container" style="max-width:1100px;text-align:center">
+    <div class="section-label">Socks</div>
+    <h2 class="section-title">Performance Socks</h2>
+    <div class="products-scroll"><div class="products-grid">
+      {% set socks = [
+        {"name":"Black Sock","image":"sock black.png","price":2000},
+        {"name":"White Sock","image":"sock white.png","price":2000},
+        {"name":"Red Sock","image":"sock red.png","price":2000},
+        {"name":"Yellow Sock","image":"sock yellow.png","price":2000},
+        {"name":"Green Sock","image":"sock green.png","price":2000},
+        {"name":"Blue Sock","image":"sock blue.png","price":2000},
+        {"name":"Purple Sock","image":"sock purple.jpg","price":2000}
+      ] %}
+      {% for sock in socks %}
+      <div class="product-card">
+        <img src="{{ url_for('static', filename='media/' ~ sock.image) }}" alt="{{ sock.name }}">
+        <h3>{{ sock.name }}</h3>
+        <div class="product-price">${{ sock.price }}</div>
+        <button class="product-btn" data-name="{{ sock.name }}" data-price="{{ sock.price }}" data-image="{{ url_for('static', filename='media/' ~ sock.image) }}">Add to Cart</button>
+      </div>
+      {% endfor %}
+    </div></div>
+  </div>
+</section>
+
+<section class="section section-alt" id="shin-guards">
+  <div class="container" style="max-width:1100px;text-align:center">
+    <div class="section-label">Protection</div>
+    <h2 class="section-title">Shin Guards</h2>
+    <div class="products-scroll"><div class="products-grid">
+      {% set shin_guards = [
+        {"name":"Black Shin Guard","image":"shin guard black.jpg","price":2000},
+        {"name":"White Shin Guard","image":"shin guard white.jpg","price":2000},
+        {"name":"Blue Shin Guard","image":"shin guard blue.jpg","price":2000},
+        {"name":"Red Shin Guard","image":"shin guard red.jpg","price":2000},
+        {"name":"Pink Shin Guard","image":"shin guard pink.jpg","price":2000}
+      ] %}
+      {% for guard in shin_guards %}
+      <div class="product-card">
+        <img src="{{ url_for('static', filename='media/' ~ guard.image) }}" alt="{{ guard.name }}">
+        <h3>{{ guard.name }}</h3>
+        <div class="product-price">${{ guard.price }}</div>
+        <button class="product-btn" data-name="{{ guard.name }}" data-price="{{ guard.price }}" data-image="{{ url_for('static', filename='media/' ~ guard.image) }}">Add to Cart</button>
+      </div>
+      {% endfor %}
+    </div></div>
+  </div>
+</section>
+
+<section class="section" id="grip-socks">
+  <div class="container" style="max-width:1100px;text-align:center">
+    <div class="section-label">Grip</div>
+    <h2 class="section-title">Grip Socks</h2>
+    <div class="products-scroll"><div class="products-grid">
+      {% set grip_socks = [
+        {"name":"Black Grip Sock","image":"grip socks black.jpg","price":2000},
+        {"name":"White Grip Sock","image":"grip socks white.jpg","price":2000},
+        {"name":"Red Grip Sock","image":"grip socks red.jpg","price":2000},
+        {"name":"Pink Grip Sock","image":"grip socks pink.jpg","price":2000},
+        {"name":"Light Blue Grip Sock","image":"grip socks light blue.jpg","price":2000},
+        {"name":"Green Grip Sock","image":"grip socks green.jpg","price":2000},
+        {"name":"Purple Grip Sock","image":"grip socks purple.jpg","price":2000},
+        {"name":"Yellow Grip Sock","image":"grip socks yellow.jpg","price":2000},
+        {"name":"Orange Grip Sock","image":"grip socks orange.jpg","price":2000}
+      ] %}
+      {% for sock in grip_socks %}
+      <div class="product-card">
+        <img src="{{ url_for('static', filename='media/' ~ sock.image) }}" alt="{{ sock.name }}">
+        <h3>{{ sock.name }}</h3>
+        <div class="product-price">${{ sock.price }}</div>
+        <button class="product-btn" data-name="{{ sock.name }}" data-price="{{ sock.price }}" data-image="{{ url_for('static', filename='media/' ~ sock.image) }}">Add to Cart</button>
+      </div>
+      {% endfor %}
+    </div></div>
+  </div>
+</section>
+
+<section style="background:linear-gradient(135deg,#3B82F6,#2563EB);padding:40px 24px;text-align:center">
+  <h2 style="color:#fff;font-size:24px;margin-bottom:8px"><i class="fas fa-calendar-check"></i> Book a Highlight Session — Get 10% Off Your Order</h2>
+  <p style="color:rgba(255,255,255,0.75);margin-bottom:20px">Pair your new gear with professional match footage.</p>
+  <a href="{{ url_for('booking.contact') }}" class="btn btn-primary">Book a Session</a>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notification.js') }}"></script>
+{% endblock %}

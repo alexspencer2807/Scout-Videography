@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Scout Videography Jamaica | About Us{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:40px">
+  <div class="container" style="text-align:center;max-width:700px">
+    <div class="section-label">About Us</div>
+    <h1 class="section-title">Built for Jamaican Athletes</h1>
+    <p class="section-sub mx-auto">Scout Videography Jamaica is a full-cycle athlete development platform. We combine Veo camera technology for professional match recording, Rezzil VR training on the HTC Vive Pro for cognitive and technical skills development, and AI-powered performance analysis — all in one platform.</p>
+    <p class="section-sub mx-auto" style="margin-top:16px">Based in Kingston &amp; St. Andrew, serving athletes, clubs, and academies across Jamaica. Our mission: give every serious young footballer access to the same development tools used by professional clubs worldwide.</p>
+    <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-primary" href="{{ url_for('booking.contact') }}"><i class="fas fa-calendar-check"></i> Book a Session</a>
+      <a class="btn btn-secondary" href="{{ url_for('pages.train') }}"><i class="fas fa-vr-cardboard"></i> VR Training</a>
+      <a class="btn btn-outline" href="{{ url_for('pages.services') }}"><i class="fas fa-video"></i> Match Recording</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

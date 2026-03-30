@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Scout Videography Jamaica | AI Performance Analyst{% endblock %}
+{% block description %}AI-powered football performance analysis. Upload match footage, get personalised training recommendations. Free to try.{% endblock %}
+{% block extra_css %}
+<style>
+.analyst-hero { background: linear-gradient(135deg, var(--teal, #0D4A7A), var(--teal-dark, #062840)); padding: 48px 24px 40px; text-align: center; }
+.analyst-hero h1 { font-size: 36px; color: #fff; margin-bottom: 12px; }
+.analyst-hero h1 span { color: var(--green, #26C96F); }
+.analyst-hero p { color: rgba(255,255,255,0.75); max-width: 540px; margin: 0 auto 20px; font-size: 16px; line-height: 1.7; }
+
+.analyst-layout { max-width: 1000px; margin: 0 auto; padding: 24px 16px 48px; display: grid; grid-template-columns: 1fr; gap: 24px; }
+
+.chat-panel { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; display: flex; flex-direction: column; min-height: 520px; }
+.chat-header { padding: 14px 20px; border-bottom: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between; }
+.chat-header-left { display: flex; align-items: center; gap: 10px; }
+.chat-header-dot { width: 10px; height: 10px; background: #10B981; border-radius: 50%; }
+.chat-header-title { font-weight: 700; font-size: 15px; color: #0F172A; }
+.chat-header-sub { font-size: 12px; color: #64748B; }
+#msgCounter { font-size: 11px; color: #94A3B8; }
+
+.chat-suggestions { padding: 12px 16px 4px; display: flex; flex-wrap: wrap; gap: 6px; }
+.chat-pill { background: #EFF6FF; border: 1px solid #DBEAFE; color: var(--teal-dark, #062840); font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.15s; }
+.chat-pill:hover { background: #DBEAFE; }
+
+.chat-messages { flex: 1; padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.7; max-width: 88%; word-wrap: break-word; }
+.chat-msg strong { font-weight: 600; }
+.chat-msg-bot { background: #F1F5F9; color: #334155; align-self: flex-start; border-bottom-left-radius: 4px; }
+.chat-msg-user { background: var(--teal, #0D4A7A); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+.chat-typing { padding: 12px 20px; }
+.typing-dots { display: flex; gap: 4px; align-items: center; }
+.typing-dots span { width: 6px; height: 6px; background: #94A3B8; border-radius: 50%; animation: bounce 1.4s ease-in-out infinite; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,80%,100%{ transform:translateY(0) } 40%{ transform:translateY(-6px) } }
+
+.chat-input-row { padding: 12px 16px; border-top: 1px solid #E2E8F0; display: flex; gap: 8px; }
+.chat-input { flex: 1; padding: 10px 14px; font-size: 14px; font-family: Inter, sans-serif; border: 1.5px solid #E2E8F0; border-radius: 8px; outline: none; resize: none; }
+.chat-input:focus { border-color: var(--teal, #0D4A7A); }
+.chat-send { padding: 10px 18px; background: var(--teal, #0D4A7A); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; transition: 0.15s; }
+.chat-send:hover { background: var(--teal-dark, #062840); }
+
+.analyst-sidebar { display: flex; flex-direction: column; gap: 16px; }
+.sidebar-card { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 18px; }
+.sidebar-card h3 { font-size: 15px; margin-bottom: 8px; color: #0F172A; }
+.sidebar-card h3 i { margin-right: 6px; }
+.sidebar-card p { font-size: 13px; color: #64748B; line-height: 1.6; }
+
+.upload-zone { border: 2px dashed #CBD5E1; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.upload-zone:hover { border-color: var(--teal, #0D4A7A); background: #EFF6FF; }
+.upload-zone i { font-size: 24px; color: #94A3B8; }
+
+.sample-report { background: #F8FAFC; border-radius: 8px; padding: 14px; margin-top: 10px; font-size: 12px; color: #334155; line-height: 1.7; border: 1px solid #E2E8F0; }
+.sample-report .report-title { font-weight: 700; margin-bottom: 8px; color: #0F172A; font-size: 13px; }
+.sample-report .metric { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+.metric-good { color: #10B981; }
+.metric-improve { color: #F43F5E; }
+.metric-action { color: var(--teal, #0D4A7A); }
+
+.freemium-banner { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #92400E; display: flex; align-items: center; gap: 8px; max-width: 420px; margin: 0 auto; }
+
+@media (min-width: 768px) { .analyst-layout { grid-template-columns: 1fr 300px; padding: 32px 24px 64px; } }
+@media (max-width: 768px) {
+  .analyst-layout { grid-template-columns: 1fr; }
+  .analyst-hero h1 { font-size: 28px; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+  <div class="analyst-hero">
+    <div class="section-label" style="color:rgba(255,255,255,0.5)">AI-Powered</div>
+    <h1>Scout AI <span>Analyst</span></h1>
+    <p>Ask about your performance, get drill recommendations, and receive personalised training insights — powered by AI that understands football.</p>
+    <div class="freemium-banner">
+      <i class="fas fa-info-circle"></i>
+      <span><strong>Free to try</strong> — 5 messages per day. Create a Scout account for full analysis, footage upload, and detailed reports.</span>
+    </div>
+  </div>
+
+  <div class="analyst-layout">
+    <!-- CHAT PANEL -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="chat-header-dot"></div>
+          <div>
+            <div class="chat-header-title">Scout AI Analyst</div>
+            <div class="chat-header-sub">Football performance analysis</div>
+          </div>
+        </div>
+        <div id="msgCounter" style="font-size:11px;color:#94A3B8">5 free messages remaining today</div>
+      </div>
+
+      <div class="chat-suggestions">
+        <span class="chat-pill">What should I work on?</span>
+        <span class="chat-pill">Analyse my reaction time</span>
+        <span class="chat-pill">Suggest Rezzil drills for me</span>
+        <span class="chat-pill">How do I improve my positioning?</span>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg chat-msg-bot">
+          Hey! I'm the Scout AI Analyst. I can help you understand your game, recommend Rezzil VR drills, and build a training plan based on your match footage and session data. What would you like to work on today?
+        </div>
+      </div>
+
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about your performance...">
+        <button class="chat-send" id="chatSend"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="analyst-sidebar">
+      <!-- Upload -->
+      <div class="sidebar-card">
+        <h3><i class="fas fa-upload" style="color:var(--teal, #0D4A7A)"></i> Upload data</h3>
+        <div class="upload-zone" id="uploadZone">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p style="font-size:13px;color:#64748B;margin-top:6px">Drop match footage or Rezzil data</p>
+          <p style="font-size:11px;color:#94A3B8;margin-top:4px">MP4, MOV, CSV, or JSON — max 500MB</p>
+          <input type="file" id="uploadInput" accept=".mp4,.mov,.avi,.csv,.json" style="display:none">
+        </div>
+        <p style="margin-top:8px;font-size:11px;color:#94A3B8"><i class="fas fa-lock" style="margin-right:4px"></i> Your data is private and never shared.</p>
+      </div>
+
+      <!-- Sample report -->
+      <div class="sidebar-card">
+        <h3><i class="fas fa-chart-bar" style="color:#F43F5E"></i> Sample report</h3>
+        <p>Here's what a full AI analysis looks like:</p>
+        <div class="sample-report">
+          <div class="report-title">Kwame B. — Match #7 Analysis</div>
+          <div class="metric"><span class="metric-good"><i class="fas fa-check-circle"></i></span> <span><strong>Strength:</strong> Excellent work rate, 11.2km covered. Consistent pressing in the first half.</span></div>
+          <div class="metric"><span class="metric-improve"><i class="fas fa-exclamation-triangle"></i></span> <span><strong>Improve:</strong> Decision speed in the final third. Average 2.1s — target is 1.4s for your position.</span></div>
+          <div class="metric"><span class="metric-action"><i class="fas fa-arrow-right"></i></span> <span><strong>Drill:</strong> Rezzil "Fast Pass Decision" — 3 sessions to bring decision time under 1.6s.</span></div>
+          <div class="metric"><span class="metric-action"><i class="fas fa-arrow-right"></i></span> <span><strong>Drill:</strong> Rezzil "Colour React" — improve filtering under defensive pressure.</span></div>
+        </div>
+      </div>
+
+      <!-- How it connects -->
+      <div class="sidebar-card">
+        <h3><i class="fas fa-sync-alt" style="color:#10B981"></i> The loop</h3>
+        <p>The AI Analyst is step 2 of the development loop. Your Veo match footage goes in, personalised Rezzil drill recommendations come out. Every session makes the analysis smarter.</p>
+      </div>
+
+      <!-- Upgrade -->
+      <div class="sidebar-card" style="background:#EFF6FF;border-color:#BFDBFE">
+        <h3><i class="fas fa-star" style="color:var(--green, #26C96F)"></i> Want the full experience?</h3>
+        <p>Unlock unlimited messages, footage upload, full performance reports, and progress tracking across sessions.</p>
+        <a href="{{ url_for('booking.contact') }}" class="btn btn-secondary" style="width:100%;margin-top:10px;font-size:13px">Get Started</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analyst-widget.js') }}"></script>
+{% endblock %}
