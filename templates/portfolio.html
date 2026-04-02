@@ -13,41 +13,100 @@
     <div class="section-label">Highlight Reels</div>
     <h2 class="section-title">Featured Work</h2>
 
-    <!-- Video Grid — replace placeholder divs with actual YouTube/Vimeo embeds -->
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:24px">
 
-      <div style="background:#F1F5F9;border-radius:12px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #E2E8F0;grid-row:span 2">
-        <i class="fas fa-play-circle" style="font-size:48px;color:#3B82F6;margin-bottom:8px"></i>
-        <div style="font-weight:700;font-size:14px;color:#0F172A">Season Highlights — Kingston FC</div>
-        <div style="font-size:12px;color:#64748B">Full Season · 2025</div>
+      <!-- Wolmer's vs STATHS U16 -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;background:#fff">
+        <video controls preload="none"
+               poster="{{ url_for('static', filename='media/thumb-wolmers-staths-u16-jan2026.jpg') }}"
+               style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+          <source src="{{ url_for('static', filename='media/highlights-wolmers-vs-staths-u16-27012026-scout-videography-2026-01-27.mp4') }}" type="video/mp4">
+        </video>
+        <div style="padding:12px 14px">
+          <div style="font-weight:700;font-size:14px;color:#0F172A">Wolmer's vs STATHS — U16 Highlights</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">School Match · 27 Jan 2026</div>
+        </div>
       </div>
 
-      <div style="background:#F1F5F9;border-radius:12px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #E2E8F0">
-        <i class="fas fa-play-circle" style="font-size:36px;color:#3B82F6;margin-bottom:6px"></i>
-        <div style="font-weight:600;font-size:13px;color:#0F172A">7-a-Side Invitational</div>
-        <div style="font-size:11px;color:#64748B">Single Match · Jan 2026</div>
+      <!-- Wolmer's vs STATHS U14 -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;background:#fff">
+        <video controls preload="none"
+               poster="{{ url_for('static', filename='media/thumb-wolmers-staths-u14-jan2026.jpg') }}"
+               style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+          <source src="{{ url_for('static', filename='media/highlights-wolmers-vs-staths-u14-27012026-scout-videography-2026-01-27.mp4') }}" type="video/mp4">
+        </video>
+        <div style="padding:12px 14px">
+          <div style="font-weight:700;font-size:14px;color:#0F172A">Wolmer's vs STATHS — U14 Highlights</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">School Match · 27 Jan 2026</div>
+        </div>
       </div>
 
-      <div style="background:#F1F5F9;border-radius:12px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #E2E8F0">
-        <i class="fas fa-play-circle" style="font-size:36px;color:#3B82F6;margin-bottom:6px"></i>
-        <div style="font-weight:600;font-size:13px;color:#0F172A">Barbican Sports Turf</div>
-        <div style="font-size:11px;color:#64748B">Youth League · Feb 2026</div>
+      <!-- AISK vs Youth Reaching Youth -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;background:#fff">
+        <video controls preload="none"
+               poster="{{ url_for('static', filename='media/thumb-aisk-vs-youth-feb2026.jpg') }}"
+               style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+          <source src="{{ url_for('static', filename='media/highlights-aisk-vs-youth-reaching-youth-06022026-scout-videography-2026-02-06.mp4') }}" type="video/mp4">
+        </video>
+        <div style="padding:12px 14px">
+          <div style="font-weight:700;font-size:14px;color:#0F172A">AISK vs Youth Reaching Youth — Highlights</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">Match Highlights · 6 Feb 2026</div>
+        </div>
       </div>
 
-      <div style="background:#F1F5F9;border-radius:12px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #E2E8F0">
-        <i class="fas fa-play-circle" style="font-size:36px;color:#3B82F6;margin-bottom:6px"></i>
-        <div style="font-weight:600;font-size:13px;color:#0F172A">Player Spotlight — Kwame B.</div>
-        <div style="font-size:11px;color:#64748B">Individual Reel · 2025</div>
+      <!-- Wolmer's vs STGC U16 2nd Round -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;background:#fff">
+        <video controls preload="none"
+               poster="{{ url_for('static', filename='media/thumb-wolmers-vs-stgc-u16-feb2026.jpg') }}"
+               style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+          <source src="{{ url_for('static', filename='media/highlights-wolmers-vs-stgc-u16-2nd-round-09022026-scout-videography-2026-02-09.mp4') }}" type="video/mp4">
+        </video>
+        <div style="padding:12px 14px">
+          <div style="font-weight:700;font-size:14px;color:#0F172A">Wolmer's vs STGC — U16 2nd Round</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">School Match · 9 Feb 2026</div>
+        </div>
       </div>
 
-      <div style="background:#F1F5F9;border-radius:12px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #E2E8F0">
-        <i class="fas fa-play-circle" style="font-size:36px;color:#3B82F6;margin-bottom:6px"></i>
-        <div style="font-weight:600;font-size:13px;color:#0F172A">St. Andrew Academy</div>
-        <div style="font-size:11px;color:#64748B">Club Package · 2025</div>
+      <!-- Holy Trinity vs Wolmer's U14 -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;background:#fff">
+        <video controls preload="none"
+               poster="{{ url_for('static', filename='media/thumb-holy-trinity-vs-wolmers-u14-feb2026.jpg') }}"
+               style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+          <source src="{{ url_for('static', filename='media/highlights-holy-trinity-vs-wolmers-u14-12022026-scout-videography-2026-02-12.mp4') }}" type="video/mp4">
+        </video>
+        <div style="padding:12px 14px">
+          <div style="font-weight:700;font-size:14px;color:#0F172A">Holy Trinity vs Wolmer's — U14 Highlights</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">School Match · 12 Feb 2026</div>
+        </div>
       </div>
+
+      <!-- AISK B vs Hillel — Soccer Feva 2026 -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;background:#fff">
+        <video controls preload="none"
+               poster="{{ url_for('static', filename='media/thumb-aisk-b-vs-hillel-mar2026.jpg') }}"
+               style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+          <source src="{{ url_for('static', filename='media/highlights-aisk-b-vs-hillel-soccer-feva-2026-scout-videography-2026-03-06.mp4') }}" type="video/mp4">
+        </video>
+        <div style="padding:12px 14px">
+          <div style="font-weight:700;font-size:14px;color:#0F172A">AISK B vs Hillel — Soccer Feva 2026</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">Tournament · 6 Mar 2026</div>
+        </div>
+      </div>
+
+      <!-- Barbican Turf — White vs Colours -->
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;background:#fff">
+        <video controls preload="none"
+               poster="{{ url_for('static', filename='media/thumb-barbican-turf-aug2025.jpg') }}"
+               style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+          <source src="{{ url_for('static', filename='media/highlights-barbican-turf-saturday-game-white-vs-colours-30082025-scout-videography-2025-08-31.mp4') }}" type="video/mp4">
+        </video>
+        <div style="padding:12px 14px">
+          <div style="font-weight:700;font-size:14px;color:#0F172A">Barbican Turf — White vs Colours</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">Saturday Game · 30 Aug 2025</div>
+        </div>
+      </div>
+
     </div>
-
-    <p style="text-align:center;margin-top:24px;font-size:13px;color:#64748B">Video placeholders — replace with YouTube/Vimeo embeds of your best work from @scoutvideoja</p>
   </div>
 </section>
 

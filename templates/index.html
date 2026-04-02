@@ -52,11 +52,11 @@
     <div class="section-label">Watch Our Work</div>
     <h2 class="section-title">See the Quality</h2>
     <p class="section-sub mx-auto" style="margin-bottom:24px">Wolmer's vs STATHS — captured by Scout Videography with Veo camera technology.</p>
-    <div style="background:#111;border-radius:var(--radius);aspect-ratio:16/9;max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;position:relative;overflow:hidden">
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,74,122,0.4),rgba(38,201,111,0.15))"></div>
-      <div style="width:56px;height:56px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;position:relative;z-index:1;color:#fff">▶</div>
-      <span style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);position:relative;z-index:1">Wolmer's vs STATHS U16 · @scoutvideoja</span>
-    </div>
+    <video controls preload="none"
+           poster="{{ url_for('static', filename='media/thumb-wolmers-staths-u16-jan2026.jpg') }}"
+           style="border-radius:var(--radius);width:100%;max-width:640px;margin:0 auto;display:block;background:#000">
+      <source src="{{ url_for('static', filename='media/highlights-wolmers-vs-staths-u16-27012026-scout-videography-2026-01-27.mp4') }}" type="video/mp4">
+    </video>
   </div>
 </section>
 
