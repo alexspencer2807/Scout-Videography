@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 venv/
 .DS_Store
+static/media/*.mp4
+receipt_*.pdf
+receipt_Customer.pdf
+.claude/
