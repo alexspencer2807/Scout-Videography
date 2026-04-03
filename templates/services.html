@@ -7,44 +7,83 @@
 <section class="train-hero">
   <div class="train-badge"><div class="train-badge-dot"></div><span>Powered by Veo Camera Technology</span></div>
   <h1>Your highlights.<br>Your story. <em>Captured.</em></h1>
-  <p class="train-hero-sub">Professional match footage and personalised highlight reels for soccer athletes in Jamaica. AI-powered recording — no camera operator needed.</p>
+  <p class="train-hero-sub">Professional match footage, live streaming, and personalised highlight reels for soccer athletes in Jamaica. AI-powered recording — no camera operator needed.</p>
   <div class="train-hero-btns">
     <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a Session</a>
-    <a href="#how-it-works" class="btn btn-white"><i class="fas fa-play-circle"></i> How It Works</a>
+    <a href="#packages" class="btn btn-white"><i class="fas fa-tag"></i> See Packages</a>
   </div>
 </section>
 
-<!-- VEO EXPLAINER -->
-<section class="train-tech" id="how-it-works">
-  <div class="train-tech-inner">
-    <div>
-      <div class="section-label">Our Technology</div>
-      <h2 class="section-title">Powered by Veo</h2>
-      <p class="section-sub">The Veo Camera is one of the world's leading AI-powered sports cameras. It delivers full-pitch automated recording without a dedicated camera operator — capturing every moment of your match.</p>
-      <ul class="tech-features">
-        <li><i class="fas fa-check-circle"></i><div><strong>AI-powered player tracking</strong> — automatic camera movement follows the action</div></li>
-        <li><i class="fas fa-check-circle"></i><div><strong>Full 180° panoramic pitch coverage</strong> — nothing is missed</div></li>
-        <li><i class="fas fa-check-circle"></i><div><strong>Automatic highlight clip generation</strong> — key moments identified by AI</div></li>
-        <li><i class="fas fa-check-circle"></i><div><strong>HD video delivery within 24 hours</strong> — ready to share with coaches and scouts</div></li>
-        <li><i class="fas fa-check-circle"></i><div><strong>Feeds into AI analytics</strong> — your footage becomes data for personalised training plans</div></li>
-      </ul>
+<!-- ALL SERVICES OVERVIEW -->
+<section class="section section-alt" style="padding-top:40px;padding-bottom:40px">
+  <div class="container" style="max-width:960px">
+    <div style="text-align:center;margin-bottom:24px">
+      <div class="section-label">Everything We Offer</div>
+      <h2 class="section-title">One Platform. Five Services.</h2>
     </div>
-    <div class="tech-visual"><i class="fas fa-video"></i><span>Veo Camera Demo</span></div>
-  </div>
-</section>
+    <div style="display:grid;grid-template-columns:1fr;gap:16px" class="about-pillars">
 
-<!-- HOW IT WORKS -->
-<section class="train-loop">
-  <div class="container" style="text-align:center">
-    <div class="section-label">The Process</div>
-    <h2 class="section-title">How It Works</h2>
-  </div>
-  <div class="loop-steps">
-    <div class="loop-step"><div class="loop-icon loop-icon-record"><i class="fas fa-calendar-check"></i></div><div class="loop-num">Step 01</div><div class="loop-title">Book a Session</div><p class="loop-body">Choose a package and send your match details via WhatsApp or our booking form. We confirm availability and lock in your date.</p></div>
-    <div class="loop-arrow"><i class="fas fa-chevron-right"></i></div>
-    <div class="loop-step"><div class="loop-icon loop-icon-train"><i class="fas fa-video"></i></div><div class="loop-num">Step 02</div><div class="loop-title">We Record Your Match</div><p class="loop-body">We arrive with the Veo camera, set up pitchside, and capture the full match. No camera operator needed during play.</p></div>
-    <div class="loop-arrow"><i class="fas fa-chevron-right"></i></div>
-    <div class="loop-step"><div class="loop-icon loop-icon-analyse"><i class="fas fa-film"></i></div><div class="loop-num">Step 03</div><div class="loop-title">Receive Your Highlights</div><p class="loop-body">You receive a professional highlight reel within 24 hours — ready to share with coaches, scouts, academies, and fans.</p></div>
+      <div style="background:var(--white);border-radius:var(--radius);padding:24px;display:flex;gap:16px;align-items:flex-start;border:1px solid var(--slate-200)">
+        <div style="width:44px;height:44px;min-width:44px;background:var(--teal-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--teal)">
+          <i class="fas fa-video"></i>
+        </div>
+        <div>
+          <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--slate-900);margin-bottom:6px">Match Recording</div>
+          <p style="font-size:14px;color:var(--slate-500);line-height:1.7;margin:0">
+            Full-match footage captured by Veo AI camera — no operator needed. HD delivery within 24 hours.
+          </p>
+        </div>
+      </div>
+
+      <div style="background:var(--white);border-radius:var(--radius);padding:24px;display:flex;gap:16px;align-items:flex-start;border:1px solid var(--slate-200)">
+        <div style="width:44px;height:44px;min-width:44px;background:#FFF7ED;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#EA580C">
+          <i class="fas fa-film"></i>
+        </div>
+        <div>
+          <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--slate-900);margin-bottom:6px">Highlight Reels</div>
+          <p style="font-size:14px;color:var(--slate-500);line-height:1.7;margin:0">
+            Professionally edited highlight reels built from your match footage. Perfect for athletic scholarship applications and getting noticed by international football clubs.
+          </p>
+        </div>
+      </div>
+
+      <div style="background:var(--white);border-radius:var(--radius);padding:24px;display:flex;gap:16px;align-items:flex-start;border:1px solid var(--slate-200)">
+        <div style="width:44px;height:44px;min-width:44px;background:#EDE9FE;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#7C3AED">
+          <i class="fas fa-vr-cardboard"></i>
+        </div>
+        <div>
+          <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--slate-900);margin-bottom:6px">VR Training</div>
+          <p style="font-size:14px;color:var(--slate-500);line-height:1.7;margin:0">
+            Rezzil cognitive and technical drills on the HTC Vive Pro — the same software used by Manchester City and Leicester City. Train smarter, not just harder.
+          </p>
+        </div>
+      </div>
+
+      <div style="background:var(--white);border-radius:var(--radius);padding:24px;display:flex;gap:16px;align-items:flex-start;border:1px solid var(--slate-200)">
+        <div style="width:44px;height:44px;min-width:44px;background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--green-dark)">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div>
+          <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--slate-900);margin-bottom:6px">AI Performance Analysis</div>
+          <p style="font-size:14px;color:var(--slate-500);line-height:1.7;margin:0">
+            Our AI Analyst reviews your match footage and VR data to identify strengths, gaps, and a personalised development plan — updated every session.
+          </p>
+        </div>
+      </div>
+
+      <div style="background:var(--white);border-radius:var(--radius);padding:24px;display:flex;gap:16px;align-items:flex-start;border:1px solid var(--slate-200)">
+        <div style="width:44px;height:44px;min-width:44px;background:#FEF9C3;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#CA8A04">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div>
+          <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--slate-900);margin-bottom:6px">Gear Shop</div>
+          <p style="font-size:14px;color:var(--slate-500);line-height:1.7;margin:0">
+            Grip socks, shin guards, and performance gear — all priced in JMD and delivered across Jamaica.
+          </p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -54,18 +93,68 @@
     <div class="section-label">Pricing</div>
     <h2 class="section-title">Choose Your Package</h2>
   </div>
-  <div class="packages-grid">
-    <div class="pkg-card"><div class="pkg-name">30-Min Game</div><div class="pkg-price">$5,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> 30-minute match recording</li><li><i class="fas fa-check"></i> HD video delivery</li><li><i class="fas fa-check"></i> Delivered within 24hrs</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
-    <div class="pkg-card"><div class="pkg-name">Single Match</div><div class="pkg-price">$10,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> Full match recording</li><li><i class="fas fa-check"></i> HD video delivery</li><li><i class="fas fa-check"></i> Delivered within 24hrs</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
-    <div class="pkg-card featured"><div class="pkg-badge">Best Value</div><div class="pkg-name">3-Match Package</div><div class="pkg-price">$25,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> 3 full match recordings</li><li><i class="fas fa-check"></i> HD video delivery per match</li><li><i class="fas fa-check"></i> Priority scheduling</li><li><i class="fas fa-check"></i> Save $5,000 vs single</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
-    <div class="pkg-card"><div class="pkg-name">5-Match Package</div><div class="pkg-price">$40,000 <span>JMD</span></div><ul class="pkg-features"><li><i class="fas fa-check"></i> 5 full match recordings</li><li><i class="fas fa-check"></i> HD video delivery per match</li><li><i class="fas fa-check"></i> Priority scheduling</li><li><i class="fas fa-check"></i> Save $10,000 vs single</li></ul><a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a></div>
+  <div class="svc-pkg-grid">
+    <div class="pkg-card" style="border-top:4px solid var(--teal-mid)">
+      <div class="pkg-name">30-Min Game</div>
+      <div class="pkg-price">$5,000 <span>JMD</span></div>
+      <ul class="pkg-features">
+        <li><i class="fas fa-check"></i> 30-minute match recording</li>
+        <li><i class="fas fa-check"></i> HD video delivery</li>
+        <li><i class="fas fa-check"></i> Delivered within 24hrs</li>
+      </ul>
+      <a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a>
+    </div>
+    <div class="pkg-card" style="border-top:4px solid var(--teal)">
+      <div class="pkg-name">Single Match</div>
+      <div class="pkg-price">$10,000 <span>JMD</span></div>
+      <ul class="pkg-features">
+        <li><i class="fas fa-check"></i> Full match recording</li>
+        <li><i class="fas fa-check"></i> HD video delivery</li>
+        <li><i class="fas fa-check"></i> Delivered within 24hrs</li>
+      </ul>
+      <a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a>
+    </div>
+    <div class="pkg-card featured" style="border-top:4px solid var(--green)">
+      <div class="pkg-badge" style="background:var(--green)">Best Value</div>
+      <div class="pkg-name">3-Match Package</div>
+      <div class="pkg-price">$25,000 <span>JMD</span></div>
+      <ul class="pkg-features">
+        <li><i class="fas fa-check"></i> 3 full match recordings</li>
+        <li><i class="fas fa-check"></i> HD video delivery per match</li>
+        <li><i class="fas fa-check"></i> Priority scheduling</li>
+        <li><i class="fas fa-check"></i> Save $5,000 vs single</li>
+      </ul>
+      <a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a>
+    </div>
+    <div class="pkg-card" style="border-top:4px solid var(--teal)">
+      <div class="pkg-name">5-Match Package</div>
+      <div class="pkg-price">$40,000 <span>JMD</span></div>
+      <ul class="pkg-features">
+        <li><i class="fas fa-check"></i> 5 full match recordings</li>
+        <li><i class="fas fa-check"></i> HD video delivery per match</li>
+        <li><i class="fas fa-check"></i> Priority scheduling</li>
+        <li><i class="fas fa-check"></i> Save $10,000 vs single</li>
+      </ul>
+      <a href="{{ url_for('booking.contact') }}" class="pkg-btn">Book This</a>
+    </div>
   </div>
 
-  <div style="max-width:400px;margin:24px auto 0;background:var(--white);border:2px solid var(--green);border-radius:var(--radius);padding:24px;text-align:left">
-    <div style="font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--green-dark);margin-bottom:16px"><i class="fas fa-plus-circle" style="margin-right:8px"></i> Add-on Services</div>
-    <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>Highlight reel</span><strong style="color:var(--green-dark)">$20,000</strong></div>
-    <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>Live streaming</span><strong style="color:var(--green-dark)">$2,000</strong></div>
-    <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px"><span>AI Analytics report</span><strong style="color:var(--green-dark)">$10,000</strong></div>
+  <div class="svc-addons">
+    <div class="svc-addons-title"><i class="fas fa-plus-circle" style="margin-right:8px"></i> Add-on Services</div>
+    <div class="svc-addons-items">
+      <div class="svc-addon-item">
+        <span>Highlight reel</span>
+        <strong style="color:var(--green-dark)">$20,000 JMD</strong>
+      </div>
+      <div class="svc-addon-item">
+        <span>Live streaming</span>
+        <strong style="color:var(--green-dark)">$2,000 JMD</strong>
+      </div>
+      <div class="svc-addon-item">
+        <span>AI Analytics report</span>
+        <strong style="color:var(--green-dark)">$10,000 JMD</strong>
+      </div>
+    </div>
   </div>
 </section>
 

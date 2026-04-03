@@ -6,21 +6,62 @@
 <!-- HERO with background image -->
 <section class="hero-image" style="background-image:url('{{ url_for('static', filename='media/hero-bg.jpg') }}')">
   <div class="section-label" style="color:rgba(255,255,255,0.5)">Scout Videography Jamaica</div>
-  <h2>Your game.<br>Your future.<br><span>Our technology.</span></h2>
-  <p>Match recording, highlight reels, VR training, and AI performance analysis for young footballers in Kingston & St. Andrew.</p>
+  <h2 style="text-shadow:0 2px 8px rgba(0,0,0,0.5)">Take your development to the next level with <span>Scout Videography</span></h2>
+  <p>Match recording, highlight reels, VR training, and AI performance analysis for young footballers across Jamaica. Based in Kingston.</p>
   <div class="hero-btns">
     <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a Session</a>
-    <a href="{{ url_for('pages.train') }}" class="btn btn-outline"><i class="fas fa-vr-cardboard"></i> Try VR Training</a>
+    <a href="{{ url_for('pages.train') }}#packages" class="btn btn-outline"><i class="fas fa-vr-cardboard"></i> Try VR Training</a>
     <a href="{{ url_for('shop.products') }}" class="btn btn-outline"><i class="fas fa-shopping-bag"></i> Shop Gear</a>
   </div>
 </section>
 
-<!-- DEVELOPMENT LOOP -->
+<!-- 1. MATCH RECORDING -->
+<section class="section" style="text-align:center">
+  <div class="container" style="max-width:680px">
+    <div class="section-label">Match Recording</div>
+    <h2 class="section-title">Book a Film Session</h2>
+    <p class="section-sub mx-auto" style="margin-bottom:28px">Professional full-match footage and live streaming powered by Veo AI camera technology. HD delivery within 24 hours — ready to share with coaches, scouts, and academies. Packages from $5,000 JMD.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book Now</a>
+      <a href="{{ url_for('pages.services') }}#packages" class="btn btn-secondary"><i class="fas fa-video"></i> See Packages</a>
+    </div>
+  </div>
+</section>
+
+<!-- 2. VR TRAINING -->
+<section class="vr-strip">
+  <div class="container">
+    <div class="section-label">VR Training</div>
+    <h2 class="section-title">Train Your Brain. Sharpen Your Game.</h2>
+    <p>Rezzil on the HTC Vive Pro — the same VR training software used by Manchester City and Leicester City. Now available in Kingston, Jamaica.</p>
+    <div class="vr-strip-btns">
+      <a href="{{ url_for('pages.train') }}#packages" class="btn btn-white"><i class="fas fa-vr-cardboard"></i> Explore VR Training</a>
+      <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%27m%20interested%20in%20VR%20training" target="_blank" rel="noopener" class="btn btn-outline"><i class="fab fa-whatsapp"></i> Contact for Pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PORTFOLIO -->
+<section class="section section-alt" style="text-align:center">
+  <div class="container">
+    <div class="section-label">Watch Our Work</div>
+    <h2 class="section-title">See the Quality</h2>
+    <p class="section-sub mx-auto" style="margin-bottom:24px">Wolmer's vs STATHS — captured by Scout Videography with Veo camera technology.</p>
+    <video controls preload="none"
+           poster="{{ url_for('static', filename='media/thumb-wolmers-staths-u16-jan2026.jpg') }}"
+           style="border-radius:var(--radius);width:100%;max-width:640px;margin:0 auto 20px;display:block;background:#000">
+      <source src="{{ url_for('static', filename='media/highlights-wolmers-vs-staths-u16-27012026-scout-videography-2026-01-27.mp4') }}" type="video/mp4">
+    </video>
+    <a href="{{ url_for('pages.portfolio') }}" class="btn btn-secondary"><i class="fas fa-play-circle"></i> View Full Portfolio</a>
+  </div>
+</section>
+
+<!-- 4. DEVELOPMENT CYCLE -->
 <section class="section" style="text-align:center">
   <div class="container">
-    <div class="section-label">How It Works</div>
+    <div class="section-label">The Development Cycle</div>
     <h2 class="section-title">Record. Analyse. Train. Repeat.</h2>
-    <p class="section-sub mx-auto" style="margin-bottom:32px">Four steps that turn match footage into measurable improvement — every session, every season.</p>
+    <p class="section-sub mx-auto" style="margin-bottom:32px">Every session feeds the next — turning match footage into measurable improvement.</p>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:500px;margin:0 auto">
       <div style="background:var(--teal-light);border-radius:var(--radius);padding:20px;text-align:center">
         <div style="width:48px;height:48px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:18px"><i class="fas fa-video"></i></div>
@@ -30,7 +71,7 @@
       <div style="background:var(--green-light);border-radius:var(--radius);padding:20px;text-align:center">
         <div style="width:48px;height:48px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:18px"><i class="fas fa-chart-line"></i></div>
         <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--green-dark);margin-bottom:4px">Analyse</div>
-        <div style="font-size:13px;color:var(--slate-500)">AI finds your strengths & gaps</div>
+        <div style="font-size:13px;color:var(--slate-500)">AI finds your strengths &amp; gaps</div>
       </div>
       <div style="background:#EDE9FE;border-radius:var(--radius);padding:20px;text-align:center">
         <div style="width:48px;height:48px;background:#7C3AED;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:18px"><i class="fas fa-vr-cardboard"></i></div>
@@ -43,76 +84,14 @@
         <div style="font-size:13px;color:var(--slate-500)">Next match, better results</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- FEATURED VIDEO -->
-<section class="section section-alt" style="text-align:center">
-  <div class="container">
-    <div class="section-label">Watch Our Work</div>
-    <h2 class="section-title">See the Quality</h2>
-    <p class="section-sub mx-auto" style="margin-bottom:24px">Wolmer's vs STATHS — captured by Scout Videography with Veo camera technology.</p>
-    <video controls preload="none"
-           poster="{{ url_for('static', filename='media/thumb-wolmers-staths-u16-jan2026.jpg') }}"
-           style="border-radius:var(--radius);width:100%;max-width:640px;margin:0 auto;display:block;background:#000">
-      <source src="{{ url_for('static', filename='media/highlights-wolmers-vs-staths-u16-27012026-scout-videography-2026-01-27.mp4') }}" type="video/mp4">
-    </video>
-  </div>
-</section>
-
-<!-- GIRLS FOOTBALL -->
-<section class="section">
-  <div class="container" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:center">
-    <div style="text-align:center">
-      <div class="section-label">For Every Athlete</div>
-      <h2 class="section-title">Boys & Girls Football</h2>
-      <p class="section-sub mx-auto">We capture matches and train athletes across all levels — boys, girls, school teams, and clubs. Every player deserves to see their highlights.</p>
-    </div>
-    <img src="{{ url_for('static', filename='media/girls-football.jpg') }}" alt="Girls football match recorded by Scout Videography Jamaica" style="border-radius:var(--radius);width:100%;max-width:400px;margin:0 auto">
-  </div>
-</section>
-
-<!-- PRICING -->
-<section class="section section-alt" style="text-align:center">
-  <div class="container">
-    <div class="section-label">Pricing</div>
-    <h2 class="section-title">Straight Up Pricing. No Surprises.</h2>
-    <p class="section-sub mx-auto" style="margin-bottom:28px">Everything in JMD. Pick what fits your game.</p>
-
-    <div style="display:grid;grid-template-columns:1fr;gap:16px;max-width:400px;margin:0 auto">
-      <!-- Match Recording -->
-      <div style="background:var(--white);border:2px solid var(--teal);border-radius:var(--radius);padding:24px;text-align:left">
-        <div style="font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--teal);margin-bottom:16px"><i class="fas fa-video" style="margin-right:8px"></i> Match Recording</div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>30-min game</span><strong style="color:var(--teal)">$5,000</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>Single match (full)</span><strong style="color:var(--teal)">$10,000</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>3-match package</span><strong style="color:var(--teal)">$25,000</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px"><span>5-match package</span><strong style="color:var(--teal)">$40,000</strong></div>
-      </div>
-
-      <!-- Add-ons -->
-      <div style="background:var(--white);border:2px solid var(--green);border-radius:var(--radius);padding:24px;text-align:left">
-        <div style="font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--green-dark);margin-bottom:16px"><i class="fas fa-plus-circle" style="margin-right:8px"></i> Add-ons</div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>Highlight reel</span><strong style="color:var(--green-dark)">$20,000</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--slate-100);font-size:15px"><span>Live streaming</span><strong style="color:var(--green-dark)">$2,000</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px"><span>AI Analytics report</span><strong style="color:var(--green-dark)">$10,000</strong></div>
-      </div>
-
-      <!-- VR Training -->
-      <div style="background:var(--white);border:2px solid #7C3AED;border-radius:var(--radius);padding:24px;text-align:left">
-        <div style="font-family:'Archivo Black',sans-serif;font-size:18px;color:#7C3AED;margin-bottom:16px"><i class="fas fa-vr-cardboard" style="margin-right:8px"></i> VR Training</div>
-        <p style="font-size:15px;color:var(--slate-500);margin-bottom:16px">Rezzil VR cognitive and technical drills on the HTC Vive Pro. Used by Man City & Leicester City.</p>
-        <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%27m%20interested%20in%20VR%20training" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%"><i class="fab fa-whatsapp"></i> Contact for Pricing</a>
-      </div>
-    </div>
-
     <div style="margin-top:24px">
-      <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a Session</a>
+      <a href="{{ url_for('pages.about') }}#dev-cycle" class="btn btn-secondary"><i class="fas fa-info-circle"></i> How We Develop Athletes</a>
     </div>
   </div>
 </section>
 
 <!-- GEAR STRIP -->
-<section class="section" style="text-align:center">
+<section class="section section-alt" style="text-align:center">
   <div class="container">
     <div class="section-label">Gear Shop</div>
     <h2 class="section-title">Premium Athlete Gear</h2>

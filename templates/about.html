@@ -1,17 +1,203 @@
 {% extends "base.html" %}
 {% block title %}Scout Videography Jamaica | About Us{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/train.css') }}">{% endblock %}
 {% block content %}
-<section class="section" style="padding-top:40px">
-  <div class="container" style="text-align:center;max-width:700px">
+
+<!-- INTRO -->
+<section class="section" style="padding-top:48px;padding-bottom:0;text-align:center">
+  <div class="container" style="max-width:620px">
     <div class="section-label">About Us</div>
-    <h1 class="section-title">Built for Jamaican Athletes</h1>
-    <p class="section-sub mx-auto">Scout Videography Jamaica is a full-cycle athlete development platform. We combine Veo camera technology for professional match recording, Rezzil VR training on the HTC Vive Pro for cognitive and technical skills development, and AI-powered performance analysis — all in one platform.</p>
-    <p class="section-sub mx-auto" style="margin-top:16px">Based in Kingston &amp; St. Andrew, serving athletes, clubs, and academies across Jamaica. Our mission: give every serious young footballer access to the same development tools used by professional clubs worldwide.</p>
-    <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a class="btn btn-primary" href="{{ url_for('booking.contact') }}"><i class="fas fa-calendar-check"></i> Book a Session</a>
-      <a class="btn btn-secondary" href="{{ url_for('pages.train') }}"><i class="fas fa-vr-cardboard"></i> VR Training</a>
-      <a class="btn btn-outline" href="{{ url_for('pages.services') }}"><i class="fas fa-video"></i> Match Recording</a>
+    <h1 class="section-title" style="margin-bottom:16px">Built for Jamaican Athletes</h1>
+    <p style="font-size:17px;color:var(--slate-500);line-height:1.75;margin:0 auto">
+      We give every young footballer in Jamaica access to the same development tools
+      used by professional clubs worldwide — match recording, live streaming, VR training, and AI analytics, all in one platform.
+    </p>
+  </div>
+</section>
+
+<!-- HOW WE DEVELOP ATHLETES -->
+<section class="section section-alt" id="dev-cycle">
+  <div class="container" style="text-align:center">
+    <div class="section-label">The Development Cycle</div>
+    <h2 class="section-title">How We Develop Athletes</h2>
+    <p class="section-sub mx-auto">Six steps that turn every match into measurable improvement — continuously, every session.</p>
+  </div>
+  <div class="dev-cycle-grid">
+
+    <div class="dev-cycle-card">
+      <div class="dev-cycle-card-header">
+        <div class="dev-cycle-icon" style="background:var(--teal-light);color:var(--teal)"><i class="fas fa-calendar-check"></i></div>
+        <div>
+          <div class="dev-cycle-num">Step 01</div>
+          <div class="dev-cycle-title">Book &amp; Record</div>
+        </div>
+      </div>
+      <p class="dev-cycle-body">Book a session and we arrive pitchside with the Veo AI camera. Full-match HD footage is captured automatically — no operator needed during play.</p>
+    </div>
+
+    <div class="dev-cycle-card">
+      <div class="dev-cycle-card-header">
+        <div class="dev-cycle-icon" style="background:var(--teal-light);color:var(--teal)"><i class="fas fa-film"></i></div>
+        <div>
+          <div class="dev-cycle-num">Step 02</div>
+          <div class="dev-cycle-title">Receive Your Highlights</div>
+        </div>
+      </div>
+      <p class="dev-cycle-body">Within 24 hours you receive a professionally edited highlight reel — ready to share with coaches, scouts, and academies for scholarship or contract opportunities.</p>
+    </div>
+
+    <div class="dev-cycle-card">
+      <div class="dev-cycle-card-header">
+        <div class="dev-cycle-icon" style="background:var(--green-light);color:var(--green-dark)"><i class="fas fa-chart-line"></i></div>
+        <div>
+          <div class="dev-cycle-num">Step 03</div>
+          <div class="dev-cycle-title">Analyse Your Game</div>
+        </div>
+      </div>
+      <p class="dev-cycle-body">Our AI Analyst reviews your footage, tracks your stats across matches, and produces a personalised report pinpointing exactly where to improve — updated every session.</p>
+    </div>
+
+    <div class="dev-cycle-card">
+      <div class="dev-cycle-card-header">
+        <div class="dev-cycle-icon" style="background:#EDE9FE;color:#7C3AED"><i class="fas fa-vr-cardboard"></i></div>
+        <div>
+          <div class="dev-cycle-num">Step 04</div>
+          <div class="dev-cycle-title">VR Training</div>
+        </div>
+      </div>
+      <p class="dev-cycle-body">Rezzil drills on the HTC Vive Pro target the specific weaknesses your analysis revealed. Hundreds of cognitive, technical, and tactical reps — zero physical fatigue.</p>
+    </div>
+
+    <div class="dev-cycle-card">
+      <div class="dev-cycle-card-header">
+        <div class="dev-cycle-icon" style="background:#FFFBEB;color:#D97706"><i class="fas fa-running"></i></div>
+        <div>
+          <div class="dev-cycle-num">Step 05</div>
+          <div class="dev-cycle-title">On-Field Practice</div>
+        </div>
+      </div>
+      <p class="dev-cycle-body">Take your sharpened skills back to the pitch. Solidify what you trained in VR with real game reps, live match situations, and competitive play.</p>
+    </div>
+
+    <div class="dev-cycle-card">
+      <div class="dev-cycle-card-header">
+        <div class="dev-cycle-icon" style="background:var(--green-light);color:var(--green-dark)"><i class="fas fa-redo-alt"></i></div>
+        <div>
+          <div class="dev-cycle-num">Step 06</div>
+          <div class="dev-cycle-title">Repeat &amp; Progress</div>
+        </div>
+      </div>
+      <p class="dev-cycle-body">Each match feeds the next cycle. Your stats, footage, and VR scores are tracked over time — building a complete, measurable picture of your development.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VEO TECHNOLOGY -->
+<section class="train-tech" id="technology">
+  <div class="train-tech-inner">
+    <div>
+      <div class="section-label">Veo Camera Technology</div>
+      <h2 class="section-title">Powered by Veo</h2>
+      <p class="section-sub">The Veo Camera is one of the world's leading AI-powered sports cameras. It delivers full-pitch automated recording and live streaming without a dedicated camera operator — capturing and broadcasting every moment of your match.</p>
+      <ul class="tech-features">
+        <li><i class="fas fa-check-circle"></i><div><strong>AI-powered player tracking</strong> — automatic camera movement follows the action</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Full 180° panoramic pitch coverage</strong> — nothing is missed</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Automatic highlight clip generation</strong> — key moments identified by AI</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>HD video delivery within 24 hours</strong> — ready to share with coaches and scouts</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Feeds into AI analytics</strong> — your footage becomes data for personalised training plans</div></li>
+      </ul>
+    </div>
+    <div style="border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;background:#000">
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/l-vn22F-TTU?si=JGy6KA9deHbRQi8R" title="Veo Camera Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="display:block"></iframe>
     </div>
   </div>
 </section>
+
+<!-- VR TECHNOLOGY -->
+<section class="train-tech" style="background:var(--white)">
+  <div class="train-tech-inner">
+    <div>
+      <div class="section-label">Rezzil + HTC Vive Pro</div>
+      <h2 class="section-title">Pro-Level VR Training</h2>
+      <p class="section-sub">Step onto the virtual pitch with the HTC Vive Pro and Rezzil — the exact sport-specific VR training software used by professional clubs worldwide, including Manchester City and Leicester City.</p>
+      <ul class="tech-features">
+        <li><i class="fas fa-check-circle"></i><div><strong>HTC Vive Pro</strong> — High-fidelity VR headset with millimetre-precision tracking for realistic movement and spatial awareness</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Rezzil Player</strong> — The same VR training software trusted by Manchester City, Leicester City, and other professional clubs worldwide</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Measurable results</strong> — Every drill produces data: reaction time, decision accuracy, peripheral awareness scores</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>Safe &amp; comfortable</strong> — Train cognitive skills at match intensity without physical fatigue or injury risk</div></li>
+        <li><i class="fas fa-check-circle"></i><div><strong>AI integration</strong> — Your VR performance data feeds directly into the Scout AI Analyst alongside your Veo match footage</div></li>
+      </ul>
+    </div>
+    <div style="border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;background:#000">
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/CdYoIweQmjM" title="Rezzil – The Global Elite VR Football Platform" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="display:block"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- MEET THE TEAM -->
+<section class="section section-alt" style="text-align:center">
+  <div class="container">
+    <div class="section-label">The People Behind It</div>
+    <h2 class="section-title">Meet the Team</h2>
+    <p class="section-sub mx-auto">The crew making it happen — from pitchside recording to highlight editing to tech operations.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Nicholas Wright">
+        <div class="team-card-name">Nicholas Wright</div>
+        <div class="team-card-role">Founder &amp; Technician</div>
+      </div>
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Alex Spencer">
+        <div class="team-card-name">Alex Spencer</div>
+        <div class="team-card-role">Founder &amp; Technician</div>
+      </div>
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Dylan Spencer">
+        <div class="team-card-name">Dylan Spencer</div>
+        <div class="team-card-role">Secretary &amp; Technician</div>
+      </div>
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Johnathon Wright">
+        <div class="team-card-name">Johnathon Wright</div>
+        <div class="team-card-role">Technician</div>
+      </div>
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Dennis Valdez">
+        <div class="team-card-name">Dennis Valdez</div>
+        <div class="team-card-role">General Manager &amp; Technician</div>
+      </div>
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Johnathon Laidlaw">
+        <div class="team-card-name">Johnathon Laidlaw</div>
+        <div class="team-card-role">Technician</div>
+      </div>
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Matthew Miles">
+        <div class="team-card-name">Matthew Miles</div>
+        <div class="team-card-role">Highlight Editor</div>
+      </div>
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" alt="Jaiden Brown">
+        <div class="team-card-name">Jaiden Brown</div>
+        <div class="team-card-role">Highlight Editor</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION + CTA -->
+<section class="section" style="padding-top:32px;padding-bottom:56px;text-align:center">
+  <div class="container" style="max-width:560px">
+    <p style="font-size:15px;color:var(--slate-500);line-height:1.7;margin:0 auto 28px">
+      Based in <strong style="color:var(--slate-700)">Kingston, Jamaica</strong> — serving athletes, schools, and clubs across the island.
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-primary"   href="{{ url_for('booking.contact') }}"><i class="fas fa-calendar-check"></i> Book a Session</a>
+      <a class="btn btn-secondary" href="{{ url_for('pages.train') }}"><i class="fas fa-vr-cardboard"></i> VR Training</a>
+      <a class="btn btn-outline" style="border-color:var(--teal);color:var(--teal)" href="{{ url_for('pages.services') }}"><i class="fas fa-video"></i> Recording &amp; Streaming</a>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

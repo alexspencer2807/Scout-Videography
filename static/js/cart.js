@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       saveCart();
       renderCartDropdown();
+      if (window.showToast) window.showToast("Added to Cart ✓", `${name} has been added to your cart`, 3000, 'success');
     });
   });
 

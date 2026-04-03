@@ -4,13 +4,24 @@
 <section class="section">
   <form class="checkout-form" id="payment-form">
     <h1>Checkout</h1>
-    <div id="cart-summary"></div>
-    <input type="text" id="name" placeholder="Full Name" required>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="text" id="address" placeholder="Shipping Address" required>
-    <input type="text" id="city" placeholder="City / Parish" required>
-    <div id="card-element"></div>
-    <button type="submit"><i class="fas fa-lock"></i> Pay Securely</button>
+
+    <div id="cartItemsSummary"></div>
+
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+      <div class="section-label" style="margin-bottom:4px">Shipping Details</div>
+      <input type="text"  id="name"    placeholder="Full Name"          required>
+      <input type="email" id="email"   placeholder="Email address"       required>
+      <input type="tel"   id="phone"   placeholder="Phone number"        required>
+      <input type="text"  id="address" placeholder="Street address"      required>
+      <input type="text"  id="city"    placeholder="City / Parish"       required>
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="section-label" style="margin-bottom:8px">Card Details</div>
+      <div id="card-element" style="padding:14px 16px;border:1.5px solid var(--slate-200);border-radius:var(--radius-sm);background:var(--white)"></div>
+    </div>
+
+    <button type="submit" style="margin-top:12px"><i class="fas fa-lock"></i> Pay Securely</button>
     <p id="payment-message" style="text-align:center;font-size:13px;color:#64748B;margin-top:8px"></p>
   </form>
 </section>

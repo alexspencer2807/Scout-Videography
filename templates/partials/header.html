@@ -2,18 +2,17 @@
   <div class="header-inner">
     <a href="{{ url_for('pages.home') }}" class="header-logo-link">
       <img src="{{ url_for('static', filename='media/Scout Videography Logo.jpg') }}" class="header-logo" alt="Scout Videography Jamaica Logo">
-      <span class="header-brand">Scout Videography</span>
     </a>
 
     <nav>
       <ul class="nav-list" id="navList">
-        <li><a href="{{ url_for('pages.home') }}">Home</a></li>
-        <li><a href="{{ url_for('pages.services') }}">Services</a></li>
-        <li><a href="{{ url_for('pages.train') }}">VR Training</a></li>
-        <li><a href="{{ url_for('analyst.analyse') }}">AI Analyst</a></li>
-        <li><a href="{{ url_for('pages.portfolio') }}">Portfolio</a></li>
-        <li><a href="{{ url_for('shop.products') }}">Shop</a></li>
-        <li><a href="{{ url_for('pages.about') }}">About</a></li>
+        <li><a href="{{ url_for('pages.home') }}"      {% if request.endpoint == 'pages.home' %}class="nav-active"{% endif %}>Home</a></li>
+        <li><a href="{{ url_for('pages.services') }}"  {% if request.endpoint == 'pages.services' %}class="nav-active"{% endif %}>Services</a></li>
+        <li><a href="{{ url_for('pages.train') }}"     {% if request.endpoint == 'pages.train' %}class="nav-active"{% endif %}>VR Training</a></li>
+        <li><a href="{{ url_for('analyst.analyse') }}" {% if request.endpoint == 'analyst.analyse' %}class="nav-active"{% endif %}>AI Analyst</a></li>
+        <li><a href="{{ url_for('pages.portfolio') }}" {% if request.endpoint == 'pages.portfolio' %}class="nav-active"{% endif %}>Portfolio</a></li>
+        <li><a href="{{ url_for('shop.products') }}"   {% if request.endpoint == 'shop.products' %}class="nav-active"{% endif %}>Shop</a></li>
+        <li><a href="{{ url_for('pages.about') }}"     {% if request.endpoint == 'pages.about' %}class="nav-active"{% endif %}>About</a></li>
         <li><a href="{{ url_for('booking.contact') }}" class="nav-cta"><i class="fas fa-calendar-check"></i> Book Now</a></li>
       </ul>
     </nav>

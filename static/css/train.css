@@ -423,6 +423,81 @@
   background: var(--coral-dark);
 }
 
+/* ═══ SERVICES PACKAGE GRID (2-col) ═══ */
+.svc-pkg-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 720px;
+  margin: 24px auto 0;
+}
+
+.svc-addons {
+  max-width: 720px;
+  margin: 16px auto 0;
+  background: var(--white);
+  border: 2px solid var(--green);
+  border-top: 4px solid var(--green);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.svc-addons-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 18px;
+  color: var(--green-dark);
+  margin-bottom: 16px;
+}
+
+.svc-addons-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.svc-addon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--slate-100);
+  font-size: 15px;
+  color: var(--slate-700);
+}
+
+.svc-addon-item:last-child { border-bottom: none; }
+
+@media (min-width: 768px) {
+  .svc-pkg-grid { grid-template-columns: repeat(2, 1fr); }
+  .svc-addons-items { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .svc-addon-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    background: var(--slate-50);
+    border-radius: var(--radius-sm);
+    border-bottom: none;
+  }
+}
+
+/* ═══ WRAPPING LOOP (services page — more steps) ═══ */
+.loop-steps--wrap {
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1100px;
+}
+
+.loop-steps--wrap .loop-arrow { display: none; }
+
+.loop-steps--wrap .loop-step {
+  flex: 0 0 auto;
+  width: 180px;
+}
+
+@media (min-width: 768px) {
+  .loop-steps--wrap { flex-direction: row; }
+}
+
 /* ═══ CONNECTION BANNER ═══ */
 .train-connect {
   background: linear-gradient(135deg, var(--teal), var(--teal-dark));
@@ -454,7 +529,7 @@
 @media (min-width: 768px) {
   .train-hero { padding: 80px 24px 60px; min-height: 65vh; }
   .train-hero h1 { font-size: 44px; }
-  .train-hero-btns { flex-direction: row; }
+  .train-hero-btns { flex-direction: row; justify-content: center; }
   .train-hero-btns .btn { width: auto; }
   .train-tech { padding: 60px 24px; }
   .train-tech-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
