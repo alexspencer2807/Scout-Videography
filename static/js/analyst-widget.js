@@ -1,11 +1,8 @@
 /**
  * Scout AI Analyst Widget
- * 
- * Handles chat interaction, suggested queries, file upload,
- * freemium message counting, and SSE streaming from the backend.
- * 
- * Phase 1: Runs in demo mode (canned responses)
- * Phase 2: Connects to /analyse/api/chat via SSE
+ *
+ * Handles chat interaction with live Gemini API streaming via SSE,
+ * freemium message counting, suggested queries, and file upload.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -20,6 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Freemium config
   const FREE_LIMIT = 5;
   const STORAGE_KEY = "scout_analyst_msgs";
+
+  // Conversation history (kept in memory)
+  let conversation = [];
 
   // Get today's message count from localStorage
   function getMsgCount() {
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     div.className = "chat-msg " + (isUser ? "chat-msg-user" : "chat-msg-bot");
 
     if (!isUser) {
-      // Format bot messages with basic markdown-like rendering
+      // Format bot messages: **bold** -> <strong>, \n -> <br>
       div.innerHTML = text
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
         .replace(/\n/g, "<br>");
@@ -78,83 +78,103 @@ document.addEventListener("DOMContentLoaded", () => {
     return div;
   }
 
-  // ── DEMO RESPONSES (Phase 1 — no API) ──
-  const demoResponses = {
-    "What should I work on?": 
-      "Great question! Without your match data loaded yet, here are the **three areas** most young footballers in Kingston should focus on:\n\n" +
-      "**1. Decision speed in the final third** — The difference between a goal and a missed chance is often less than a second. Rezzil's cognitive drills can cut your decision time from 2+ seconds down to under 1.4s.\n\n" +
-      "**2. First touch under pressure** — When you receive the ball with a defender closing, your first touch decides everything. The VR technical drills let you practise 200+ first-touch scenarios per session.\n\n" +
-      "**3. Peripheral awareness** — Can you see the run your teammate is making without looking directly at them? Rezzil's peripheral vision drills train exactly this.\n\n" +
-      "Want to know which one to prioritise? **Book a Veo recording session** and I can analyse your actual match footage to give you a personalised recommendation.",
+  // Stream response from SSE endpoint
+  async function streamResponse(userMessage) {
+    const typing = addTyping();
+    let botMessageDiv = null;
+    let fullText = "";
 
-    "Analyse my reaction time":
-      "I'd love to dig into your reaction data! Here's what I'd need:\n\n" +
-      "**Option 1: Upload Rezzil data** — If you've done a VR session with us, I can pull your reaction time scores and compare them against benchmarks for your age and position.\n\n" +
-      "**Option 2: Book a VR session** — In a single 45-minute Rezzil session, we'll measure your reaction time across 50+ scenarios. The average for U-18 midfielders in our system is **340ms**. Let's see where you land.\n\n" +
-      "Once I have your data, I can show you:\n" +
-      "- Your average reaction time vs. the target for your position\n" +
-      "- Which drill types improve it fastest\n" +
-      "- A 6-session training plan to bring it down\n\n" +
-      "Ready to find out? Upload your data above or book a session.",
+    try {
+      const response = await fetch("/analyse/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          conversation: conversation
+        })
+      });
 
-    "Suggest Rezzil drills for me":
-      "Here are the **top Rezzil drills** I'd recommend based on common development areas for Jamaican youth players:\n\n" +
-      "**For decision-making:**\n" +
-      "- **Fast Pass Decision** — You see 3 passing options flash on screen. Pick the right one before the window closes. Starts at 2s, works down to 0.8s.\n" +
-      "- **Colour React** — Targets appear in different colours. You only strike the correct colour. Trains filtering under pressure.\n\n" +
-      "**For technique:**\n" +
-      "- **First Touch Challenge** — Balls arrive from different angles and speeds. Control and redirect to a target zone. Tracks accuracy %.\n" +
-      "- **Finishing Drill** — Goalkeeper reacts. You pick your corner. Measures shot placement and decision speed.\n\n" +
-      "**For tactical awareness:**\n" +
-      "- **Pitch Scan** — You must identify the positions of teammates before receiving the ball. Measures how quickly you check your surroundings.\n\n" +
-      "For a **personalised drill programme**, I'd need your match footage or previous VR session data. Upload it above and I'll build a plan specific to your game.",
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-    "How do I improve my positioning?":
-      "Positioning is one of the hardest skills to teach on the training ground — but it's one of the **easiest to train in VR**. Here's why:\n\n" +
-      "On a real pitch, a coach can shout \"check your shoulder\" but you can't pause the game and see the full picture. In VR, we can:\n\n" +
-      "**1. Freeze the moment** — Rezzil's tactical drills pause the action and ask: where should you be? You choose, then the game shows you what happens.\n\n" +
-      "**2. Repeat the same scenario 50 times** — On a real pitch, a specific game situation might happen twice in 90 minutes. In VR, you face it 50 times in 20 minutes.\n\n" +
-      "**3. Measure your improvement** — Your spatial awareness score tracks across sessions. Most players see a **15-20% improvement** within their first 6-session training block.\n\n" +
-      "The best approach? **Record your next match with Veo**, then I'll identify the specific positioning errors. We'll build a Rezzil drill programme that targets those exact moments. That's the Scout development loop in action.\n\n" +
-      "Ready to start? Book a combination package (Veo + VR) for the best results.",
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
 
-    "default":
-      "Thanks for your question! The AI Analyst is currently in **preview mode** — I'm showing you what the experience will look like when fully connected.\n\n" +
-      "When live, I'll be able to:\n" +
-      "- **Analyse your Veo match footage** and identify specific improvement areas\n" +
-      "- **Review your Rezzil VR training scores** and track progress over time\n" +
-      "- **Recommend specific drills** based on your actual performance data\n" +
-      "- **Generate full performance reports** you can share with coaches\n\n" +
-      "In the meantime, try asking me one of the suggested questions, or **book a session** to start building your performance profile.\n\n" +
-      "You can also reach us on WhatsApp for any questions about our services."
-  };
+      // Remove typing indicator on first chunk
+      let firstChunk = true;
 
-  function getDemoResponse(userText) {
-    const lower = userText.toLowerCase();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-    // Match against known queries
-    if (lower.includes("work on") || lower.includes("focus on") || lower.includes("improve")) {
-      if (lower.includes("position")) return demoResponses["How do I improve my positioning?"];
-      return demoResponses["What should I work on?"];
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n");
+
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            const data = line.slice(6); // Remove "data: " prefix
+
+            if (data === "[DONE]") {
+              // Stream complete - add to conversation history
+              conversation.push({ role: "user", content: userMessage });
+              conversation.push({ role: "model", content: fullText });
+              return;
+            }
+
+            try {
+              const parsed = JSON.parse(data);
+
+              if (parsed.error) {
+                // Handle error
+                if (firstChunk && typing) {
+                  typing.remove();
+                  firstChunk = false;
+                }
+                addMessage(parsed.error, false);
+                return;
+              }
+
+              if (parsed.text) {
+                // Remove typing indicator on first chunk
+                if (firstChunk && typing) {
+                  typing.remove();
+                  firstChunk = false;
+                  botMessageDiv = addMessage("", false);
+                }
+
+                // Append text chunk
+                fullText += parsed.text;
+
+                if (botMessageDiv) {
+                  // Format and display
+                  botMessageDiv.innerHTML = fullText
+                    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                    .replace(/\n/g, "<br>");
+                  messages.scrollTop = messages.scrollHeight;
+                }
+              }
+            } catch (e) {
+              // Ignore parse errors for malformed chunks
+              console.warn("Failed to parse SSE data:", data);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      if (typing) typing.remove();
+      addMessage(
+        "Sorry, I couldn't connect to the AI. Try again in a moment, or DM us on Instagram @scoutvideoja.",
+        false
+      );
+      console.error("Stream error:", error);
     }
-    if (lower.includes("reaction") || lower.includes("speed") || lower.includes("reaction time")) {
-      return demoResponses["Analyse my reaction time"];
-    }
-    if (lower.includes("drill") || lower.includes("rezzil") || lower.includes("suggest") || lower.includes("recommend")) {
-      return demoResponses["Suggest Rezzil drills for me"];
-    }
-    if (lower.includes("position") || lower.includes("tactical") || lower.includes("spatial")) {
-      return demoResponses["How do I improve my positioning?"];
-    }
-
-    // Exact pill matches
-    if (demoResponses[userText]) return demoResponses[userText];
-
-    return demoResponses["default"];
   }
 
-  // ── SEND MESSAGE ──
-  function handleSend() {
+  // Handle send message
+  async function handleSend() {
     const text = input.value.trim();
     if (!text) return;
 
@@ -175,20 +195,11 @@ document.addEventListener("DOMContentLoaded", () => {
     input.value = "";
     incrementMsgCount();
 
-    const typing = addTyping();
-
-    // Phase 1: Demo mode with delayed response
-    // Phase 2: Replace with SSE fetch to /analyse/api/chat
-    const response = getDemoResponse(text);
-    const delay = 600 + Math.random() * 800;
-
-    setTimeout(() => {
-      typing.remove();
-      addMessage(response, false);
-    }, delay);
+    // Stream response from API
+    await streamResponse(text);
   }
 
-  // ── EVENT LISTENERS ──
+  // Event listeners
   sendBtn.addEventListener("click", handleSend);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -239,33 +250,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const ext = "." + file.name.split(".").pop().toLowerCase();
 
     if (!allowed.includes(ext)) {
-      addMessage("Sorry, I can only accept video files (MP4, MOV, AVI) and data files (CSV, JSON). Please try a different file.", false);
+      addMessage(
+        "Sorry, I can only accept video files (MP4, MOV, AVI) and data files (CSV, JSON). Please try a different file.",
+        false
+      );
       return;
     }
 
     if (file.size > maxSize) {
-      addMessage("That file is too large (max 500MB). Try compressing the video or splitting it into smaller clips.", false);
+      addMessage(
+        "That file is too large (max 500MB). Try compressing the video or splitting it into smaller clips.",
+        false
+      );
       return;
     }
 
-    // Phase 1: Demo response
+    // Show friendly message that file analysis is coming soon
     addMessage("Uploaded: " + file.name, true);
-    const typing = addTyping();
-
-    setTimeout(() => {
-      typing.remove();
-      addMessage(
-        "I've received **" + file.name + "** (" + (file.size / (1024 * 1024)).toFixed(1) + "MB).\n\n" +
-        "File upload and analysis is a **Phase 2 feature** — when live, I'll be able to:\n" +
-        "- Parse your Rezzil CSV/JSON data and extract performance metrics\n" +
-        "- Analyse your match footage metadata for tactical patterns\n" +
-        "- Generate a full performance report with training recommendations\n\n" +
-        "For now, **book a VR session** or **match recording** to start building your Scout profile. Your data will be ready for analysis when the AI goes live.",
-        false
-      );
-    }, 1200);
+    addMessage(
+      "I've received **" + file.name + "** (" + (file.size / (1024 * 1024)).toFixed(1) + "MB).\n\n" +
+      "File upload and analysis is **coming soon** — when live, I'll be able to:\n" +
+      "- Parse your Rezzil CSV/JSON data and extract performance metrics\n" +
+      "- Analyse your match footage metadata for tactical patterns\n" +
+      "- Generate a full performance report with training recommendations\n\n" +
+      "For now, **book a VR session** or **match recording** to start building your Scout profile.",
+      false
+    );
   }
 
-  // Initialise counter
+  // Initialize counter
   updateCounter();
 });
