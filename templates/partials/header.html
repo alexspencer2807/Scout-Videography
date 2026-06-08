@@ -13,6 +13,7 @@
         <li><a href="{{ url_for('pages.portfolio') }}" {% if request.endpoint == 'pages.portfolio' %}class="nav-active"{% endif %}>Portfolio</a></li>
         <li><a href="{{ url_for('shop.products') }}"   {% if request.endpoint == 'shop.products' %}class="nav-active"{% endif %}>Shop</a></li>
         <li><a href="{{ url_for('pages.about') }}"     {% if request.endpoint == 'pages.about' %}class="nav-active"{% endif %}>About</a></li>
+        <li><a href="{{ url_for('pages.worldcup') }}" class="nav-worldcup{% if request.endpoint == 'pages.worldcup' %} nav-active{% endif %}" id="navWorldCup"><span class="nav-wc-dot"></span>🏆 World Cup<span class="nav-wc-live">LIVE</span></a></li>
         <li><a href="{{ url_for('booking.contact') }}" class="nav-cta"><i class="fas fa-calendar-check"></i> Book Now</a></li>
       </ul>
     </nav>
@@ -35,3 +36,41 @@
     </div>
   </div>
 </header>
+
+<!-- World Cup nav styling (scoped here to keep global CSS/JS untouched) -->
+<style>
+  .nav-worldcup { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; color: #26C96F !important; }
+  .nav-worldcup:hover { color: #1DA85C !important; }
+  .nav-wc-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #26C96F;
+    box-shadow: 0 0 0 0 rgba(38,201,111,0.7);
+    animation: navWcPulse 1.8s ease-out infinite;
+  }
+  @keyframes navWcPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(38,201,111,0.7); }
+    70%  { box-shadow: 0 0 0 8px rgba(38,201,111,0); }
+    100% { box-shadow: 0 0 0 0 rgba(38,201,111,0); }
+  }
+  .nav-wc-live {
+    display: none; font-size: 9px; font-weight: 800; letter-spacing: 1px;
+    background: #e11d2a; color: #fff; padding: 1px 5px; border-radius: 4px;
+  }
+  .nav-worldcup.live .nav-wc-dot { display: none; }
+  .nav-worldcup.live .nav-wc-live { display: inline-block; animation: navWcBlink 1.2s steps(2, start) infinite; }
+  @keyframes navWcBlink { 50% { opacity: 0.35; } }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-wc-dot, .nav-worldcup.live .nav-wc-live { animation: none; }
+  }
+</style>
+<script>
+  (function () {
+    // Reveal the "LIVE" badge once the tournament has kicked off (11 Jun 2026 14:00 EST = 19:00 UTC).
+    var KICKOFF = Date.UTC(2026, 5, 11, 19, 0, 0);
+    function mark() {
+      var el = document.getElementById('navWorldCup');
+      if (el && Date.now() >= KICKOFF) el.classList.add('live');
+    }
+    if (document.readyState !== 'loading') mark();
+    else document.addEventListener('DOMContentLoaded', mark);
+  })();
+</script>
