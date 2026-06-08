@@ -10,6 +10,7 @@
   {% block extra_css %}{% endblock %}
 </head>
 <body>
+  {% include 'partials/announcement.html' %}
   {% include 'partials/header.html' %}
 
   {% block content %}{% endblock %}
@@ -22,6 +23,9 @@
   <script src="{{ url_for('static', filename='js/hamburger.js') }}"></script>
   <script src="{{ url_for('static', filename='js/scroll-animations.js') }}"></script>
   <script src="{{ url_for('static', filename='js/counters.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/announcement.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/contact-fab.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

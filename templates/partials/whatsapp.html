@@ -1,3 +1,21 @@
-<a href="https://wa.me/18768092519" class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
-</a>
+<!-- Floating contact menu — expands to WhatsApp / Instagram / AI Analyst -->
+<div class="contact-fab" id="contactFab">
+  <div class="contact-fab-options">
+    <a class="contact-fab-option" href="https://wa.me/18768092519" target="_blank" rel="noopener">
+      <span class="contact-fab-label">WhatsApp</span>
+      <span class="contact-fab-icon contact-fab-icon--wa"><i class="fab fa-whatsapp"></i></span>
+    </a>
+    <a class="contact-fab-option" href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener">
+      <span class="contact-fab-label">Instagram DM</span>
+      <span class="contact-fab-icon contact-fab-icon--ig"><i class="fab fa-instagram"></i></span>
+    </a>
+    <a class="contact-fab-option" href="{{ url_for('analyst.analyse') }}">
+      <span class="contact-fab-label">AI Analyst</span>
+      <span class="contact-fab-icon contact-fab-icon--ai"><i class="fas fa-robot"></i></span>
+    </a>
+  </div>
+  <button type="button" class="contact-fab-toggle" id="contactFabToggle" aria-label="Open contact options" aria-expanded="false">
+    <i class="fab fa-whatsapp contact-fab-toggle-open"></i>
+    <i class="fas fa-times contact-fab-toggle-close"></i>
+  </button>
+</div>

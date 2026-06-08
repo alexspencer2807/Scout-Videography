@@ -45,6 +45,38 @@
   </div>
 </section>
 
+<!-- AUDIENCE SELECTOR — "Who Are You?" -->
+<section class="section fade-in" style="text-align:center">
+  <div class="container">
+    <h2 class="section-title">How Can We Help You?</h2>
+    <div class="audience-grid">
+      <a href="{{ url_for('pages.services') }}" class="audience-card audience-card--green">
+        <div class="audience-icon"><i class="fas fa-running"></i></div>
+        <h3 class="audience-title">I'm an Athlete</h3>
+        <p class="audience-sub">Get your highlights, train in VR, and build your profile.</p>
+        <span class="audience-cta">Start Here <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a href="{{ url_for('pages.about') }}" class="audience-card audience-card--teal">
+        <div class="audience-icon"><i class="fas fa-users"></i></div>
+        <h3 class="audience-title">I'm a Parent</h3>
+        <p class="audience-sub">See what your child's development looks like with Scout.</p>
+        <span class="audience-cta">Learn More <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%27m%20a%20coach%20interested%20in%20club%20packages%20for%20my%20squad." target="_blank" rel="noopener" class="audience-card audience-card--gold">
+        <div class="audience-icon"><i class="fas fa-clipboard"></i></div>
+        <h3 class="audience-title">I'm a Coach</h3>
+        <p class="audience-sub">Full match footage, team packages, and VR training for your squad.</p>
+        <span class="audience-cta">Club Packages <i class="fas fa-arrow-right"></i></span>
+      </a>
+    </div>
+    <div class="quiz-cta">
+      <button type="button" class="btn btn-secondary" id="quizOpenBtn">
+        <i class="fas fa-wand-magic-sparkles"></i> Not sure where to start? Take our 60-second quiz →
+      </button>
+    </div>
+  </div>
+</section>
+
 <!-- C2. DEVELOPMENT CYCLE -->
 <section class="section fade-in" style="text-align:center">
   <div class="container">
@@ -156,6 +188,106 @@
   </div>
 </section>
 
+<!-- ATHLETE SPOTLIGHT -->
+<!-- TODO: Make dynamic when database is added -->
+<section class="section section-alt fade-in" style="text-align:center">
+  <div class="container">
+    <div class="section-label">Athlete Spotlight</div>
+    <h2 class="section-title">Real People. Real Progress.</h2>
+
+    <div class="spotlight-card">
+      <div class="spotlight-photo">
+        <i class="fas fa-user spotlight-silhouette"></i>
+        <span class="spotlight-number">#14</span>
+      </div>
+      <div class="spotlight-body">
+        <i class="fas fa-quote-left spotlight-quote-icon"></i>
+        <p class="spotlight-quote">Scout helped me build a highlight reel that got me noticed by three clubs. The VR training improved my reaction time by 15%.</p>
+        <div class="spotlight-name">Matthew Spencer, #14</div>
+        <div class="spotlight-details">Age 16 · LW/RW/CAM · Left-footed · Kingston</div>
+        <div class="spotlight-stats">
+          <div class="spotlight-stat"><strong>8</strong><span>Matches Recorded</span></div>
+          <div class="spotlight-stat"><strong>12</strong><span>VR Sessions</span></div>
+          <div class="spotlight-stat"><strong>340</strong><span>Highlight Views</span></div>
+        </div>
+        <a href="{{ url_for('pages.portfolio') }}" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Read Matthew's Story</a>
+      </div>
+    </div>
+
+    <div class="mini-spotlight-grid">
+      <div class="mini-spotlight">
+        <div class="mini-spotlight-head">
+          <span class="mini-spotlight-name">Andre Williams</span>
+          <span class="mini-spotlight-pos">ST</span>
+        </div>
+        <p class="mini-spotlight-quote">"The reaction drills carried straight into my matches — I'm finishing chances I used to miss."</p>
+      </div>
+      <div class="mini-spotlight">
+        <div class="mini-spotlight-head">
+          <span class="mini-spotlight-name">Tariq Bennett</span>
+          <span class="mini-spotlight-pos">CB</span>
+        </div>
+        <p class="mini-spotlight-quote">"My highlight reel made my scholarship application stand out. Worth every dollar."</p>
+      </div>
+      <div class="mini-spotlight">
+        <div class="mini-spotlight-head">
+          <span class="mini-spotlight-name">Jaden Clarke</span>
+          <span class="mini-spotlight-pos">CM</span>
+        </div>
+        <p class="mini-spotlight-quote">"Seeing my stats tracked match to match keeps me pushing. I can see myself getting better."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S HAPPENING — ACTIVITY FEED -->
+<!-- TODO: Make dynamic when database is added -->
+<section class="section fade-in">
+  <div class="container" style="max-width:680px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div class="section-label">Live Feed</div>
+      <h2 class="section-title">What's Happening at Scout</h2>
+    </div>
+    <ul class="activity-feed">
+      <li class="activity-item">
+        <span class="activity-emoji">📹</span>
+        <div class="activity-body">
+          <span class="activity-text">New highlight reel delivered — Wolmer's vs STATHS U16</span>
+          <span class="activity-time">2 days ago</span>
+        </div>
+      </li>
+      <li class="activity-item">
+        <span class="activity-emoji">🎮</span>
+        <div class="activity-body">
+          <span class="activity-text">VR Training session completed — 3 athletes</span>
+          <span class="activity-time">Yesterday</span>
+        </div>
+      </li>
+      <li class="activity-item">
+        <span class="activity-emoji">⚽</span>
+        <div class="activity-body">
+          <span class="activity-text">Match recorded at Barbican Sports Turf</span>
+          <span class="activity-time">Last week</span>
+        </div>
+      </li>
+      <li class="activity-item">
+        <span class="activity-emoji">🏆</span>
+        <div class="activity-body">
+          <span class="activity-text">World Cup Fan Zone launched — 45 predictions made</span>
+          <span class="activity-time">Today</span>
+        </div>
+      </li>
+      <li class="activity-item">
+        <span class="activity-emoji">📊</span>
+        <div class="activity-body">
+          <span class="activity-text">AI Analysis report generated for Matthew Spencer</span>
+          <span class="activity-time">3 days ago</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
 <!-- C7. VR TRAINING TEASER -->
 <section class="vr-strip fade-in">
   <div class="container">
@@ -206,4 +338,14 @@
     <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="btn btn-white"><i class="fab fa-instagram"></i> Follow @scoutvideoja</a>
   </div>
 </section>
+
+<!-- FIND YOUR PACKAGE QUIZ MODAL -->
+<div class="quiz-modal" id="quizModal" hidden>
+  <div class="quiz-overlay" id="quizOverlay"></div>
+  <div class="quiz-dialog" role="dialog" aria-modal="true" aria-label="Find your package quiz">
+    <button type="button" class="quiz-close" id="quizClose" aria-label="Close quiz">&times;</button>
+    <div class="quiz-progress"><div class="quiz-progress-bar" id="quizProgressBar"></div></div>
+    <div class="quiz-content" id="quizContent"><!-- steps rendered by quiz.js --></div>
+  </div>
+</div>
 {% endblock %}
