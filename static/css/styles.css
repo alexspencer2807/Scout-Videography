@@ -649,19 +649,7 @@ img { max-width: 100%; display: block; }
 
 .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.4); }
 
-/* ================= WHATSAPP FLOAT ================= */
-.wa-float {
-  position: fixed; bottom: 20px; right: 16px;
-  width: 56px; height: 56px;
-  background: #25D366; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 26px;
-  box-shadow: 0 4px 20px rgba(37,211,102,0.35);
-  z-index: 500; transition: transform 0.25s ease;
-  text-decoration: none;
-}
-
-.wa-float:hover { transform: scale(1.1); }
+/* WhatsApp float was replaced by the expandable .contact-fab (see partials/whatsapp.html) */
 
 /* ================= MOBILE PRICE ================= */
 .product-btn::after { content: " $" attr(data-price); font-weight: 700; }
@@ -1097,6 +1085,49 @@ img { max-width: 100%; display: block; }
 @media (prefers-reduced-motion: reduce) {
   .fade-in { opacity: 1; transform: none; transition: none; }
   .hero-bg { animation: none; }
+}
+
+/* ================= ATHLETES / HAPPY FACES BAND ================= */
+.faces-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.face-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--slate-100);
+  box-shadow: var(--shadow-sm);
+}
+
+.face-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.face-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(6,40,64,0.25) 0%, transparent 45%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.face-card:hover img { transform: scale(1.07); }
+.face-card:hover::after { opacity: 1; }
+
+@media (min-width: 768px) {
+  .faces-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+}
+
+@media (min-width: 1024px) {
+  .faces-grid { grid-template-columns: repeat(6, 1fr); }
 }
 
 /* ================= C1 — TECH PARTNERS MARQUEE ================= */
@@ -1846,6 +1877,10 @@ img { max-width: 100%; display: block; }
   padding: 16px;
 }
 
+/* When closed, the hidden attribute must win over display:flex above —
+   otherwise the invisible overlay covers the page and blocks all clicks. */
+.quiz-modal[hidden] { display: none; }
+
 .quiz-overlay {
   position: absolute;
   inset: 0;
@@ -2008,6 +2043,9 @@ img { max-width: 100%; display: block; }
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
+  /* The container box (and closed options that still take layout space) must
+     not intercept clicks meant for links underneath it. */
+  pointer-events: none;
 }
 
 .contact-fab-options {
@@ -2015,6 +2053,7 @@ img { max-width: 100%; display: block; }
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
+  pointer-events: none;
 }
 
 .contact-fab-option {
@@ -2073,6 +2112,7 @@ img { max-width: 100%; display: block; }
   color: var(--white);
   font-size: 26px;
   cursor: pointer;
+  pointer-events: auto;
   box-shadow: 0 4px 20px rgba(37,211,102,0.35);
   display: flex;
   align-items: center;
