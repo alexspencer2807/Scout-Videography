@@ -58,7 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       saveCart();
       renderCartDropdown();
-      if (window.showToast) window.showToast("Added to Cart ✓", `${name} has been added to your cart`, 3000, 'success');
+      if (window.showToast) {
+        window.showToast(
+          `✓ ${name} added to cart`,
+          '<a href="/checkout" class="cart-toast-link">View Cart</a>',
+          3000,
+          'cart'
+        );
+      }
     });
   });
 

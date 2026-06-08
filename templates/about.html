@@ -15,6 +15,49 @@
   </div>
 </section>
 
+<!-- DEVELOPMENT LOOP TIMELINE (E2) -->
+<section class="section" style="padding-bottom:24px;text-align:center">
+  <div class="container">
+    <div class="section-label">The Development Loop</div>
+    <h2 class="section-title">Record. Analyse. Train. Repeat.</h2>
+    <p class="section-sub mx-auto" style="margin-bottom:8px">Four connected steps that turn every match into measurable improvement — continuously, every session.</p>
+    <div class="dev-loop">
+      <div class="dev-loop-step">
+        <div class="dev-loop-icon dev-loop-icon--teal"><i class="fas fa-video"></i></div>
+        <div class="dev-loop-text">
+          <div class="dev-loop-num">Step 01</div>
+          <div class="dev-loop-title">Record</div>
+          <p class="dev-loop-body">We arrive pitchside with the Veo AI camera and capture your full match in HD with 180&deg; coverage — no operator needed during play.</p>
+        </div>
+      </div>
+      <div class="dev-loop-step">
+        <div class="dev-loop-icon dev-loop-icon--green"><i class="fas fa-chart-line"></i></div>
+        <div class="dev-loop-text">
+          <div class="dev-loop-num">Step 02</div>
+          <div class="dev-loop-title">Analyse</div>
+          <p class="dev-loop-body">Our AI Analyst reviews the footage, tracks your stats across matches, and pinpoints exactly where to improve.</p>
+        </div>
+      </div>
+      <div class="dev-loop-step">
+        <div class="dev-loop-icon dev-loop-icon--purple"><i class="fas fa-vr-cardboard"></i></div>
+        <div class="dev-loop-text">
+          <div class="dev-loop-num">Step 03</div>
+          <div class="dev-loop-title">Train</div>
+          <p class="dev-loop-body">Rezzil drills on the HTC Vive Pro target the exact weaknesses your analysis revealed — hundreds of reps, zero fatigue.</p>
+        </div>
+      </div>
+      <div class="dev-loop-step">
+        <div class="dev-loop-icon dev-loop-icon--amber"><i class="fas fa-rotate"></i></div>
+        <div class="dev-loop-text">
+          <div class="dev-loop-num">Step 04</div>
+          <div class="dev-loop-title">Repeat</div>
+          <p class="dev-loop-body">Each match feeds the next cycle. Your footage, stats, and VR scores build a complete, measurable picture of your progress.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- HOW WE DEVELOP ATHLETES -->
 <section class="section section-alt" id="dev-cycle">
   <div class="container" style="text-align:center">
@@ -90,6 +133,34 @@
       <p class="dev-cycle-body">Each match feeds the next cycle. Your stats, footage, and VR scores are tracked over time — building a complete, measurable picture of your development.</p>
     </div>
 
+  </div>
+</section>
+
+<!-- DEVELOPED BY PROFESSIONALS (E3) -->
+<section class="section fade-in" style="text-align:center">
+  <div class="container">
+    <div class="section-label">Our Footage</div>
+    <h2 class="section-title">Developed by Professionals</h2>
+    <p class="section-sub mx-auto">Real match footage captured by Scout Videography with Veo camera technology.</p>
+    <div class="highlights-grid">
+      <div class="highlight-card" style="background-image:url('{{ url_for('static', filename='media/thumb-wolmers-staths-u16-jan2026.jpg') }}')">
+        <i class="fas fa-play highlight-play"></i>
+        <div class="highlight-card-overlay">
+          <strong>Wolmer's vs STATHS U16</strong>
+          <span>January 2026</span>
+        </div>
+      </div>
+      <div class="highlight-card" style="background-image:url('{{ url_for('static', filename='media/thumb-wolmers-staths-u14-jan2026.jpg') }}')">
+        <i class="fas fa-play highlight-play"></i>
+        <div class="highlight-card-overlay">
+          <strong>Wolmer's vs STATHS U14</strong>
+          <span>January 2026</span>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:14px;color:var(--slate-500);margin-top:20px">
+      Follow <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" style="font-weight:600">@scoutvideoja</a> on Instagram for more highlights.
+    </p>
   </div>
 </section>
 
@@ -182,6 +253,41 @@
         <div class="team-card-name">Jaiden Brown</div>
         <div class="team-card-role">Highlight Editor</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- VR TRAINING INTRO (E4) -->
+<section class="section section-alt fade-in" style="text-align:center">
+  <div class="container" style="max-width:900px">
+    <div class="section-label">VR Training</div>
+    <h2 class="section-title">VR Training with Rezzil</h2>
+    <p class="section-sub mx-auto">Train on the HTC Vive Pro with Rezzil — the same sport-specific VR software used by Manchester City and Leicester City — now available in Kingston.</p>
+    <div class="vr-teaser-features">
+      <div class="vr-teaser-feature">
+        <div class="vr-teaser-feature-icon" style="background:#EDE9FE;color:#7C3AED"><i class="fas fa-brain"></i></div>
+        <div class="vr-teaser-feature-text">
+          <strong>Cognitive</strong>
+          <p>Faster decisions, sharper reaction time, and wider peripheral awareness.</p>
+        </div>
+      </div>
+      <div class="vr-teaser-feature">
+        <div class="vr-teaser-feature-icon" style="background:var(--teal-light);color:var(--teal)"><i class="fas fa-bullseye"></i></div>
+        <div class="vr-teaser-feature-text">
+          <strong>Technical</strong>
+          <p>Hundreds of reps on first touch, passing accuracy, and finishing.</p>
+        </div>
+      </div>
+      <div class="vr-teaser-feature">
+        <div class="vr-teaser-feature-icon" style="background:var(--green-light);color:var(--green-dark)"><i class="fas fa-chess"></i></div>
+        <div class="vr-teaser-feature-text">
+          <strong>Tactical</strong>
+          <p>Read the pitch — positioning, spacing, and game intelligence.</p>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:28px">
+      <a href="{{ url_for('pages.train') }}" class="btn btn-secondary"><i class="fas fa-vr-cardboard"></i> Learn More About VR Training</a>
     </div>
   </div>
 </section>

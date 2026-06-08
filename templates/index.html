@@ -3,110 +3,207 @@
 {% block description %}Professional match recording, VR skills training, and AI performance analysis for young footballers in Kingston & St. Andrew, Jamaica. Book a session today.{% endblock %}
 
 {% block content %}
-<!-- HERO with background image -->
-<section class="hero-image" style="background-image:url('{{ url_for('static', filename='media/hero-bg.jpg') }}')">
-  <div class="section-label" style="color:rgba(255,255,255,0.5)">Scout Videography Jamaica</div>
-  <h2 style="text-shadow:0 2px 8px rgba(0,0,0,0.5)">Take your development to the next level with <span>Scout Videography</span></h2>
-  <p>Match recording, highlight reels, VR training, and AI performance analysis for young footballers across Jamaica. Based in Kingston.</p>
-  <div class="hero-btns">
-    <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a Session</a>
-    <a href="{{ url_for('pages.train') }}#packages" class="btn btn-outline"><i class="fas fa-vr-cardboard"></i> Try VR Training</a>
-    <a href="{{ url_for('shop.products') }}" class="btn btn-outline"><i class="fas fa-shopping-bag"></i> Shop Gear</a>
-  </div>
-</section>
-
-<!-- 1. MATCH RECORDING -->
-<section class="section" style="text-align:center">
-  <div class="container" style="max-width:680px">
-    <div class="section-label">Match Recording</div>
-    <h2 class="section-title">Book a Film Session</h2>
-    <p class="section-sub mx-auto" style="margin-bottom:28px">Professional full-match footage and live streaming powered by Veo AI camera technology. HD delivery within 24 hours — ready to share with coaches, scouts, and academies. Packages from $5,000 JMD.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book Now</a>
-      <a href="{{ url_for('pages.services') }}#packages" class="btn btn-secondary"><i class="fas fa-video"></i> See Packages</a>
+<!-- HERO -->
+<section class="hero-image fade-in">
+  <div class="hero-bg" style="background-image:url('{{ url_for('static', filename='media/hero-bg.jpg') }}')"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="section-label" style="color:rgba(255,255,255,0.6)">Scout Videography Jamaica</div>
+    <h2>Take Your Development to the Next Level with <span>SCOUT VIDEOGRAPHY</span></h2>
+    <p>Match recording, highlight reels, VR training, and AI performance analysis for young footballers across Jamaica. Based in Kingston.</p>
+    <div class="hero-btns">
+      <a href="{{ url_for('pages.train') }}" class="btn btn-primary"><i class="fas fa-vr-cardboard"></i> VR Training</a>
+      <a href="{{ url_for('pages.services') }}" class="btn btn-white"><i class="fas fa-video"></i> Our Services</a>
     </div>
   </div>
 </section>
 
-<!-- 2. VR TRAINING -->
-<section class="vr-strip">
+<!-- C1. TRUST / TECH PARTNERS MARQUEE -->
+<!-- TODO: Replace with actual logo images -->
+<section class="tech-marquee fade-in">
+  <div class="tech-marquee-title">Powered By World-Class Technology</div>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span class="marquee-item">Veo</span>
+      <span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Rezzil</span>
+      <span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">HTC Vive Pro</span>
+      <span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Claude AI</span>
+      <span class="marquee-dot">&bull;</span>
+      <!-- duplicate set for a seamless loop -->
+      <span class="marquee-item">Veo</span>
+      <span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Rezzil</span>
+      <span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">HTC Vive Pro</span>
+      <span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Claude AI</span>
+      <span class="marquee-dot">&bull;</span>
+    </div>
+  </div>
+</section>
+
+<!-- C2. DEVELOPMENT CYCLE -->
+<section class="section fade-in" style="text-align:center">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">The Athlete Development Cycle</h2>
+    <p class="section-sub mx-auto" style="margin-bottom:36px">Our four-step development loop turns match footage into measurable improvement. Every session feeds into the next.</p>
+    <div class="cycle-grid">
+      <div class="cycle-step">
+        <div class="cycle-icon cycle-icon--teal"><i class="fas fa-video"></i></div>
+        <div class="cycle-step-num">Step 1</div>
+        <h3 class="cycle-step-title">Record</h3>
+        <p class="cycle-step-body">Veo AI camera captures your full match with 180&deg; coverage.</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-icon cycle-icon--green"><i class="fas fa-chart-line"></i></div>
+        <div class="cycle-step-num">Step 2</div>
+        <h3 class="cycle-step-title">Analyse</h3>
+        <p class="cycle-step-body">AI breaks down your performance and identifies areas to improve.</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-icon cycle-icon--purple"><i class="fas fa-vr-cardboard"></i></div>
+        <div class="cycle-step-num">Step 3</div>
+        <h3 class="cycle-step-title">Train</h3>
+        <p class="cycle-step-body">Rezzil VR drills on HTC Vive Pro target your specific weaknesses.</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-icon cycle-icon--amber"><i class="fas fa-rotate"></i></div>
+        <div class="cycle-step-num">Step 4</div>
+        <h3 class="cycle-step-title">Repeat</h3>
+        <p class="cycle-step-body">Next match, measurable progress. The cycle continues.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- C3. STATS COUNTERS -->
+<section class="section stats-section fade-in" style="text-align:center">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-number" data-target="50" data-suffix="+">0</div>
+        <div class="stat-label">Matches Recorded</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" data-target="100" data-suffix="+">0</div>
+        <div class="stat-label">Athletes Developed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" data-target="4" data-suffix="">0</div>
+        <div class="stat-label">Technology Pillars</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" data-target="24" data-suffix="hr">0</div>
+        <div class="stat-label">Highlight Delivery</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- C4. WATCH OUR WORK -->
+<section class="section section-alt fade-in" style="text-align:center">
+  <div class="container" style="max-width:640px">
+    <div class="section-label">Watch Our Work</div>
+    <h2 class="section-title">See the Quality</h2>
+    <p class="section-sub mx-auto" style="margin-bottom:28px">Highlight reels and match footage captured by Veo for schools, clubs, and athletes across Kingston &amp; St. Andrew.</p>
+    <a href="{{ url_for('pages.portfolio') }}" class="btn btn-secondary"><i class="fas fa-play-circle"></i> View Our Portfolio</a>
+  </div>
+</section>
+
+<!-- C5. CTA BANNER 1 — CROSS-SELL -->
+<section class="cta-banner cta-banner--green fade-in">
+  <div class="container cta-banner-inner">
+    <h2 class="cta-banner-text">Book a Session &amp; Get 10% Off Your First Gear Order</h2>
+    <a href="{{ url_for('booking.contact') }}" class="btn cta-banner-btn"><i class="fas fa-calendar-check"></i> Book Now</a>
+  </div>
+</section>
+
+<!-- C6. TESTIMONIALS -->
+<section class="section fade-in" style="text-align:center">
+  <div class="container">
+    <h2 class="section-title">What Athletes &amp; Parents Say</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <i class="fas fa-quote-left testimonial-quote-icon"></i>
+        <p class="testimonial-text">The highlight reel got my son noticed by an academy scout. The quality is honestly professional — exactly what we needed for his applications.</p>
+        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <div class="testimonial-name">Marsha P.</div>
+        <div class="testimonial-role">Parent, Kingston</div>
+      </div>
+      <div class="testimonial-card">
+        <i class="fas fa-quote-left testimonial-quote-icon"></i>
+        <p class="testimonial-text">The VR sessions sharpened my decision-making on the pitch. I can feel the difference in how fast I read the game now.</p>
+        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <div class="testimonial-name">Andre W.</div>
+        <div class="testimonial-role">U16 Striker</div>
+      </div>
+      <div class="testimonial-card">
+        <i class="fas fa-quote-left testimonial-quote-icon"></i>
+        <p class="testimonial-text">Match footage delivered the next day, every time. The AI analysis report told us exactly where to focus training. Brilliant service.</p>
+        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <div class="testimonial-name">Coach Daley</div>
+        <div class="testimonial-role">Club Coach, St. Andrew</div>
+      </div>
+    </div>
+    <div class="testimonial-cta">
+      <p>Ready to join them?</p>
+      <a href="{{ url_for('booking.contact') }}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book a Session</a>
+    </div>
+  </div>
+</section>
+
+<!-- C7. VR TRAINING TEASER -->
+<section class="vr-strip fade-in">
   <div class="container">
     <div class="section-label">VR Training</div>
     <h2 class="section-title">Train Your Brain. Sharpen Your Game.</h2>
-    <p>Rezzil on the HTC Vive Pro — the same VR training software used by Manchester City and Leicester City. Now available in Kingston, Jamaica.</p>
+    <p>Rezzil VR cognitive and technical drills on the HTC Vive Pro — the same technology used by Manchester City and Leicester City. Now available in Kingston.</p>
     <div class="vr-strip-btns">
-      <a href="{{ url_for('pages.train') }}#packages" class="btn btn-white"><i class="fas fa-vr-cardboard"></i> Explore VR Training</a>
+      <a href="{{ url_for('pages.train') }}" class="btn btn-white"><i class="fas fa-vr-cardboard"></i> Explore VR Training</a>
       <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%27m%20interested%20in%20VR%20training" target="_blank" rel="noopener" class="btn btn-outline"><i class="fab fa-whatsapp"></i> Contact for Pricing</a>
     </div>
   </div>
 </section>
 
-<!-- 3. PORTFOLIO -->
-<section class="section section-alt" style="text-align:center">
-  <div class="container">
-    <div class="section-label">Watch Our Work</div>
-    <h2 class="section-title">See the Quality</h2>
-    <p class="section-sub mx-auto" style="margin-bottom:24px">Wolmer's vs STATHS — captured by Scout Videography with Veo camera technology.</p>
-    <video controls preload="none"
-           poster="{{ url_for('static', filename='media/thumb-wolmers-staths-u16-jan2026.jpg') }}"
-           style="border-radius:var(--radius);width:100%;max-width:640px;margin:0 auto 20px;display:block;background:#000">
-      <source src="{{ url_for('static', filename='media/highlights-wolmers-vs-staths-u16-27012026-scout-videography-2026-01-27.mp4') }}" type="video/mp4">
-    </video>
-    <a href="{{ url_for('pages.portfolio') }}" class="btn btn-secondary"><i class="fas fa-play-circle"></i> View Full Portfolio</a>
+<!-- C8. CTA BANNER 2 — AI ANALYST -->
+<section class="cta-banner cta-banner--dark fade-in">
+  <div class="container cta-banner-inner">
+    <h2 class="cta-banner-text">Not Sure Where to Start? Talk to Our AI Analyst — Free</h2>
+    <a href="{{ url_for('analyst.analyse') }}" class="btn btn-primary"><i class="fas fa-robot"></i> Try the AI Analyst</a>
+    <p class="cta-banner-sub">5 free questions per day. No signup required.</p>
   </div>
 </section>
 
-<!-- 4. DEVELOPMENT CYCLE -->
-<section class="section" style="text-align:center">
+<!-- C9. INSTAGRAM FEED PREVIEW -->
+<section class="ig-section fade-in" style="text-align:center">
   <div class="container">
-    <div class="section-label">The Development Cycle</div>
-    <h2 class="section-title">Record. Analyse. Train. Repeat.</h2>
-    <p class="section-sub mx-auto" style="margin-bottom:32px">Every session feeds the next — turning match footage into measurable improvement.</p>
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:500px;margin:0 auto">
-      <div style="background:var(--teal-light);border-radius:var(--radius);padding:20px;text-align:center">
-        <div style="width:48px;height:48px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:18px"><i class="fas fa-video"></i></div>
-        <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--teal);margin-bottom:4px">Record</div>
-        <div style="font-size:13px;color:var(--slate-500)">Veo captures your match</div>
-      </div>
-      <div style="background:var(--green-light);border-radius:var(--radius);padding:20px;text-align:center">
-        <div style="width:48px;height:48px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:18px"><i class="fas fa-chart-line"></i></div>
-        <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:var(--green-dark);margin-bottom:4px">Analyse</div>
-        <div style="font-size:13px;color:var(--slate-500)">AI finds your strengths &amp; gaps</div>
-      </div>
-      <div style="background:#EDE9FE;border-radius:var(--radius);padding:20px;text-align:center">
-        <div style="width:48px;height:48px;background:#7C3AED;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:18px"><i class="fas fa-vr-cardboard"></i></div>
-        <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:#7C3AED;margin-bottom:4px">Train</div>
-        <div style="font-size:13px;color:var(--slate-500)">Rezzil VR targets weak areas</div>
-      </div>
-      <div style="background:#FFFBEB;border-radius:var(--radius);padding:20px;text-align:center">
-        <div style="width:48px;height:48px;background:#D97706;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:18px"><i class="fas fa-redo-alt"></i></div>
-        <div style="font-family:'Archivo Black',sans-serif;font-size:16px;color:#D97706;margin-bottom:4px">Repeat</div>
-        <div style="font-size:13px;color:var(--slate-500)">Next match, better results</div>
-      </div>
+    <h2 class="section-title" style="color:var(--white)">Follow the Action</h2>
+    <p class="ig-subtitle">@scoutvideoja on Instagram</p>
+    <div class="ig-grid">
+      <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="ig-card">
+        <i class="fas fa-play"></i><span class="ig-caption">Wolmer's vs STATHS — U16 Highlights</span>
+      </a>
+      <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="ig-card">
+        <i class="fas fa-play"></i><span class="ig-caption">Veo camera in action, pitchside</span>
+      </a>
+      <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="ig-card">
+        <i class="fas fa-play"></i><span class="ig-caption">VR training session — Rezzil drills</span>
+      </a>
+      <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="ig-card">
+        <i class="fas fa-play"></i><span class="ig-caption">Match-day atmosphere</span>
+      </a>
+      <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="ig-card">
+        <i class="fas fa-play"></i><span class="ig-caption">Goal of the week</span>
+      </a>
+      <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="ig-card">
+        <i class="fas fa-play"></i><span class="ig-caption">Behind the scenes with the crew</span>
+      </a>
     </div>
-    <div style="margin-top:24px">
-      <a href="{{ url_for('pages.about') }}#dev-cycle" class="btn btn-secondary"><i class="fas fa-info-circle"></i> How We Develop Athletes</a>
-    </div>
-  </div>
-</section>
-
-<!-- GEAR STRIP -->
-<section class="section section-alt" style="text-align:center">
-  <div class="container">
-    <div class="section-label">Gear Shop</div>
-    <h2 class="section-title">Premium Athlete Gear</h2>
-    <p class="section-sub mx-auto" style="margin-bottom:16px">Grip socks, shin guards, and performance gear — all in JMD.</p>
-    <a href="{{ url_for('shop.products') }}" class="btn btn-secondary"><i class="fas fa-shopping-bag"></i> Browse the Shop</a>
-  </div>
-</section>
-
-<!-- CTA BANNER -->
-<section style="background:var(--green);padding:40px 16px;text-align:center">
-  <h2 style="font-family:'Archivo Black',sans-serif;font-size:24px;color:var(--white);margin-bottom:12px">Ready to Level Up?</h2>
-  <p style="color:rgba(255,255,255,0.85);font-size:16px;max-width:480px;margin:0 auto 20px;line-height:1.7">Book a match recording, try VR training, or message us on WhatsApp — we usually reply within an hour.</p>
-  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-    <a href="{{ url_for('booking.contact') }}" class="btn btn-white"><i class="fas fa-calendar-check"></i> Book Now</a>
-    <a href="https://wa.me/18768092519" target="_blank" rel="noopener" class="btn btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+    <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="btn btn-white"><i class="fab fa-instagram"></i> Follow @scoutvideoja</a>
   </div>
 </section>
 {% endblock %}
