@@ -41,9 +41,10 @@ def worldcup_register():
     name = (data.get("name") or "").strip()
     email = (data.get("email") or "").strip()
     instagram = (data.get("instagram") or "").strip()
+    backing = (data.get("backing") or "").strip()
 
     # For now, log it. Phase 2: persist to the database.
-    print(f"World Cup registration: {name} | {email} | {instagram}")
+    print(f"World Cup registration: {name} | {email} | {instagram} | backing: {backing}")
 
     # Best-effort email notification to the host (never block the response on it).
     try:
@@ -56,7 +57,8 @@ def worldcup_register():
                 "<pre style='font-family:monospace;font-size:13px'>"
                 f"Name     : {name}\n"
                 f"Email    : {email}\n"
-                f"Instagram: {instagram}</pre>"
+                f"Instagram: {instagram}\n"
+                f"Backing  : {backing}</pre>"
             ),
             to_addr=host_email,
         )

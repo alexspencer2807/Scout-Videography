@@ -13,7 +13,7 @@
   <section class="wc-hero">
     <div class="wc-hero-tag"><i class="fas fa-trophy"></i> USA · Mexico · Canada · 2026</div>
     <h1>WORLD CUP 2026 <span>FAN ZONE</span></h1>
-    <p class="wc-hero-sub">Predictions. Trivia. Watch Parties. Powered by Scout Videography Jamaica.</p>
+    <p class="wc-hero-sub">Which team are <strong class="wc-green-text">YOU</strong> backing? Predictions, trivia &amp; watch parties — Jamaica's home for the 2026 World Cup, powered by Scout Videography.</p>
 
     <div class="wc-countdown" id="wcCountdown" aria-label="Countdown to kickoff">
       <div class="wc-cd-box"><div class="wc-cd-num" id="cdDays">00</div><div class="wc-cd-label">Days</div></div>
@@ -34,9 +34,9 @@
     <div class="container">
       <div class="wc-reg-card">
         <div id="wcRegForm">
-          <div class="wc-eyebrow" style="text-align:center">Members Only</div>
-          <h2 class="wc-h2">Join the Scout Fan Zone</h2>
-          <p class="wc-sub" style="margin:0 auto">Get access to predictions, trivia, and a chance to win prizes.</p>
+          <div class="wc-eyebrow" style="text-align:center">Back Your Team</div>
+          <h2 class="wc-h2">Which Team Are <span class="wc-green-text">YOU</span> Backing?</h2>
+          <p class="wc-sub" style="margin:0 auto">Pick the team you're supporting at the 2026 World Cup, then unlock predictions, trivia &amp; a chance to win prizes.</p>
           <form class="wc-form" id="wcForm" novalidate>
             <div>
               <label for="wcName">Name</label>
@@ -53,6 +53,12 @@
                 <input class="wc-input" type="text" id="wcInsta" placeholder="yourhandle" autocomplete="off" required>
               </div>
             </div>
+            <div>
+              <label for="wcBacking">Which team are you backing?</label>
+              <select class="wc-input wc-select" id="wcBacking" required>
+                <option value="">Pick a team to support…</option>
+              </select>
+            </div>
             <label class="wc-check">
               <input type="checkbox" id="wcFollow">
               <span>I follow <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener">@scoutvideoja</a> on Instagram</span>
@@ -64,7 +70,7 @@
 
         <div class="wc-reg-success" id="wcRegSuccess">
           <h2 class="wc-h2">You're in! 🎉</h2>
-          <p class="wc-sub" style="margin:0 auto 14px">Welcome to the Fan Zone, <strong id="wcMemberName">fan</strong>. Predictions, trivia &amp; the leaderboard are unlocked below.</p>
+          <p class="wc-sub" style="margin:0 auto 14px">Welcome to the Fan Zone, <strong id="wcMemberName">fan</strong> — backing <strong id="wcMemberBacking" class="wc-green-text">your team</strong>. Predictions, trivia &amp; the leaderboard are unlocked below.</p>
           <a href="#wcPredict" class="wc-btn wc-btn--gold"><i class="fas fa-bullseye"></i> Start Predicting</a>
         </div>
       </div>
@@ -76,7 +82,7 @@
     <div class="container">
       <div class="wc-eyebrow">Fixtures</div>
       <h2 class="wc-h2">Match Schedule</h2>
-      <p class="wc-sub" style="margin:0 auto">Group stage fixtures in Jamaica time (EST). Filter by group — or follow the Reggae Boyz 🇯🇲.</p>
+      <p class="wc-sub" style="margin:0 auto">Group stage fixtures in Jamaica time (EST). Filter by group and follow the team you're backing.</p>
       <div class="wc-tabs" id="wcTabs"></div>
       <div id="wcSchedule" style="text-align:left"></div>
     </div>
@@ -139,21 +145,21 @@
       <div class="wc-events">
         <div class="wc-event-card">
           <span class="wc-event-date">Thu · 11 June 2026</span>
-          <span class="wc-event-match">Opening Match: Mexico 🇲🇽 vs TBD</span>
+          <span class="wc-event-match">Opening Match: Mexico 🇲🇽 vs South Africa 🇿🇦</span>
           <span class="wc-event-meta">Kingston, St. Andrew</span>
           <span class="wc-event-free">Free for Fan Zone members</span>
           <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%20want%20to%20join%20the%20World%20Cup%20VR%20watch%20party" target="_blank" rel="noopener" class="wc-btn wc-btn--green"><i class="fab fa-whatsapp"></i> Reserve Your Spot</a>
         </div>
         <div class="wc-event-card">
           <span class="wc-event-date">Fri · 12 June 2026</span>
-          <span class="wc-event-match">USA 🇺🇸 vs TBD</span>
+          <span class="wc-event-match">USA 🇺🇸 vs Paraguay 🇵🇾</span>
           <span class="wc-event-meta">Kingston, St. Andrew</span>
           <span class="wc-event-free">Free for Fan Zone members</span>
           <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%20want%20to%20join%20the%20World%20Cup%20VR%20watch%20party" target="_blank" rel="noopener" class="wc-btn wc-btn--green"><i class="fab fa-whatsapp"></i> Reserve Your Spot</a>
         </div>
         <div class="wc-event-card">
-          <span class="wc-event-date">Group Stage · Date TBD</span>
-          <span class="wc-event-match">Reggae Boyz 🇯🇲 Watch Party</span>
+          <span class="wc-event-date">Knockout Stage · Date TBD</span>
+          <span class="wc-event-match">Back Your Team Watch Party</span>
           <span class="wc-event-meta">Kingston, St. Andrew</span>
           <span class="wc-event-free">Free for Fan Zone members</span>
           <a href="https://wa.me/18768092519?text=Hi%20Scout%2C%20I%20want%20to%20join%20the%20World%20Cup%20VR%20watch%20party" target="_blank" rel="noopener" class="wc-btn wc-btn--green"><i class="fab fa-whatsapp"></i> Reserve Your Spot</a>

@@ -4,7 +4,7 @@
   'use strict';
   if (!document.querySelector('.wc-page')) return;
 
-  // Opening match: 11 June 2026, 14:00 EST (Jamaica time) === 19:00 UTC.
+  // Opening match (Mexico v South Africa): 11 June 2026, 15:00 ET / 14:00 Jamaica === 19:00 UTC.
   var KICKOFF_UTC = Date.UTC(2026, 5, 11, 19, 0, 0);
 
   var LS = {
@@ -79,39 +79,87 @@
     attachShare(el, PRED_SHARE_MSG);
   }
 
-  /* ===================== SCHEDULE DATA =====================
-     FIFA World Cup 2026 group stage. The official draw is not yet finalised,
-     so some opponents/times are placeholders (TBD). Opening match and the
-     Reggae Boyz fixtures are included.
-     TODO: Make dynamic / confirm fixtures when the draw is finalised. */
-  var MATCHES = [
-    // Matchday 1
-    { id: 'A1', group: 'A', date: '2026-06-11', time: '14:00', a: { n: 'Mexico', f: '🇲🇽' }, b: { n: 'TBD', f: '⚽' }, venue: 'Estadio Azteca', city: 'Mexico City', status: 'upcoming' },
-    { id: 'A2', group: 'A', date: '2026-06-11', time: '17:00', a: { n: 'Croatia', f: '🇭🇷' }, b: { n: 'Senegal', f: '🇸🇳' }, venue: 'Estadio Akron', city: 'Guadalajara', status: 'upcoming' },
-    { id: 'B1', group: 'B', date: '2026-06-12', time: '15:00', a: { n: 'Canada', f: '🇨🇦' }, b: { n: 'TBD', f: '⚽' }, venue: 'BMO Field', city: 'Toronto', status: 'upcoming' },
-    { id: 'B2', group: 'B', date: '2026-06-12', time: '18:00', a: { n: 'Belgium', f: '🇧🇪' }, b: { n: 'Morocco', f: '🇲🇦' }, venue: 'BC Place', city: 'Vancouver', status: 'upcoming' },
-    { id: 'C1', group: 'C', date: '2026-06-12', time: '20:00', a: { n: 'USA', f: '🇺🇸' }, b: { n: 'TBD', f: '⚽' }, venue: 'SoFi Stadium', city: 'Los Angeles', status: 'upcoming' },
-    { id: 'C2', group: 'C', date: '2026-06-13', time: '14:00', a: { n: 'Uruguay', f: '🇺🇾' }, b: { n: 'South Korea', f: '🇰🇷' }, venue: 'NRG Stadium', city: 'Houston', status: 'upcoming' },
-    { id: 'D1', group: 'D', date: '2026-06-13', time: '17:00', a: { n: 'Argentina', f: '🇦🇷' }, b: { n: 'Australia', f: '🇦🇺' }, venue: 'Mercedes-Benz Stadium', city: 'Atlanta', status: 'upcoming' },
-    { id: 'D2', group: 'D', date: '2026-06-13', time: '20:00', a: { n: 'Nigeria', f: '🇳🇬' }, b: { n: 'TBD', f: '⚽' }, venue: 'Lincoln Financial Field', city: 'Philadelphia', status: 'upcoming' },
-    // Group F — Reggae Boyz 🇯🇲
-    { id: 'F1', group: 'F', date: '2026-06-14', time: '14:00', a: { n: 'Jamaica', f: '🇯🇲' }, b: { n: 'Japan', f: '🇯🇵' }, venue: 'Hard Rock Stadium', city: 'Miami', status: 'upcoming' },
-    { id: 'F2', group: 'F', date: '2026-06-14', time: '17:00', a: { n: 'England', f: '🏴' }, b: { n: 'Tunisia', f: '🇹🇳' }, venue: 'AT&T Stadium', city: 'Dallas', status: 'upcoming' },
-    { id: 'G1', group: 'G', date: '2026-06-14', time: '20:00', a: { n: 'Brazil', f: '🇧🇷' }, b: { n: 'TBD', f: '⚽' }, venue: 'MetLife Stadium', city: 'New York / NJ', status: 'upcoming' },
-    { id: 'G2', group: 'G', date: '2026-06-15', time: '15:00', a: { n: 'Spain', f: '🇪🇸' }, b: { n: 'Ecuador', f: '🇪🇨' }, venue: 'Levi\'s Stadium', city: 'San Francisco', status: 'upcoming' },
-    // Matchday 2 (selected)
-    { id: 'A3', group: 'A', date: '2026-06-17', time: '17:00', a: { n: 'Mexico', f: '🇲🇽' }, b: { n: 'Croatia', f: '🇭🇷' }, venue: 'Estadio Azteca', city: 'Mexico City', status: 'upcoming' },
-    { id: 'F3', group: 'F', date: '2026-06-18', time: '14:00', a: { n: 'Jamaica', f: '🇯🇲' }, b: { n: 'England', f: '🏴' }, venue: 'AT&T Stadium', city: 'Dallas', status: 'upcoming' },
-    { id: 'F4', group: 'F', date: '2026-06-18', time: '17:00', a: { n: 'Japan', f: '🇯🇵' }, b: { n: 'Tunisia', f: '🇹🇳' }, venue: 'Hard Rock Stadium', city: 'Miami', status: 'upcoming' }
-    // result fields (e.g. result:{a:2,b:1}) get added once matches are played → unlocks scoring + ✓/✗
-  ];
+  /* ===================== TEAMS — official 2026 qualifiers (48) =====================
+     Jamaica did not qualify for 2026 — fans pick a qualified team to support. */
+  var TEAM = {
+    MEX:{n:'Mexico',f:'🇲🇽'}, RSA:{n:'South Africa',f:'🇿🇦'}, KOR:{n:'Korea Republic',f:'🇰🇷'}, CZE:{n:'Czechia',f:'🇨🇿'},
+    CAN:{n:'Canada',f:'🇨🇦'}, BIH:{n:'Bosnia & Herzegovina',f:'🇧🇦'}, QAT:{n:'Qatar',f:'🇶🇦'}, SUI:{n:'Switzerland',f:'🇨🇭'},
+    BRA:{n:'Brazil',f:'🇧🇷'}, MAR:{n:'Morocco',f:'🇲🇦'}, HAI:{n:'Haiti',f:'🇭🇹'}, SCO:{n:'Scotland',f:'🏴󠁧󠁢󠁳󠁣󠁴󠁿'},
+    USA:{n:'USA',f:'🇺🇸'}, PAR:{n:'Paraguay',f:'🇵🇾'}, AUS:{n:'Australia',f:'🇦🇺'}, TUR:{n:'Türkiye',f:'🇹🇷'},
+    GER:{n:'Germany',f:'🇩🇪'}, CUW:{n:'Curaçao',f:'🇨🇼'}, CIV:{n:"Côte d'Ivoire",f:'🇨🇮'}, ECU:{n:'Ecuador',f:'🇪🇨'},
+    NED:{n:'Netherlands',f:'🇳🇱'}, JPN:{n:'Japan',f:'🇯🇵'}, SWE:{n:'Sweden',f:'🇸🇪'}, TUN:{n:'Tunisia',f:'🇹🇳'},
+    BEL:{n:'Belgium',f:'🇧🇪'}, EGY:{n:'Egypt',f:'🇪🇬'}, IRN:{n:'IR Iran',f:'🇮🇷'}, NZL:{n:'New Zealand',f:'🇳🇿'},
+    ESP:{n:'Spain',f:'🇪🇸'}, CPV:{n:'Cabo Verde',f:'🇨🇻'}, KSA:{n:'Saudi Arabia',f:'🇸🇦'}, URU:{n:'Uruguay',f:'🇺🇾'},
+    FRA:{n:'France',f:'🇫🇷'}, SEN:{n:'Senegal',f:'🇸🇳'}, IRQ:{n:'Iraq',f:'🇮🇶'}, NOR:{n:'Norway',f:'🇳🇴'},
+    ARG:{n:'Argentina',f:'🇦🇷'}, ALG:{n:'Algeria',f:'🇩🇿'}, AUT:{n:'Austria',f:'🇦🇹'}, JOR:{n:'Jordan',f:'🇯🇴'},
+    POR:{n:'Portugal',f:'🇵🇹'}, COD:{n:'Congo DR',f:'🇨🇩'}, UZB:{n:'Uzbekistan',f:'🇺🇿'}, COL:{n:'Colombia',f:'🇨🇴'},
+    ENG:{n:'England',f:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, CRO:{n:'Croatia',f:'🇭🇷'}, GHA:{n:'Ghana',f:'🇬🇭'}, PAN:{n:'Panama',f:'🇵🇦'}
+  };
 
-  var DATE_FMT = { weekday: 'short', day: 'numeric', month: 'long' };
-  function fmtDate(iso) {
-    var p = iso.split('-');
-    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2], 12));
-    return d.toLocaleDateString('en-GB', DATE_FMT);
+  // Backing dropdown: all 48 qualified teams, alphabetical by name.
+  var TEAMS = Object.keys(TEAM).map(function (c) { return TEAM[c]; })
+    .sort(function (a, b) { return a.n < b.n ? -1 : (a.n > b.n ? 1 : 0); });
+
+  function flagFor(name) {
+    for (var i = 0; i < TEAMS.length; i++) { if (TEAMS[i].n === name) return TEAMS[i].f; }
+    return '⚽';
   }
+
+  function populateTeams() {
+    var sel = document.getElementById('wcBacking');
+    if (!sel) return;
+    var reg = read(LS.reg, null);
+    var current = reg && reg.backing ? reg.backing : '';
+    TEAMS.forEach(function (t) {
+      var opt = document.createElement('option');
+      opt.value = t.n;
+      opt.textContent = t.f + '  ' + t.n;
+      if (t.n === current) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+
+  /* ===================== SCHEDULE — official FIFA WC2026 group stage =====================
+     Source: FIFA official Match Schedule (v17, 10 Apr 2026) + the final group draw.
+     Every group of four is a round-robin (6 fixtures) in FIFA's positional pattern —
+     MD1: 1v2,3v4 · MD2: 1v3,4v2 · MD3: 4v1,2v3 — which the official schedule confirms.
+     All 72 group-stage matches are included. Kick-off times are US Eastern Time (ET). */
+  var GROUPS = {
+    A: ['MEX','RSA','KOR','CZE'], B: ['CAN','BIH','QAT','SUI'], C: ['BRA','MAR','HAI','SCO'],
+    D: ['USA','PAR','AUS','TUR'], E: ['GER','CUW','CIV','ECU'], F: ['NED','JPN','SWE','TUN'],
+    G: ['BEL','EGY','IRN','NZL'], H: ['ESP','CPV','KSA','URU'], I: ['FRA','SEN','IRQ','NOR'],
+    J: ['ARG','ALG','AUT','JOR'], K: ['POR','COD','UZB','COL'], L: ['ENG','CRO','GHA','PAN']
+  };
+
+  // Per group: [homeCode, awayCode, matchday, matchNo, kickoffET]
+  var SCHED = {
+    A: [['MEX','RSA',1,1,'15:00'],['KOR','CZE',1,2,'22:00'],['MEX','KOR',2,28,'21:00'],['CZE','RSA',2,25,'12:00'],['CZE','MEX',3,53,'21:00'],['RSA','KOR',3,54,'21:00']],
+    B: [['CAN','BIH',1,3,'15:00'],['QAT','SUI',1,8,'15:00'],['CAN','QAT',2,27,'18:00'],['SUI','BIH',2,26,'15:00'],['SUI','CAN',3,51,'15:00'],['BIH','QAT',3,52,'15:00']],
+    C: [['BRA','MAR',1,7,'18:00'],['HAI','SCO',1,5,'21:00'],['BRA','HAI',2,29,'20:30'],['SCO','MAR',2,30,'18:00'],['SCO','BRA',3,49,'18:00'],['MAR','HAI',3,50,'18:00']],
+    D: [['USA','PAR',1,4,'21:00'],['AUS','TUR',1,6,'00:00'],['USA','AUS',2,32,'15:00'],['TUR','PAR',2,31,'23:00'],['TUR','USA',3,59,'22:00'],['PAR','AUS',3,60,'22:00']],
+    E: [['GER','CUW',1,10,'13:00'],['CIV','ECU',1,9,'19:00'],['GER','CIV',2,33,'16:00'],['ECU','CUW',2,34,'20:00'],['ECU','GER',3,56,'16:00'],['CUW','CIV',3,55,'16:00']],
+    F: [['NED','JPN',1,11,'16:00'],['SWE','TUN',1,12,'22:00'],['NED','SWE',2,35,'13:00'],['TUN','JPN',2,36,'00:00'],['TUN','NED',3,58,'19:00'],['JPN','SWE',3,57,'19:00']],
+    G: [['BEL','EGY',1,16,'15:00'],['IRN','NZL',1,15,'21:00'],['BEL','IRN',2,39,'15:00'],['NZL','EGY',2,40,'21:00'],['NZL','BEL',3,64,'23:00'],['EGY','IRN',3,63,'23:00']],
+    H: [['ESP','CPV',1,14,'12:00'],['KSA','URU',1,13,'18:00'],['ESP','KSA',2,38,'12:00'],['URU','CPV',2,37,'18:00'],['URU','ESP',3,66,'20:00'],['CPV','KSA',3,65,'20:00']],
+    I: [['FRA','SEN',1,17,'15:00'],['IRQ','NOR',1,18,'18:00'],['FRA','IRQ',2,42,'17:00'],['NOR','SEN',2,41,'20:00'],['NOR','FRA',3,61,'15:00'],['SEN','IRQ',3,62,'15:00']],
+    J: [['ARG','ALG',1,19,'21:00'],['AUT','JOR',1,20,'00:00'],['ARG','AUT',2,43,'13:00'],['JOR','ALG',2,44,'23:00'],['JOR','ARG',3,70,'22:00'],['ALG','AUT',3,69,'22:00']],
+    K: [['POR','COD',1,23,'13:00'],['UZB','COL',1,24,'22:00'],['POR','UZB',2,47,'13:00'],['COL','COD',2,48,'22:00'],['COL','POR',3,71,'19:30'],['COD','UZB',3,72,'19:30']],
+    L: [['ENG','CRO',1,22,'16:00'],['GHA','PAN',1,21,'19:00'],['ENG','GHA',2,45,'16:00'],['PAN','CRO',2,46,'19:00'],['PAN','ENG',3,67,'17:00'],['CRO','GHA',3,68,'17:00']]
+  };
+
+  var MATCHES = [];
+  Object.keys(SCHED).forEach(function (g) {
+    SCHED[g].forEach(function (r) {
+      MATCHES.push({
+        id: 'M' + r[3], group: g, md: r[2], no: r[3], time: r[4],
+        a: TEAM[r[0]], b: TEAM[r[1]], status: 'upcoming'
+        // result:{a,b} can be added once a match is played → unlocks scoring + ✓/✗
+      });
+    });
+  });
+
+  function mdLabel(md) { return 'Matchday ' + md; }
+
   function winnerOf(res) {
     if (!res) return null;
     if (res.a > res.b) return 'A';
@@ -149,26 +197,32 @@
     var timer = setInterval(tick, 1000);
   }
 
-  /* ===================== REGISTRATION GATE ===================== */
+  /* ===================== REGISTRATION GATE =====================
+     Registration is remembered in localStorage, so a returning visitor is never
+     asked again on the same browser — they're greeted with "Welcome back". */
   function checkRegistration() {
     var reg = read(LS.reg, null);
     if (reg && reg.registered) {
-      unlockFanZone(reg);
+      unlockFanZone(reg, true); // returning visitor — already registered
     } else {
       var note = document.getElementById('wcLockNote');
       if (note) note.classList.add('show');
     }
   }
 
-  function unlockFanZone(reg) {
+  function unlockFanZone(reg, returning) {
     var form = document.getElementById('wcRegForm');
     var success = document.getElementById('wcRegSuccess');
     var gated = document.getElementById('wcGated');
     var note = document.getElementById('wcLockNote');
     var nameEl = document.getElementById('wcMemberName');
+    var titleEl = document.querySelector('#wcRegSuccess .wc-h2');
+    if (titleEl) titleEl.textContent = returning ? 'Welcome back! 👋' : "You're in! 🎉";
     if (form) form.style.display = 'none';
     if (success) success.classList.add('show');
     if (nameEl && reg && reg.name) nameEl.textContent = reg.name;
+    var backEl = document.getElementById('wcMemberBacking');
+    if (backEl && reg && reg.backing) backEl.textContent = flagFor(reg.backing) + ' ' + reg.backing;
     if (gated) gated.classList.remove('locked');
     if (note) note.classList.remove('show');
     updateLeaderboard();
@@ -182,6 +236,8 @@
       var name = document.getElementById('wcName').value.trim();
       var email = document.getElementById('wcEmail').value.trim();
       var insta = document.getElementById('wcInsta').value.trim().replace(/^@+/, '');
+      var backingEl = document.getElementById('wcBacking');
+      var backing = backingEl ? backingEl.value : '';
       var follows = document.getElementById('wcFollow').checked;
       var err = document.getElementById('wcFormError');
       err.textContent = '';
@@ -189,16 +245,17 @@
       if (!name) { err.textContent = 'Please enter your name.'; return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email address.'; return; }
       if (!insta) { err.textContent = 'Please enter your Instagram handle.'; return; }
+      if (!backing) { err.textContent = 'Pick the team you\'re backing.'; return; }
       if (!follows) { err.textContent = 'Please confirm you follow @scoutvideoja to enter.'; return; }
 
-      var reg = { name: name, email: email, instagram: insta, registered: true };
+      var reg = { name: name, email: email, instagram: insta, backing: backing, registered: true };
       write(LS.reg, reg);
 
       // Fire-and-forget to the server (never block the user on it).
       fetch('/api/worldcup/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name, email: email, instagram: '@' + insta })
+        body: JSON.stringify({ name: name, email: email, instagram: '@' + insta, backing: backing })
       }).catch(function () {});
 
       unlockFanZone(reg);
@@ -209,9 +266,8 @@
 
   /* ===================== PREDICTIONS ===================== */
   function predictableMatches() {
-    return MATCHES.filter(function (m) {
-      return m.status !== 'complete' && m.a.n !== 'TBD' && m.b.n !== 'TBD';
-    }).slice(0, 6);
+    // Matchday-1 fixtures are the next ones up — feature them for predictions.
+    return MATCHES.filter(function (m) { return m.md === 1 && m.status !== 'complete'; }).slice(0, 6);
   }
 
   function predictionPoints() {
@@ -266,7 +322,7 @@
       }
 
       return '<div class="wc-pred-card">' +
-        '<div class="wc-match-meta"><span>' + esc(fmtDate(m.date)) + ' · ' + esc(m.time) + ' EST</span><span>Group ' + esc(m.group) + '</span></div>' +
+        '<div class="wc-match-meta"><span>' + mdLabel(m.md) + ' · ' + esc(m.time) + ' ET</span><span>Group ' + esc(m.group) + '</span></div>' +
         '<div class="wc-pred-top">' +
           '<div class="wc-team"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
           '<span class="wc-vs">VS</span>' +
@@ -422,7 +478,9 @@
     var total = predPts + triviaBest;
 
     var youName = reg && reg.name ? reg.name : 'You';
+    var backing = reg && reg.backing ? reg.backing : '';
     var youHandle = reg && reg.instagram ? '@' + reg.instagram : '@yourhandle';
+    if (backing) youHandle += ' · backing ' + flagFor(backing) + ' ' + backing;
 
     var rows = [
       { rank: '🥇', name: esc(youName), handle: esc(youHandle), pred: predPts, trivia: triviaBest, total: total, you: true },
@@ -459,7 +517,6 @@
 
     var tabs = [{ key: 'all', label: 'All Matches' }];
     groups.forEach(function (g) { tabs.push({ key: 'group:' + g, label: 'Group ' + g }); });
-    tabs.push({ key: 'jamaica', label: 'Jamaica 🇯🇲' });
 
     tabsEl.innerHTML = tabs.map(function (t) {
       return '<button type="button" class="wc-tab' + (t.key === 'all' ? ' active' : '') +
@@ -477,7 +534,6 @@
 
   function matchesForFilter(filter) {
     if (filter === 'all') return MATCHES;
-    if (filter === 'jamaica') return MATCHES.filter(function (m) { return m.a.n === 'Jamaica' || m.b.n === 'Jamaica'; });
     if (filter.indexOf('group:') === 0) {
       var g = filter.split(':')[1];
       return MATCHES.filter(function (m) { return m.group === g; });
@@ -495,7 +551,7 @@
     if (m.status === 'complete' && m.result) {
       return '<span class="wc-score">' + m.result.a + ' – ' + m.result.b + '</span>';
     }
-    return '<span class="wc-vs">' + esc(m.time) + '<br>EST</span>';
+    return '<span class="wc-vs">' + esc(m.time) + '<br>ET</span>';
   }
 
   function filterSchedule(filter) {
@@ -509,28 +565,28 @@
       return;
     }
 
-    // Group by date
-    var byDate = {};
+    // Group fixtures by group letter; order each group by matchday / match number.
+    var byGroup = {};
     var order = [];
     list.forEach(function (m) {
-      if (!byDate[m.date]) { byDate[m.date] = []; order.push(m.date); }
-      byDate[m.date].push(m);
+      if (!byGroup[m.group]) { byGroup[m.group] = []; order.push(m.group); }
+      byGroup[m.group].push(m);
     });
     order.sort();
 
-    el.innerHTML = order.map(function (date) {
-      var cards = byDate[date].map(function (m) {
+    el.innerHTML = order.map(function (g) {
+      var matches = byGroup[g].slice().sort(function (x, y) { return x.no - y.no; });
+      var cards = matches.map(function (m) {
         return '<div class="wc-match-card">' +
-          '<div class="wc-match-meta"><span>Group ' + esc(m.group) + '</span>' + badgeFor(m) + '</div>' +
+          '<div class="wc-match-meta"><span>' + mdLabel(m.md) + '</span>' + badgeFor(m) + '</div>' +
           '<div class="wc-match-teams">' +
             '<div class="wc-team"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
             centerCell(m) +
             '<div class="wc-team"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
           '</div>' +
-          '<div class="wc-match-venue">' + esc(m.venue) + ' · ' + esc(m.city) + '</div>' +
         '</div>';
       }).join('');
-      return '<div class="wc-date-group"><div class="wc-date-head">' + esc(fmtDate(date)) + '</div>' +
+      return '<div class="wc-date-group"><div class="wc-date-head">Group ' + esc(g) + '</div>' +
              '<div class="wc-match-grid">' + cards + '</div></div>';
     }).join('');
   }
@@ -538,6 +594,7 @@
   /* ===================== INIT ===================== */
   document.addEventListener('DOMContentLoaded', function () {
     initCountdown();
+    populateTeams();
     handleRegister();
     buildTabs();
     filterSchedule('all');

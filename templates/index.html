@@ -18,6 +18,46 @@
   </div>
 </section>
 
+<!-- WORLD CUP 2026 FAN ZONE PROMO -->
+<section class="wcpromo fade-in">
+  <div class="container wcpromo-inner">
+    <div class="wcpromo-badge"><span class="wcpromo-dot"></span> Fan Zone Now Live</div>
+    <h2 class="wcpromo-title">World Cup 2026 <span>Fan Zone</span></h2>
+    <p class="wcpromo-sub">Which team are YOU backing? Predictions, trivia, watch parties &amp; a live countdown to kickoff — Jamaica's home for the 2026 World Cup.</p>
+    <div class="wcpromo-cd" id="wcpromoCd" aria-label="Countdown to kickoff">
+      <div class="wcpromo-box"><b id="wcpDays">00</b><span>Days</span></div>
+      <div class="wcpromo-box"><b id="wcpHours">00</b><span>Hrs</span></div>
+      <div class="wcpromo-box"><b id="wcpMins">00</b><span>Min</span></div>
+      <div class="wcpromo-box"><b id="wcpSecs">00</b><span>Sec</span></div>
+    </div>
+    <a href="{{ url_for('pages.worldcup') }}" class="btn wcpromo-btn"><i class="fas fa-trophy"></i> Enter the Fan Zone</a>
+  </div>
+  <script>
+  (function () {
+    var T = Date.UTC(2026, 5, 11, 19, 0, 0); // kickoff: 11 Jun 2026, 15:00 ET
+    var d = document.getElementById('wcpDays'), h = document.getElementById('wcpHours'),
+        m = document.getElementById('wcpMins'), s = document.getElementById('wcpSecs');
+    if (!d) return;
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    function tick() {
+      var x = T - Date.now();
+      if (x <= 0) {
+        var cd = document.getElementById('wcpromoCd');
+        if (cd) cd.innerHTML = '<div class="wcpromo-live">🔴 Tournament in progress — LIVE</div>';
+        clearInterval(iv); return;
+      }
+      var sec = Math.floor(x / 1000);
+      d.textContent = p(Math.floor(sec / 86400));
+      h.textContent = p(Math.floor(sec % 86400 / 3600));
+      m.textContent = p(Math.floor(sec % 3600 / 60));
+      s.textContent = p(sec % 60);
+    }
+    tick();
+    var iv = setInterval(tick, 1000);
+  })();
+  </script>
+</section>
+
 <!-- ATHLETES / HAPPY FACES BAND (below hero) -->
 <!-- TODO: Replace with dedicated smiling-athlete photos when available -->
 <section class="section faces-section fade-in" style="text-align:center">
