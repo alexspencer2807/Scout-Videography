@@ -28,6 +28,18 @@
 .chat-msg-bot { background: #F1F5F9; color: #334155; align-self: flex-start; border-bottom-left-radius: 4px; }
 .chat-msg-user { background: var(--teal, #0D4A7A); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
 
+/* Coach Scout avatar beside every bot message (messaging-app style). Injected
+   via ::before so no change to analyst-widget.js is needed. */
+.chat-msg-bot { position: relative; margin-left: 42px; }
+.chat-msg-bot::before {
+  content: "";
+  position: absolute; left: -42px; top: 0;
+  width: 32px; height: 32px; border-radius: 50%;
+  background-image: url("{{ url_for('static', filename='media/coach-scout/default.png') }}");
+  background-size: cover; background-position: center;
+  border: 2px solid #26C96F; box-shadow: 0 0 12px rgba(38,201,111,0.3);
+}
+
 .chat-typing { padding: 12px 20px; }
 .typing-dots { display: flex; gap: 4px; align-items: center; }
 .typing-dots span { width: 6px; height: 6px; background: #94A3B8; border-radius: 50%; animation: bounce 1.4s ease-in-out infinite; }
@@ -85,10 +97,10 @@
     <div class="chat-panel">
       <div class="chat-header">
         <div class="chat-header-left">
-          <div class="chat-header-dot"></div>
+          <img src="{{ url_for('static', filename='media/coach-scout/default.png') }}" class="coach-scout-avatar md" alt="Coach Scout">
           <div>
-            <div class="chat-header-title">Scout AI Analyst</div>
-            <div class="chat-header-sub">Football performance analysis</div>
+            <div class="chat-header-title">Coach Scout</div>
+            <div class="chat-header-sub">AI Performance Analyst</div>
           </div>
         </div>
         <div id="msgCounter" style="font-size:11px;color:#94A3B8">5 free messages remaining today</div>

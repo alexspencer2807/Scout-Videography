@@ -373,7 +373,13 @@
   border: 1px solid var(--wc-line); border-left: 3px solid var(--wc-green);
   border-radius: 12px; padding: 16px; margin: 14px 0;
 }
-.wc-analysis-head { font-family: 'Archivo Black', sans-serif; font-size: 14px; color: var(--wc-green); margin-bottom: 8px; }
+/* Coach Scout avatar (state-driven img rendered by worldcup.js) sits beside the head */
+.wc-analysis-head { font-family: 'Archivo Black', sans-serif; font-size: 14px; color: var(--wc-green); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+
+/* leaderboard Coach Scout entry */
+.wc-board-av { display: inline-block; vertical-align: middle; margin-right: 8px; }
+.wc-board-row.is-coach { border-left: 3px solid var(--wc-gold); }
+.wc-board-streak { font-size: 11px; font-weight: 700; color: var(--wc-gold); }
 .wc-analysis-text { font-style: italic; font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.9); margin: 0 0 12px; }
 .wc-analysis-foot { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.85); }
 .wc-analysis-k { font-weight: 800; color: var(--wc-gold); }

@@ -483,12 +483,23 @@
     var youHandle = reg && reg.instagram ? '@' + reg.instagram : '@yourhandle';
     if (backing) youHandle += ' · backing ' + flagFor(backing) + ' ' + backing;
 
-    var rows = [
-      { rank: '🥇', name: esc(youName), handle: esc(youHandle), pred: predPts, trivia: triviaBest, total: total, you: true },
-      { rank: '🥈', name: 'Coming soon…', handle: '—', pred: '—', trivia: '—', total: '—', you: false },
-      { rank: '🥉', name: 'Coming soon…', handle: '—', pred: '—', trivia: '—', total: '—', you: false },
-      { rank: '4', name: 'Coming soon…', handle: '—', pred: '—', trivia: '—', total: '—', you: false }
-    ];
+    // Coach Scout competes too — default avatar, swapping to winning-streak on a 3+ run.
+    var coach = coachScoutRecord();
+    var coachName = '<img class="coach-scout-avatar sm wc-board-av" src="' + coachImg(coach.avatar) + '" alt="Coach Scout"> Coach Scout' +
+      (coach.streak >= 3 ? ' <span class="wc-board-streak">🔥 ' + coach.streak + ' in a row</span>' : '');
+    var coachHandle = 'AI Analyst · ' + coach.correct + '/' + coach.completed + ' correct';
+
+    // Real competitors sorted by total points (desc), then placeholders fill the rest.
+    var real = [
+      { name: esc(youName), handle: esc(youHandle), pred: predPts, trivia: triviaBest, total: total, you: true },
+      { name: coachName, handle: coachHandle, pred: coach.pts, trivia: '🤖', total: coach.pts, isCoach: true }
+    ].sort(function (a, b) { return b.total - a.total; });
+
+    var ranks = ['🥇', '🥈', '🥉', '4', '5'];
+    var rows = real.map(function (r, i) { r.rank = ranks[i]; return r; });
+    while (rows.length < 4) {
+      rows.push({ rank: ranks[rows.length], name: 'Coming soon…', handle: '—', pred: '—', trivia: '—', total: '—' });
+    }
 
     board.innerHTML =
       '<div class="wc-board-head">' +
@@ -496,7 +507,7 @@
         '<span class="wc-hide-sm">Predict</span><span class="wc-hide-sm">Trivia</span><span style="text-align:right">Total</span>' +
       '</div>' +
       rows.map(function (r) {
-        return '<div class="wc-board-row' + (r.you ? ' you' : '') + '">' +
+        return '<div class="wc-board-row' + (r.you ? ' you' : '') + (r.isCoach ? ' is-coach' : '') + '">' +
           '<span class="wc-board-rank">' + r.rank + '</span>' +
           '<span class="wc-board-name">' + r.name + '<small>' + r.handle + '</small></span>' +
           '<span class="wc-board-col wc-hide-sm">' + r.pred + '</span>' +
@@ -605,6 +616,33 @@
     { no: 22, date: '13 June', text: "A classic in the making. Tuchel's England against Modrić's Croatia revives memories of past tournament drama. Bellingham versus the experienced Croatian midfield is the central battle. England's pace out wide through Saka should be decisive against an ageing back line.", scoreline: 'England 2-1 Croatia', confidence: 58, keyBattle: 'Jude Bellingham vs Luka Modrić', watchCode: 'ENG' }
   ];
 
+  // ---- Coach Scout avatar + prediction record ----
+  var COACH_BASE = '/static/media/coach-scout/';
+  function coachImg(state) { return COACH_BASE + state + '.png'; }
+  function parseScore(s) {
+    var m = String(s).match(/(\d+)\s*-\s*(\d+)/);
+    return m ? { a: +m[1], b: +m[2] } : { a: 0, b: 0 };
+  }
+  // Tally Coach Scout's own predictions (MATCH_ANALYSIS scorelines) against any
+  // completed results. Used for the leaderboard entry + winning-streak avatar.
+  function coachScoutRecord() {
+    var correct = 0, exact = 0, pts = 0, streak = 0, completed = 0;
+    MATCH_ANALYSIS.slice().sort(function (a, b) { return a.no - b.no; }).forEach(function (an) {
+      var m = findMatchByNo(an.no);
+      if (!m || !m.result) return;
+      completed++;
+      var pg = parseScore(an.scoreline);
+      var pw = pg.a > pg.b ? 'A' : (pg.a < pg.b ? 'B' : 'D');
+      var aw = m.result.a > m.result.b ? 'A' : (m.result.a < m.result.b ? 'B' : 'D');
+      if (pw === aw) {
+        correct++; pts += 3; streak++;
+        if (pg.a === m.result.a && pg.b === m.result.b) { exact++; pts += 5; }
+      } else { streak = 0; }
+    });
+    return { correct: correct, exact: exact, pts: pts, streak: streak, completed: completed,
+             avatar: streak >= 3 ? 'winning-streak' : 'default' };
+  }
+
   function loadPlayers() {
     var url = window.WC_PLAYERS_URL || '/static/data/worldcup-players.json';
     return fetch(url).then(function (r) { return r.json(); }).then(function (data) {
@@ -664,9 +702,17 @@
         '</div>' +
         '<div class="wc-mp-meta">Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + esc(an.date) + ' · ' + esc(m.time) + ' ET</div>';
 
+      // Avatar reflects Coach Scout's outcome once the match has a result.
+      var coachState = 'analyzing';
+      if (m.result) {
+        var pg = parseScore(an.scoreline);
+        var pw = pg.a > pg.b ? 'A' : (pg.a < pg.b ? 'B' : 'D');
+        var aw = m.result.a > m.result.b ? 'A' : (m.result.a < m.result.b ? 'B' : 'D');
+        coachState = (pw === aw) ? 'celebrating' : 'shocked';
+      }
       var analysis =
         '<div class="wc-analysis">' +
-          '<div class="wc-analysis-head">🤖 Coach Scout&rsquo;s Pre-Match Analysis</div>' +
+          '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg(coachState) + '" alt="Coach Scout"> Coach Scout&rsquo;s Pre-Match Analysis</div>' +
           '<p class="wc-analysis-text">&ldquo;' + esc(an.text) + '&rdquo;</p>' +
           '<div class="wc-analysis-foot">' +
             '<div><span class="wc-analysis-k">🤖 Prediction:</span> ' + esc(an.scoreline) + ' <span class="wc-analysis-conf">(' + an.confidence + '% confidence)</span></div>' +

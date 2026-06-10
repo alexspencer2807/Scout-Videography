@@ -2176,3 +2176,16 @@ img { max-width: 100%; display: block; }
 .contact-fab-toggle-close { display: none; }
 .contact-fab.open .contact-fab-toggle-open { display: none; }
 .contact-fab.open .contact-fab-toggle-close { display: block; }
+
+/* ================= COACH SCOUT AVATAR ================= */
+.coach-scout-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #26C96F;
+  box-shadow: 0 0 12px rgba(38, 201, 111, 0.3);
+  display: block;
+  flex-shrink: 0;
+}
+.coach-scout-avatar.sm { width: 32px; height: 32px; }
+.coach-scout-avatar.md { width: 48px; height: 48px; }
+.coach-scout-avatar.lg { width: 64px; height: 64px; }
