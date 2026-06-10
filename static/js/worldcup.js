@@ -683,7 +683,9 @@
           '<div class="wc-mp-col"><div class="wc-mp-colhead wc-team-link" data-team="' + m.cb + '">' + m.b.f + ' ' + esc(m.b.n) + '</div>' + colB + '</div>' +
         '</div>';
 
-      return '<div class="wc-mp-block fade-in">' + header + analysis + comparison + '</div>';
+      // Note: no .fade-in here — these blocks are injected after the scroll
+      // observer has already run, so they'd never receive the .visible class.
+      return '<div class="wc-mp-block">' + header + analysis + comparison + '</div>';
     }).join('');
 
     body.innerHTML = blocks || '<p class="wc-sub" style="text-align:center">No upcoming fixtures to preview.</p>';
