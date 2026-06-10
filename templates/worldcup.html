@@ -29,6 +29,16 @@
     <a href="#wcRegister" class="wc-btn wc-btn--green"><i class="fas fa-futbol"></i> Join the Fan Zone</a>
   </section>
 
+  <!-- ============ MATCH DAY PREVIEW ============ -->
+  <section class="wc-section wc-center fade-in" id="wcMatchPreview">
+    <div class="container">
+      <div class="wc-eyebrow">Match Day Preview</div>
+      <h2 class="wc-h2">Upcoming Matches</h2>
+      <p class="wc-sub" style="margin:0 auto">Coach Scout breaks down the opening fixtures — squads, key battles &amp; predictions. Tap any team to open its full profile.</p>
+      <div id="wcMatchPreviewBody" class="wc-mp-wrap"></div>
+    </div>
+  </section>
+
   <!-- ============ REGISTRATION GATE ============ -->
   <section class="wc-section wc-section--alt wc-center" id="wcRegister">
     <div class="container">
@@ -175,10 +185,20 @@
     <a href="https://instagram.com/scoutvideoja" target="_blank" rel="noopener" class="wc-btn wc-btn--ig"><i class="fab fa-instagram"></i> Follow @scoutvideoja</a>
   </section>
 
+  <!-- ============ TEAM PROFILE MODAL ============ -->
+  <div class="wc-tm-modal" id="wcTeamModal" hidden>
+    <div class="wc-tm-overlay"></div>
+    <div class="wc-tm-dialog" role="dialog" aria-modal="true" aria-label="Team profile">
+      <button type="button" class="wc-tm-close" aria-label="Close team profile">&times;</button>
+      <div id="wcTeamModalBody"></div>
+    </div>
+  </div>
+
 </div>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+<script>window.WC_PLAYERS_URL = "{{ url_for('static', filename='data/worldcup-players.json') }}";</script>
 <script src="{{ url_for('static', filename='js/worldcup.js') }}"></script>
 {% endblock %}

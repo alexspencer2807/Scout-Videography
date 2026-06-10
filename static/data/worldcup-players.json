@@ -1,0 +1,485 @@
+{
+  "_disclaimer": "Featured-player data compiled from football knowledge as of early 2026. Clubs reflect most-recently-known sides and may change with transfer windows. Caps/goals are approximate. Jamaica did NOT qualify for the 2026 World Cup and is intentionally excluded. Groups follow the official FIFA 2026 final draw.",
+  "teams": {
+    "MEX": {
+      "name": "Mexico", "flag": "🇲🇽", "group": "A", "fifa_ranking": 16, "coach": "Javier Aguirre",
+      "colors": { "primary": "#006847", "secondary": "#CE1126" },
+      "players": [
+        { "name": "Santiago Giménez", "age": 25, "position": "ST", "club": "AC Milan", "league": "Serie A", "caps": 36, "goals": 12, "stat_highlight": "Prolific Eredivisie-to-Serie A goalscorer", "scout_note": "Mexico's modern No.9 — sharp movement and ruthless in the box.", "player_to_watch": true },
+        { "name": "Edson Álvarez", "age": 28, "position": "DM", "club": "West Ham", "league": "Premier League", "caps": 80, "goals": 4, "stat_highlight": "Premier League midfield destroyer", "scout_note": "Breaks up play and shields the back four — the team's engine.", "player_to_watch": false },
+        { "name": "Hirving Lozano", "age": 30, "position": "LW", "club": "San Diego FC", "league": "MLS", "caps": 70, "goals": 18, "stat_highlight": "Scored Mexico's famous winner vs Germany 2018", "scout_note": "Direct, two-footed winger who stretches defences wide.", "player_to_watch": false },
+        { "name": "Gilberto Mora", "age": 17, "position": "AM", "club": "Club Tijuana", "league": "Liga MX", "caps": 8, "goals": 1, "stat_highlight": "Youngest senior debutant in years", "scout_note": "Teenage prodigy with fearless dribbling — one for the future and now.", "player_to_watch": false }
+      ]
+    },
+    "RSA": {
+      "name": "South Africa", "flag": "🇿🇦", "group": "A", "fifa_ranking": 56, "coach": "Hugo Broos",
+      "colors": { "primary": "#007749", "secondary": "#FFB81C" },
+      "players": [
+        { "name": "Ronwen Williams", "age": 34, "position": "GK", "club": "Mamelodi Sundowns", "league": "PSL", "caps": 35, "goals": 0, "stat_highlight": "AFCON penalty-shootout hero (4 saves)", "scout_note": "Inspirational captain and a genuinely elite shot-stopper.", "player_to_watch": true },
+        { "name": "Lyle Foster", "age": 25, "position": "ST", "club": "Burnley", "league": "Premier League", "caps": 24, "goals": 6, "stat_highlight": "Bafana's main Premier League striker", "scout_note": "Powerful runner who leads the line and presses relentlessly.", "player_to_watch": false },
+        { "name": "Teboho Mokoena", "age": 28, "position": "CM", "club": "Mamelodi Sundowns", "league": "PSL", "caps": 40, "goals": 7, "stat_highlight": "Long-range specialist and set-piece threat", "scout_note": "Tidy passer with a thunderous shot from distance.", "player_to_watch": false },
+        { "name": "Percy Tau", "age": 31, "position": "RW", "club": "Al Ahly", "league": "Egyptian PL", "caps": 45, "goals": 12, "stat_highlight": "Experienced continental campaigner", "scout_note": "Crafty forward who unlocks low blocks with clever movement.", "player_to_watch": false }
+      ]
+    },
+    "KOR": {
+      "name": "Korea Republic", "flag": "🇰🇷", "group": "A", "fifa_ranking": 23, "coach": "Hong Myung-bo",
+      "colors": { "primary": "#CD2E3A", "secondary": "#0047A0" },
+      "players": [
+        { "name": "Son Heung-min", "age": 33, "position": "LW", "club": "Tottenham Hotspur", "league": "Premier League", "caps": 130, "goals": 50, "stat_highlight": "Korea's all-time talisman & captain", "scout_note": "World-class finisher off either foot — drags Korea forward single-handedly.", "player_to_watch": true },
+        { "name": "Lee Kang-in", "age": 25, "position": "AM", "club": "Paris Saint-Germain", "league": "Ligue 1", "caps": 35, "goals": 6, "stat_highlight": "PSG-trusted creator", "scout_note": "Left-footed playmaker with silky control and vision.", "player_to_watch": false },
+        { "name": "Kim Min-jae", "age": 29, "position": "CB", "club": "Bayern Munich", "league": "Bundesliga", "caps": 65, "goals": 4, "stat_highlight": "Bundesliga title-winning defender", "scout_note": "'The Monster' — dominant, quick and aggressive on the ball.", "player_to_watch": false },
+        { "name": "Hwang Hee-chan", "age": 30, "position": "RW", "club": "Wolverhampton", "league": "Premier League", "caps": 60, "goals": 13, "stat_highlight": "Premier League pace merchant", "scout_note": "Relentless runner who thrives on the counter-attack.", "player_to_watch": false }
+      ]
+    },
+    "CZE": {
+      "name": "Czechia", "flag": "🇨🇿", "group": "A", "fifa_ranking": 40, "coach": "Ivan Hašek",
+      "colors": { "primary": "#11457E", "secondary": "#D7141A" },
+      "players": [
+        { "name": "Patrik Schick", "age": 30, "position": "ST", "club": "Bayer Leverkusen", "league": "Bundesliga", "caps": 50, "goals": 22, "stat_highlight": "Scored from the halfway line at Euro 2020", "scout_note": "Tall, technical finisher — clinical when fit and firing.", "player_to_watch": true },
+        { "name": "Tomáš Souček", "age": 31, "position": "CM", "club": "West Ham", "league": "Premier League", "caps": 75, "goals": 18, "stat_highlight": "Box-crashing midfield goal threat", "scout_note": "Aerial monster who arrives late in the area.", "player_to_watch": false },
+        { "name": "Adam Hložek", "age": 23, "position": "FW", "club": "Hoffenheim", "league": "Bundesliga", "caps": 35, "goals": 6, "stat_highlight": "Versatile young forward", "scout_note": "Can play across the front line — pace and a cool head.", "player_to_watch": false },
+        { "name": "Antonín Barák", "age": 31, "position": "AM", "club": "Fiorentina", "league": "Serie A", "caps": 45, "goals": 9, "stat_highlight": "Serie A midfield runner", "scout_note": "Energetic No.10 who links midfield to attack.", "player_to_watch": false }
+      ]
+    },
+    "CAN": {
+      "name": "Canada", "flag": "🇨🇦", "group": "B", "fifa_ranking": 30, "coach": "Jesse Marsch",
+      "colors": { "primary": "#FF0000", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Alphonso Davies", "age": 25, "position": "LB/LW", "club": "Bayern Munich", "league": "Bundesliga", "caps": 55, "goals": 15, "stat_highlight": "One of the fastest players in world football", "scout_note": "Rocket pace down the left — a constant transition weapon.", "player_to_watch": true },
+        { "name": "Jonathan David", "age": 26, "position": "ST", "club": "Juventus", "league": "Serie A", "caps": 60, "goals": 30, "stat_highlight": "Canada's all-time top scorer", "scout_note": "Ice-cold finisher with clever movement off the shoulder.", "player_to_watch": false },
+        { "name": "Stephen Eustáquio", "age": 29, "position": "CM", "club": "FC Porto", "league": "Primeira Liga", "caps": 45, "goals": 3, "stat_highlight": "Champions League regular", "scout_note": "Metronomic deep-lying playmaker — dictates Canada's tempo.", "player_to_watch": false },
+        { "name": "Tani Oluwaseyi", "age": 25, "position": "FW", "club": "Minnesota United", "league": "MLS", "caps": 15, "goals": 5, "stat_highlight": "Emerging MLS forward", "scout_note": "Athletic, raw talent breaking into the senior side.", "player_to_watch": false }
+      ]
+    },
+    "BIH": {
+      "name": "Bosnia & Herzegovina", "flag": "🇧🇦", "group": "B", "fifa_ranking": 70, "coach": "Sergej Barbarez",
+      "colors": { "primary": "#002395", "secondary": "#FECB00" },
+      "players": [
+        { "name": "Edin Džeko", "age": 40, "position": "ST", "club": "Fenerbahçe", "league": "Süper Lig", "caps": 140, "goals": 70, "stat_highlight": "Bosnia's record scorer & captain", "scout_note": "Ageless target man — still a clinical and intelligent No.9.", "player_to_watch": true },
+        { "name": "Sead Kolašinac", "age": 32, "position": "LB", "club": "Atalanta", "league": "Serie A", "caps": 60, "goals": 2, "stat_highlight": "Serie A wing-back muscle", "scout_note": "Powerful, combative defender who loves a duel.", "player_to_watch": false },
+        { "name": "Benjamin Tahirović", "age": 22, "position": "CM", "club": "Ajax", "league": "Eredivisie", "caps": 18, "goals": 1, "stat_highlight": "Promising young midfielder", "scout_note": "Composed deep playmaker — the future of the midfield.", "player_to_watch": false },
+        { "name": "Ermedin Demirović", "age": 28, "position": "FW", "club": "VfB Stuttgart", "league": "Bundesliga", "caps": 30, "goals": 8, "stat_highlight": "Bundesliga forward", "scout_note": "Mobile striker who presses and links play.", "player_to_watch": false }
+      ]
+    },
+    "QAT": {
+      "name": "Qatar", "flag": "🇶🇦", "group": "B", "fifa_ranking": 36, "coach": "Luis García",
+      "colors": { "primary": "#8A1538", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Akram Afif", "age": 29, "position": "LW", "club": "Al-Sadd", "league": "QSL", "caps": 110, "goals": 35, "stat_highlight": "Two-time Asian Cup top performer", "scout_note": "Qatar's creative heartbeat — dribbles, assists and finishes.", "player_to_watch": true },
+        { "name": "Almoez Ali", "age": 29, "position": "ST", "club": "Al-Duhail", "league": "QSL", "caps": 100, "goals": 50, "stat_highlight": "Record Asian Cup goalscorer (2019)", "scout_note": "Acrobatic finisher and Qatar's main goal threat.", "player_to_watch": false },
+        { "name": "Hassan Al-Haydos", "age": 35, "position": "AM", "club": "Al-Sadd", "league": "QSL", "caps": 175, "goals": 35, "stat_highlight": "Most-capped Qatari ever", "scout_note": "Experienced captain who keeps the side ticking.", "player_to_watch": false },
+        { "name": "Boualem Khoukhi", "age": 35, "position": "CB", "club": "Al-Sadd", "league": "QSL", "caps": 110, "goals": 18, "stat_highlight": "Defensive leader with a goal threat", "scout_note": "Reads the game well and dangerous from set pieces.", "player_to_watch": false }
+      ]
+    },
+    "SUI": {
+      "name": "Switzerland", "flag": "🇨🇭", "group": "B", "fifa_ranking": 20, "coach": "Murat Yakin",
+      "colors": { "primary": "#D52B1E", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Granit Xhaka", "age": 33, "position": "CM", "club": "Bayer Leverkusen", "league": "Bundesliga", "caps": 135, "goals": 14, "stat_highlight": "Bundesliga title-winning captain", "scout_note": "Switzerland's metronome — passing range and leadership.", "player_to_watch": true },
+        { "name": "Manuel Akanji", "age": 30, "position": "CB", "club": "Manchester City", "league": "Premier League", "caps": 65, "goals": 2, "stat_highlight": "Ball-playing centre-back at the elite level", "scout_note": "Calm, quick and comfortable building from the back.", "player_to_watch": false },
+        { "name": "Breel Embolo", "age": 29, "position": "ST", "club": "AS Monaco", "league": "Ligue 1", "caps": 70, "goals": 14, "stat_highlight": "Physical Ligue 1 forward", "scout_note": "Bullying centre-forward who holds the ball up superbly.", "player_to_watch": false },
+        { "name": "Dan Ndoye", "age": 25, "position": "RW", "club": "Nottingham Forest", "league": "Premier League", "caps": 25, "goals": 4, "stat_highlight": "Rising wide threat", "scout_note": "Quick, direct winger growing into a key role.", "player_to_watch": false }
+      ]
+    },
+    "BRA": {
+      "name": "Brazil", "flag": "🇧🇷", "group": "C", "fifa_ranking": 5, "coach": "Carlo Ancelotti",
+      "colors": { "primary": "#FFDF00", "secondary": "#009C3B" },
+      "players": [
+        { "name": "Vinícius Júnior", "age": 25, "position": "LW", "club": "Real Madrid", "league": "La Liga", "caps": 40, "goals": 12, "stat_highlight": "Champions League final match-winner", "scout_note": "Electric pace and 1v1 ability — the tournament's most feared attacker on song.", "player_to_watch": true },
+        { "name": "Raphinha", "age": 29, "position": "RW", "club": "Barcelona", "league": "La Liga", "caps": 40, "goals": 14, "stat_highlight": "Barcelona's standout creator-scorer", "scout_note": "End product to burn — goals, assists and relentless work-rate.", "player_to_watch": false },
+        { "name": "Bruno Guimarães", "age": 28, "position": "CM", "club": "Newcastle United", "league": "Premier League", "caps": 35, "goals": 3, "stat_highlight": "Premier League midfield general", "scout_note": "Controls tempo and breaks lines — Brazil's midfield anchor.", "player_to_watch": false },
+        { "name": "Endrick", "age": 19, "position": "ST", "club": "Real Madrid", "league": "La Liga", "caps": 15, "goals": 5, "stat_highlight": "Generational teenage striker", "scout_note": "Fearless finisher already scoring for Brazil — the next big thing.", "player_to_watch": false }
+      ]
+    },
+    "MAR": {
+      "name": "Morocco", "flag": "🇲🇦", "group": "C", "fifa_ranking": 12, "coach": "Walid Regragui",
+      "colors": { "primary": "#C1272D", "secondary": "#006233" },
+      "players": [
+        { "name": "Achraf Hakimi", "age": 27, "position": "RB", "club": "Paris Saint-Germain", "league": "Ligue 1", "caps": 80, "goals": 11, "stat_highlight": "World-class attacking full-back", "scout_note": "Flies down the right and decisive in big moments — Morocco's star.", "player_to_watch": true },
+        { "name": "Brahim Díaz", "age": 26, "position": "AM", "club": "Real Madrid", "league": "La Liga", "caps": 20, "goals": 4, "stat_highlight": "Real Madrid technician", "scout_note": "Slippery dribbler who glides through midfield.", "player_to_watch": false },
+        { "name": "Youssef En-Nesyri", "age": 28, "position": "ST", "club": "Fenerbahçe", "league": "Süper Lig", "caps": 80, "goals": 22, "stat_highlight": "Towering World Cup 2022 goal vs Portugal", "scout_note": "Aerial powerhouse and Morocco's main No.9.", "player_to_watch": false },
+        { "name": "Bilal El Khannouss", "age": 21, "position": "AM", "club": "VfB Stuttgart", "league": "Bundesliga", "caps": 25, "goals": 3, "stat_highlight": "Emerging creative talent", "scout_note": "Inventive young playmaker with a bright future.", "player_to_watch": false }
+      ]
+    },
+    "HAI": {
+      "name": "Haiti", "flag": "🇭🇹", "group": "C", "fifa_ranking": 82, "coach": "Sébastien Migné",
+      "colors": { "primary": "#00209F", "secondary": "#D21034" },
+      "players": [
+        { "name": "Frantzdy Pierrot", "age": 30, "position": "ST", "club": "Gaziantep", "league": "Süper Lig", "caps": 35, "goals": 14, "stat_highlight": "Haiti's main goal threat", "scout_note": "Strong, willing target man who leads the line.", "player_to_watch": true },
+        { "name": "Danley Jean Jacques", "age": 25, "position": "CM", "club": "AS Monaco", "league": "Ligue 1", "caps": 25, "goals": 1, "stat_highlight": "Ligue 1 midfield athlete", "scout_note": "Energetic box-to-box engine in the middle.", "player_to_watch": false },
+        { "name": "Duckens Nazon", "age": 31, "position": "FW", "club": "Free agent", "league": "—", "caps": 45, "goals": 18, "stat_highlight": "Experienced international scorer", "scout_note": "Journeyman forward with an eye for goal. [club uncertain]", "player_to_watch": false },
+        { "name": "Garven Metusala", "age": 23, "position": "CB", "club": "Cavalier SC", "league": "Caribbean", "caps": 15, "goals": 0, "stat_highlight": "Young defensive prospect", "scout_note": "Composed centre-back anchoring a young back line.", "player_to_watch": false }
+      ]
+    },
+    "SCO": {
+      "name": "Scotland", "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "group": "C", "fifa_ranking": 38, "coach": "Steve Clarke",
+      "colors": { "primary": "#0065BF", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Scott McTominay", "age": 29, "position": "CM", "club": "Napoli", "league": "Serie A", "caps": 60, "goals": 12, "stat_highlight": "Serie A title-winning midfielder", "scout_note": "Goalscoring midfielder who drives Scotland forward from deep.", "player_to_watch": true },
+        { "name": "Andrew Robertson", "age": 32, "position": "LB", "club": "Liverpool", "league": "Premier League", "caps": 80, "goals": 4, "stat_highlight": "Champions League-winning captain", "scout_note": "Relentless overlapping full-back and inspirational skipper.", "player_to_watch": false },
+        { "name": "John McGinn", "age": 31, "position": "CM", "club": "Aston Villa", "league": "Premier League", "caps": 70, "goals": 19, "stat_highlight": "Scotland's midfield talisman", "scout_note": "All-action runner with a knack for big goals.", "player_to_watch": false },
+        { "name": "Ben Doak", "age": 20, "position": "RW", "club": "Bournemouth", "league": "Premier League", "caps": 12, "goals": 1, "stat_highlight": "Explosive young winger", "scout_note": "Fearless dribbler bringing fresh pace to the wing.", "player_to_watch": false }
+      ]
+    },
+    "USA": {
+      "name": "USA", "flag": "🇺🇸", "group": "D", "fifa_ranking": 15, "coach": "Mauricio Pochettino",
+      "colors": { "primary": "#0A3161", "secondary": "#B31942" },
+      "players": [
+        { "name": "Christian Pulisic", "age": 27, "position": "RW/AM", "club": "AC Milan", "league": "Serie A", "caps": 75, "goals": 32, "stat_highlight": "USA's all-time talisman", "scout_note": "Captain America — the team's go-to creator and finisher.", "player_to_watch": true },
+        { "name": "Weston McKennie", "age": 27, "position": "CM", "club": "Juventus", "league": "Serie A", "caps": 55, "goals": 11, "stat_highlight": "Serie A box-to-box engine", "scout_note": "Versatile, energetic midfielder who covers every blade of grass.", "player_to_watch": false },
+        { "name": "Folarin Balogun", "age": 24, "position": "ST", "club": "AS Monaco", "league": "Ligue 1", "caps": 20, "goals": 6, "stat_highlight": "Ligue 1 proven goalscorer", "scout_note": "Mobile modern No.9 who runs in behind.", "player_to_watch": false },
+        { "name": "Antonee Robinson", "age": 28, "position": "LB", "club": "Fulham", "league": "Premier League", "caps": 45, "goals": 3, "stat_highlight": "Elite Premier League full-back season", "scout_note": "Flying left-back — pace, crossing and defensive bite.", "player_to_watch": false }
+      ]
+    },
+    "PAR": {
+      "name": "Paraguay", "flag": "🇵🇾", "group": "D", "fifa_ranking": 50, "coach": "Gustavo Alfaro",
+      "colors": { "primary": "#D52B1E", "secondary": "#0038A8" },
+      "players": [
+        { "name": "Julio Enciso", "age": 22, "position": "AM", "club": "Ipswich Town", "league": "Championship", "caps": 25, "goals": 4, "stat_highlight": "Premier League wonder-goal vs Man City", "scout_note": "Spark of creativity and a stunning shot — Paraguay's gem.", "player_to_watch": true },
+        { "name": "Miguel Almirón", "age": 32, "position": "RW", "club": "Atlanta United", "league": "MLS", "caps": 65, "goals": 14, "stat_highlight": "Premier League pace over years at Newcastle", "scout_note": "Tireless runner who stretches play and presses high.", "player_to_watch": false },
+        { "name": "Antonio Sanabria", "age": 30, "position": "ST", "club": "Torino", "league": "Serie A", "caps": 55, "goals": 18, "stat_highlight": "Experienced Serie A striker", "scout_note": "Clever link forward and Paraguay's penalty-box presence.", "player_to_watch": false },
+        { "name": "Omar Alderete", "age": 29, "position": "CB", "club": "Getafe", "league": "La Liga", "caps": 50, "goals": 4, "stat_highlight": "Aggressive La Liga defender", "scout_note": "Combative centre-back who relishes physical battles.", "player_to_watch": false }
+      ]
+    },
+    "AUS": {
+      "name": "Australia", "flag": "🇦🇺", "group": "D", "fifa_ranking": 24, "coach": "Tony Popovic",
+      "colors": { "primary": "#00843D", "secondary": "#FFCD00" },
+      "players": [
+        { "name": "Nestory Irankunda", "age": 20, "position": "RW", "club": "Bayern Munich", "league": "Bundesliga", "caps": 12, "goals": 2, "stat_highlight": "Bayern-signed teenage talent", "scout_note": "Explosive winger with flair — Australia's most exciting prospect.", "player_to_watch": true },
+        { "name": "Jackson Irvine", "age": 33, "position": "CM", "club": "St. Pauli", "league": "Bundesliga", "caps": 75, "goals": 12, "stat_highlight": "Socceroos captain & leader", "scout_note": "All-action midfielder who sets the tone.", "player_to_watch": false },
+        { "name": "Mathew Ryan", "age": 34, "position": "GK", "club": "Roma", "league": "Serie A", "caps": 95, "goals": 0, "stat_highlight": "Veteran shot-stopper, 90+ caps", "scout_note": "Reliable, experienced keeper and vocal organiser.", "player_to_watch": false },
+        { "name": "Kusini Yengi", "age": 27, "position": "ST", "club": "Portsmouth", "league": "Championship", "caps": 20, "goals": 6, "stat_highlight": "Direct centre-forward", "scout_note": "Powerful runner who gives the Socceroos a focal point.", "player_to_watch": false }
+      ]
+    },
+    "TUR": {
+      "name": "Türkiye", "flag": "🇹🇷", "group": "D", "fifa_ranking": 26, "coach": "Vincenzo Montella",
+      "colors": { "primary": "#E30A17", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Arda Güler", "age": 21, "position": "AM", "club": "Real Madrid", "league": "La Liga", "caps": 30, "goals": 8, "stat_highlight": "Real Madrid's gifted playmaker", "scout_note": "Wand of a left foot — Türkiye's creative future is now.", "player_to_watch": true },
+        { "name": "Hakan Çalhanoğlu", "age": 32, "position": "DM", "club": "Inter", "league": "Serie A", "caps": 95, "goals": 20, "stat_highlight": "Elite deep-lying playmaker", "scout_note": "Dictates games and a dead-ball master — the team's conductor.", "player_to_watch": false },
+        { "name": "Kenan Yıldız", "age": 21, "position": "LW", "club": "Juventus", "league": "Serie A", "caps": 25, "goals": 5, "stat_highlight": "Juventus rising star", "scout_note": "Silky forward who drifts inside to devastating effect.", "player_to_watch": false },
+        { "name": "Barış Alper Yılmaz", "age": 26, "position": "RW", "club": "Galatasaray", "league": "Süper Lig", "caps": 30, "goals": 6, "stat_highlight": "Galatasaray title winner", "scout_note": "Direct, hard-working wide man with end product.", "player_to_watch": false }
+      ]
+    },
+    "GER": {
+      "name": "Germany", "flag": "🇩🇪", "group": "E", "fifa_ranking": 10, "coach": "Julian Nagelsmann",
+      "colors": { "primary": "#000000", "secondary": "#DD0000" },
+      "players": [
+        { "name": "Jamal Musiala", "age": 23, "position": "AM", "club": "Bayern Munich", "league": "Bundesliga", "caps": 40, "goals": 8, "stat_highlight": "Bayern's dribbling magician", "scout_note": "Glides past defenders in tight spaces — Germany's creative jewel.", "player_to_watch": true },
+        { "name": "Florian Wirtz", "age": 23, "position": "AM", "club": "Liverpool", "league": "Premier League", "caps": 35, "goals": 7, "stat_highlight": "Record-fee move to Liverpool", "scout_note": "Elite playmaker with vision and goals — a co-star with Musiala.", "player_to_watch": false },
+        { "name": "Kai Havertz", "age": 26, "position": "ST", "club": "Arsenal", "league": "Premier League", "caps": 55, "goals": 18, "stat_highlight": "Versatile Premier League forward", "scout_note": "Mobile No.9 who links play and arrives in the box.", "player_to_watch": false },
+        { "name": "Joshua Kimmich", "age": 31, "position": "CM/RB", "club": "Bayern Munich", "league": "Bundesliga", "caps": 95, "goals": 6, "stat_highlight": "Leader and multi-position cornerstone", "scout_note": "Germany's captain — passing, pressing and relentless drive.", "player_to_watch": false }
+      ]
+    },
+    "CUW": {
+      "name": "Curaçao", "flag": "🇨🇼", "group": "E", "fifa_ranking": 82, "coach": "Dick Advocaat",
+      "colors": { "primary": "#002B7F", "secondary": "#F9D90F" },
+      "players": [
+        { "name": "Tahith Chong", "age": 26, "position": "AM", "club": "Luton Town", "league": "Championship", "caps": 15, "goals": 2, "stat_highlight": "Former Man Utd academy talent", "scout_note": "Technical winger-cum-playmaker — Curaçao's most gifted player.", "player_to_watch": true },
+        { "name": "Leandro Bacuna", "age": 34, "position": "CM", "club": "Free agent", "league": "—", "caps": 40, "goals": 6, "stat_highlight": "Experienced ex-Premier League midfielder", "scout_note": "Versatile veteran leader. [club uncertain]", "player_to_watch": false },
+        { "name": "Juninho Bacuna", "age": 28, "position": "CM", "club": "Birmingham City", "league": "Championship", "caps": 25, "goals": 3, "stat_highlight": "Combative English-league midfielder", "scout_note": "Energetic runner with a shot from distance.", "player_to_watch": false },
+        { "name": "Jürgen Locadia", "age": 32, "position": "ST", "club": "PEC Zwolle", "league": "Eredivisie", "caps": 20, "goals": 7, "stat_highlight": "Former Brighton forward", "scout_note": "Physical striker who gives Curaçao a focal point.", "player_to_watch": false }
+      ]
+    },
+    "CIV": {
+      "name": "Côte d'Ivoire", "flag": "🇨🇮", "group": "E", "fifa_ranking": 40, "coach": "Emerse Faé",
+      "colors": { "primary": "#FF8200", "secondary": "#009A44" },
+      "players": [
+        { "name": "Amad Diallo", "age": 23, "position": "RW", "club": "Manchester United", "league": "Premier League", "caps": 25, "goals": 5, "stat_highlight": "Man Utd's breakout attacker", "scout_note": "Fearless dribbler with flair and clutch goals — the future star.", "player_to_watch": true },
+        { "name": "Franck Kessié", "age": 29, "position": "CM", "club": "Al-Ahli", "league": "Saudi Pro League", "caps": 75, "goals": 12, "stat_highlight": "AFCON-winning midfield powerhouse", "scout_note": "Box-to-box force who dominates the middle.", "player_to_watch": false },
+        { "name": "Simon Adingra", "age": 24, "position": "LW", "club": "Brighton", "league": "Premier League", "caps": 25, "goals": 5, "stat_highlight": "AFCON 2023 hero", "scout_note": "Rapid, direct winger who beats his man.", "player_to_watch": false },
+        { "name": "Evan Ndicka", "age": 26, "position": "CB", "club": "Roma", "league": "Serie A", "caps": 30, "goals": 2, "stat_highlight": "Serie A ever-present defender", "scout_note": "Tall, quick left-sided centre-back.", "player_to_watch": false }
+      ]
+    },
+    "ECU": {
+      "name": "Ecuador", "flag": "🇪🇨", "group": "E", "fifa_ranking": 23, "coach": "Sebastián Beccacece",
+      "colors": { "primary": "#FFDD00", "secondary": "#034EA2" },
+      "players": [
+        { "name": "Moisés Caicedo", "age": 24, "position": "DM", "club": "Chelsea", "league": "Premier League", "caps": 45, "goals": 3, "stat_highlight": "Record-fee Premier League midfielder", "scout_note": "Ball-winning machine with huge range — Ecuador's spine.", "player_to_watch": true },
+        { "name": "Kendry Páez", "age": 18, "position": "AM", "club": "Chelsea", "league": "Premier League", "caps": 20, "goals": 4, "stat_highlight": "Teen prodigy and youngest scorer in qualifying", "scout_note": "Generational playmaker — fearless beyond his years.", "player_to_watch": false },
+        { "name": "Piero Hincapié", "age": 24, "position": "CB", "club": "Arsenal", "league": "Premier League", "caps": 40, "goals": 1, "stat_highlight": "Composed left-footed defender", "scout_note": "Quick, aggressive and excellent on the ball.", "player_to_watch": false },
+        { "name": "Enner Valencia", "age": 36, "position": "ST", "club": "Internacional", "league": "Brasileirão", "caps": 90, "goals": 45, "stat_highlight": "Ecuador's all-time top scorer", "scout_note": "Veteran poacher who still delivers on the big stage.", "player_to_watch": false }
+      ]
+    },
+    "NED": {
+      "name": "Netherlands", "flag": "🇳🇱", "group": "F", "fifa_ranking": 7, "coach": "Ronald Koeman",
+      "colors": { "primary": "#FF6200", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Cody Gakpo", "age": 26, "position": "LW", "club": "Liverpool", "league": "Premier League", "caps": 40, "goals": 14, "stat_highlight": "Premier League title winner", "scout_note": "Powerful left-sided forward with goals in his locker.", "player_to_watch": true },
+        { "name": "Virgil van Dijk", "age": 34, "position": "CB", "club": "Liverpool", "league": "Premier League", "caps": 80, "goals": 8, "stat_highlight": "One of the best defenders of his era", "scout_note": "Commanding captain — calm, dominant and a leader.", "player_to_watch": false },
+        { "name": "Frenkie de Jong", "age": 28, "position": "CM", "club": "Barcelona", "league": "La Liga", "caps": 60, "goals": 3, "stat_highlight": "Press-resistant midfield maestro", "scout_note": "Carries the ball through pressure like few others.", "player_to_watch": false },
+        { "name": "Xavi Simons", "age": 22, "position": "AM", "club": "RB Leipzig", "league": "Bundesliga", "caps": 30, "goals": 6, "stat_highlight": "Dynamic young creator", "scout_note": "Energetic No.10 with dribbling and end product.", "player_to_watch": false }
+      ]
+    },
+    "JPN": {
+      "name": "Japan", "flag": "🇯🇵", "group": "F", "fifa_ranking": 18, "coach": "Hajime Moriyasu",
+      "colors": { "primary": "#0033A0", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Kaoru Mitoma", "age": 28, "position": "LW", "club": "Brighton", "league": "Premier League", "caps": 35, "goals": 8, "stat_highlight": "Premier League dribble king", "scout_note": "Mesmerising 1v1 winger — Japan's biggest attacking weapon.", "player_to_watch": true },
+        { "name": "Takefusa Kubo", "age": 24, "position": "RW", "club": "Real Sociedad", "league": "La Liga", "caps": 40, "goals": 6, "stat_highlight": "La Liga creative spark", "scout_note": "Left-footed wizard who cuts in and creates.", "player_to_watch": false },
+        { "name": "Wataru Endō", "age": 33, "position": "DM", "club": "Liverpool", "league": "Premier League", "caps": 65, "goals": 3, "stat_highlight": "Tireless holding midfielder & captain", "scout_note": "Japan's defensive shield and on-field leader.", "player_to_watch": false },
+        { "name": "Takefusa Maeda", "age": 28, "position": "ST", "club": "Celtic", "league": "Scottish PL", "caps": 35, "goals": 10, "stat_highlight": "Relentless pressing forward", "scout_note": "Non-stop runner who leads the line with energy.", "player_to_watch": false }
+      ]
+    },
+    "SWE": {
+      "name": "Sweden", "flag": "🇸🇪", "group": "F", "fifa_ranking": 22, "coach": "Jon Dahl Tomasson",
+      "colors": { "primary": "#FECC00", "secondary": "#006AA7" },
+      "players": [
+        { "name": "Alexander Isak", "age": 26, "position": "ST", "club": "Liverpool", "league": "Premier League", "caps": 50, "goals": 14, "stat_highlight": "Premier League 20-goal striker", "scout_note": "Elegant, lethal finisher — Sweden's world-class No.9.", "player_to_watch": true },
+        { "name": "Viktor Gyökeres", "age": 27, "position": "ST", "club": "Arsenal", "league": "Premier League", "caps": 30, "goals": 15, "stat_highlight": "Prolific goal machine", "scout_note": "Powerful, relentless striker forming a fearsome strike duo.", "player_to_watch": false },
+        { "name": "Dejan Kulusevski", "age": 25, "position": "AM/RW", "club": "Tottenham Hotspur", "league": "Premier League", "caps": 40, "goals": 6, "stat_highlight": "Premier League creator", "scout_note": "Strong, skilful forward who drives and supplies the strikers.", "player_to_watch": false },
+        { "name": "Anthony Elanga", "age": 24, "position": "RW", "club": "Newcastle United", "league": "Premier League", "caps": 25, "goals": 4, "stat_highlight": "Lightning counter-attacker", "scout_note": "Blistering pace in transition down the flank.", "player_to_watch": false }
+      ]
+    },
+    "TUN": {
+      "name": "Tunisia", "flag": "🇹🇳", "group": "F", "fifa_ranking": 41, "coach": "Sami Trabelsi",
+      "colors": { "primary": "#E70013", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Hannibal Mejbri", "age": 23, "position": "AM/CM", "club": "Burnley", "league": "Premier League", "caps": 35, "goals": 2, "stat_highlight": "Fiery former Man Utd midfielder", "scout_note": "Combative, technical engine — Tunisia's creative heartbeat.", "player_to_watch": true },
+        { "name": "Ellyes Skhiri", "age": 30, "position": "DM", "club": "Eintracht Frankfurt", "league": "Bundesliga", "caps": 75, "goals": 6, "stat_highlight": "Bundesliga midfield anchor", "scout_note": "Disciplined holding midfielder who protects the back four.", "player_to_watch": false },
+        { "name": "Montassar Talbi", "age": 27, "position": "CB", "club": "Al-Khalidiyah", "league": "Saudi PL", "caps": 45, "goals": 3, "stat_highlight": "Defensive leader", "scout_note": "Strong aerially and Tunisia's organiser at the back.", "player_to_watch": false },
+        { "name": "Youssef Msakni", "age": 35, "position": "RW", "club": "Al-Arabi", "league": "QSL", "caps": 95, "goals": 22, "stat_highlight": "Veteran talisman", "scout_note": "Experienced playmaker who still produces magic.", "player_to_watch": false }
+      ]
+    },
+    "BEL": {
+      "name": "Belgium", "flag": "🇧🇪", "group": "G", "fifa_ranking": 8, "coach": "Rudi Garcia",
+      "colors": { "primary": "#E30613", "secondary": "#FFD90C" },
+      "players": [
+        { "name": "Kevin De Bruyne", "age": 34, "position": "AM", "club": "Napoli", "league": "Serie A", "caps": 110, "goals": 30, "stat_highlight": "One of the best playmakers of his generation", "scout_note": "Still elite — passing range and set-pieces win matches alone.", "player_to_watch": true },
+        { "name": "Jérémy Doku", "age": 23, "position": "LW", "club": "Manchester City", "league": "Premier League", "caps": 35, "goals": 5, "stat_highlight": "Explosive dribbling winger", "scout_note": "Terrifying 1v1 pace — Belgium's new attacking spark.", "player_to_watch": false },
+        { "name": "Romelu Lukaku", "age": 32, "position": "ST", "club": "Napoli", "league": "Serie A", "caps": 120, "goals": 88, "stat_highlight": "Belgium's all-time record scorer", "scout_note": "Physical focal point who still bullies defenders.", "player_to_watch": false },
+        { "name": "Youri Tielemans", "age": 28, "position": "CM", "club": "Aston Villa", "league": "Premier League", "caps": 75, "goals": 9, "stat_highlight": "Composed central midfielder", "scout_note": "Tidy passer who controls the tempo from deep.", "player_to_watch": false }
+      ]
+    },
+    "EGY": {
+      "name": "Egypt", "flag": "🇪🇬", "group": "G", "fifa_ranking": 33, "coach": "Hossam Hassan",
+      "colors": { "primary": "#CE1126", "secondary": "#000000" },
+      "players": [
+        { "name": "Mohamed Salah", "age": 33, "position": "RW", "club": "Liverpool", "league": "Premier League", "caps": 105, "goals": 60, "stat_highlight": "Egypt's all-time top scorer & icon", "scout_note": "World-class match-winner — carries Egypt's hopes on his right foot.", "player_to_watch": true },
+        { "name": "Omar Marmoush", "age": 27, "position": "ST", "club": "Manchester City", "league": "Premier League", "caps": 40, "goals": 14, "stat_highlight": "Big-money Man City striker", "scout_note": "Pace and finishing — the perfect foil for Salah.", "player_to_watch": false },
+        { "name": "Mohamed Elneny", "age": 33, "position": "DM", "club": "Al-Jazira", "league": "UAE PL", "caps": 100, "goals": 4, "stat_highlight": "Experienced holding midfielder", "scout_note": "Reliable screen and tempo-setter in midfield.", "player_to_watch": false },
+        { "name": "Mahmoud Trezeguet", "age": 31, "position": "LW", "club": "Trabzonspor", "league": "Süper Lig", "caps": 80, "goals": 18, "stat_highlight": "AFCON final scorer", "scout_note": "Direct winger who balances the attack opposite Salah.", "player_to_watch": false }
+      ]
+    },
+    "IRN": {
+      "name": "IR Iran", "flag": "🇮🇷", "group": "G", "fifa_ranking": 20, "coach": "Amir Ghalenoei",
+      "colors": { "primary": "#239F40", "secondary": "#DA0000" },
+      "players": [
+        { "name": "Mehdi Taremi", "age": 33, "position": "ST", "club": "Inter", "league": "Serie A", "caps": 90, "goals": 50, "stat_highlight": "Iran's prolific modern striker", "scout_note": "Complete forward — finishing, link play and penalties.", "player_to_watch": true },
+        { "name": "Sardar Azmoun", "age": 31, "position": "ST", "club": "Shabab Al-Ahli", "league": "UAE PL", "caps": 85, "goals": 50, "stat_highlight": "The 'Iranian Messi'", "scout_note": "Powerful poacher who partners Taremi up top.", "player_to_watch": false },
+        { "name": "Alireza Jahanbakhsh", "age": 32, "position": "RW", "club": "Heerenveen", "league": "Eredivisie", "caps": 85, "goals": 14, "stat_highlight": "Former Eredivisie top scorer", "scout_note": "Experienced two-footed winger and captain.", "player_to_watch": false },
+        { "name": "Mehdi Ghayedi", "age": 27, "position": "AM", "club": "Ittihad Kalba", "league": "UAE PL", "caps": 30, "goals": 6, "stat_highlight": "Tricky attacking midfielder", "scout_note": "Inventive dribbler who unlocks deep defences.", "player_to_watch": false }
+      ]
+    },
+    "NZL": {
+      "name": "New Zealand", "flag": "🇳🇿", "group": "G", "fifa_ranking": 86, "coach": "Darren Bazeley",
+      "colors": { "primary": "#FFFFFF", "secondary": "#000000" },
+      "players": [
+        { "name": "Chris Wood", "age": 34, "position": "ST", "club": "Nottingham Forest", "league": "Premier League", "caps": 75, "goals": 40, "stat_highlight": "20-goal Premier League season", "scout_note": "All Whites' talisman — a proven, powerful Premier League finisher.", "player_to_watch": true },
+        { "name": "Marko Stamenić", "age": 24, "position": "CM", "club": "Olympiacos", "league": "Super League Greece", "caps": 25, "goals": 2, "stat_highlight": "European-tested midfielder", "scout_note": "Tidy, mobile midfielder anchoring the engine room.", "player_to_watch": false },
+        { "name": "Liberato Cacace", "age": 25, "position": "LB", "club": "Empoli", "league": "Serie A", "caps": 30, "goals": 2, "stat_highlight": "Serie A wing-back", "scout_note": "Energetic left-back who supports attacks.", "player_to_watch": false },
+        { "name": "Ben Old", "age": 23, "position": "AM", "club": "St Mirren", "league": "Scottish PL", "caps": 18, "goals": 3, "stat_highlight": "Promising attacker", "scout_note": "Direct creative talent and one to watch for NZ.", "player_to_watch": false }
+      ]
+    },
+    "ESP": {
+      "name": "Spain", "flag": "🇪🇸", "group": "H", "fifa_ranking": 2, "coach": "Luis de la Fuente",
+      "colors": { "primary": "#C60B1E", "secondary": "#FFC400" },
+      "players": [
+        { "name": "Lamine Yamal", "age": 18, "position": "RW", "club": "Barcelona", "league": "La Liga", "caps": 30, "goals": 8, "stat_highlight": "Euro 2024 teenage sensation", "scout_note": "Generational winger — already unplayable on his day.", "player_to_watch": true },
+        { "name": "Rodri", "age": 29, "position": "DM", "club": "Manchester City", "league": "Premier League", "caps": 60, "goals": 5, "stat_highlight": "Ballon d'Or-winning midfielder", "scout_note": "The best holding midfielder in the world — controls everything.", "player_to_watch": false },
+        { "name": "Pedri", "age": 23, "position": "CM", "club": "Barcelona", "league": "La Liga", "caps": 35, "goals": 4, "stat_highlight": "Press-resistant midfield metronome", "scout_note": "Elegant, intelligent passer who never loses the ball.", "player_to_watch": false },
+        { "name": "Nico Williams", "age": 23, "position": "LW", "club": "Athletic Club", "league": "La Liga", "caps": 35, "goals": 7, "stat_highlight": "Euro 2024 final scorer", "scout_note": "Blistering pace and end product on the left.", "player_to_watch": false }
+      ]
+    },
+    "CPV": {
+      "name": "Cabo Verde", "flag": "🇨🇻", "group": "H", "fifa_ranking": 70, "coach": "Pedro Leitão Brito (Bubista)",
+      "colors": { "primary": "#003893", "secondary": "#CF2027" },
+      "players": [
+        { "name": "Ryan Mendes", "age": 36, "position": "RW", "club": "Free agent", "league": "—", "caps": 75, "goals": 22, "stat_highlight": "Cabo Verde's record scorer & captain", "scout_note": "Veteran leader of a historic first-ever World Cup squad. [club uncertain]", "player_to_watch": true },
+        { "name": "Bebé", "age": 35, "position": "FW", "club": "Rayo Vallecano", "league": "La Liga", "caps": 30, "goals": 8, "stat_highlight": "La Liga experience", "scout_note": "Tall, technical forward who offers a focal point.", "player_to_watch": false },
+        { "name": "Jamiro Monteiro", "age": 32, "position": "CM", "club": "San Jose Earthquakes", "league": "MLS", "caps": 35, "goals": 5, "stat_highlight": "Box-to-box MLS midfielder", "scout_note": "Energetic engine who drives Cabo Verde forward.", "player_to_watch": false },
+        { "name": "Garry Rodrigues", "age": 35, "position": "LW", "club": "Free agent", "league": "—", "caps": 30, "goals": 7, "stat_highlight": "Former Galatasaray winger", "scout_note": "Skilful wide man with big-club pedigree. [club uncertain]", "player_to_watch": false }
+      ]
+    },
+    "KSA": {
+      "name": "Saudi Arabia", "flag": "🇸🇦", "group": "H", "fifa_ranking": 58, "coach": "Hervé Renard",
+      "colors": { "primary": "#006C35", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Salem Al-Dawsari", "age": 34, "position": "LW", "club": "Al-Hilal", "league": "Saudi Pro League", "caps": 80, "goals": 22, "stat_highlight": "Scored the winner vs Argentina at WC2022", "scout_note": "Saudi Arabia's talisman — capable of moments of magic.", "player_to_watch": true },
+        { "name": "Firas Al-Buraikan", "age": 26, "position": "ST", "club": "Al-Ahli", "league": "Saudi Pro League", "caps": 45, "goals": 14, "stat_highlight": "Leading domestic goalscorer", "scout_note": "Mobile striker and the Green Falcons' main No.9.", "player_to_watch": false },
+        { "name": "Mohamed Kanno", "age": 31, "position": "DM", "club": "Al-Hilal", "league": "Saudi Pro League", "caps": 60, "goals": 4, "stat_highlight": "Midfield anchor", "scout_note": "Reliable screen who breaks up play in front of the defence.", "player_to_watch": false },
+        { "name": "Saud Abdulhamid", "age": 26, "position": "RB", "club": "Roma", "league": "Serie A", "caps": 40, "goals": 2, "stat_highlight": "Saudi pioneer in Serie A", "scout_note": "Attack-minded full-back testing himself in Europe.", "player_to_watch": false }
+      ]
+    },
+    "URU": {
+      "name": "Uruguay", "flag": "🇺🇾", "group": "H", "fifa_ranking": 11, "coach": "Marcelo Bielsa",
+      "colors": { "primary": "#7BAFD4", "secondary": "#001489" },
+      "players": [
+        { "name": "Federico Valverde", "age": 27, "position": "CM", "club": "Real Madrid", "league": "La Liga", "caps": 70, "goals": 8, "stat_highlight": "Real Madrid's relentless midfielder", "scout_note": "Engine, power and a cannon of a shot — Uruguay's driving force.", "player_to_watch": true },
+        { "name": "Darwin Núñez", "age": 26, "position": "ST", "club": "Al-Hilal", "league": "Saudi Pro League", "caps": 35, "goals": 15, "stat_highlight": "Explosive centre-forward", "scout_note": "Chaotic, electric striker who terrifies defences with his runs.", "player_to_watch": false },
+        { "name": "Ronald Araújo", "age": 27, "position": "CB", "club": "Barcelona", "league": "La Liga", "caps": 50, "goals": 2, "stat_highlight": "Elite man-marking defender", "scout_note": "Quick, powerful centre-back who shuts down star forwards.", "player_to_watch": false },
+        { "name": "Manuel Ugarte", "age": 25, "position": "DM", "club": "Manchester United", "league": "Premier League", "caps": 35, "goals": 0, "stat_highlight": "Ball-winning holding midfielder", "scout_note": "Aggressive destroyer who frees Valverde to attack.", "player_to_watch": false }
+      ]
+    },
+    "FRA": {
+      "name": "France", "flag": "🇫🇷", "group": "I", "fifa_ranking": 3, "coach": "Didier Deschamps",
+      "colors": { "primary": "#001489", "secondary": "#E1000F" },
+      "players": [
+        { "name": "Kylian Mbappé", "age": 27, "position": "ST", "club": "Real Madrid", "league": "La Liga", "caps": 90, "goals": 50, "stat_highlight": "WC2022 final hat-trick", "scout_note": "Captain and superstar — devastating pace and finishing, France's everything.", "player_to_watch": true },
+        { "name": "Ousmane Dembélé", "age": 28, "position": "RW", "club": "Paris Saint-Germain", "league": "Ligue 1", "caps": 55, "goals": 8, "stat_highlight": "Two-footed dribbling threat", "scout_note": "Unpredictable from either flank — beats his man at will.", "player_to_watch": false },
+        { "name": "Aurélien Tchouaméni", "age": 26, "position": "DM", "club": "Real Madrid", "league": "La Liga", "caps": 45, "goals": 3, "stat_highlight": "Elite defensive midfielder", "scout_note": "Reads danger, wins it back and starts attacks — France's shield.", "player_to_watch": false },
+        { "name": "William Saliba", "age": 25, "position": "CB", "club": "Arsenal", "league": "Premier League", "caps": 25, "goals": 1, "stat_highlight": "Premier League's best young defender", "scout_note": "Pace and composure — the anchor of France's back line.", "player_to_watch": false }
+      ]
+    },
+    "SEN": {
+      "name": "Senegal", "flag": "🇸🇳", "group": "I", "fifa_ranking": 17, "coach": "Pape Thiaw",
+      "colors": { "primary": "#00853F", "secondary": "#FDEF42" },
+      "players": [
+        { "name": "Sadio Mané", "age": 34, "position": "RW/ST", "club": "Al-Nassr", "league": "Saudi Pro League", "caps": 110, "goals": 45, "stat_highlight": "AFCON-winning captain & icon", "scout_note": "Senegal's leader — pace, power and big-game goals.", "player_to_watch": true },
+        { "name": "Nicolas Jackson", "age": 24, "position": "ST", "club": "Chelsea", "league": "Premier League", "caps": 25, "goals": 8, "stat_highlight": "Premier League No.9", "scout_note": "Athletic, mobile striker who runs channels relentlessly.", "player_to_watch": false },
+        { "name": "Pape Matar Sarr", "age": 23, "position": "CM", "club": "Tottenham Hotspur", "league": "Premier League", "caps": 35, "goals": 4, "stat_highlight": "Dynamic young midfielder", "scout_note": "Box-to-box energy and growing influence in midfield.", "player_to_watch": false },
+        { "name": "Édouard Mendy", "age": 34, "position": "GK", "club": "Al-Ahli", "league": "Saudi Pro League", "caps": 45, "goals": 0, "stat_highlight": "Champions League-winning keeper", "scout_note": "Commanding shot-stopper and a reassuring last line.", "player_to_watch": false }
+      ]
+    },
+    "IRQ": {
+      "name": "Iraq", "flag": "🇮🇶", "group": "I", "fifa_ranking": 58, "coach": "Graham Arnold",
+      "colors": { "primary": "#007A3D", "secondary": "#CE1126" },
+      "players": [
+        { "name": "Ali Jasim", "age": 22, "position": "AM/FW", "club": "Como", "league": "Serie A", "caps": 25, "goals": 5, "stat_highlight": "Iraq's European-based bright spark", "scout_note": "Tricky, creative forward — the Lions of Mesopotamia's future.", "player_to_watch": true },
+        { "name": "Aymen Hussein", "age": 30, "position": "ST", "club": "Al-Shorta", "league": "Iraqi PL", "caps": 60, "goals": 25, "stat_highlight": "Asian Cup goalscorer", "scout_note": "Strong, reliable target man and Iraq's main scorer.", "player_to_watch": false },
+        { "name": "Zidane Iqbal", "age": 23, "position": "CM", "club": "FC Utrecht", "league": "Eredivisie", "caps": 20, "goals": 1, "stat_highlight": "Ex-Man Utd academy midfielder", "scout_note": "Composed, technical midfielder controlling the tempo.", "player_to_watch": false },
+        { "name": "Jalal Hassan", "age": 30, "position": "GK", "club": "Al-Quwa Al-Jawiya", "league": "Iraqi PL", "caps": 45, "goals": 0, "stat_highlight": "Dependable No.1", "scout_note": "Athletic keeper who has kept Iraq in tight games.", "player_to_watch": false }
+      ]
+    },
+    "NOR": {
+      "name": "Norway", "flag": "🇳🇴", "group": "I", "fifa_ranking": 28, "coach": "Ståle Solbakken",
+      "colors": { "primary": "#BA0C2F", "secondary": "#00205B" },
+      "players": [
+        { "name": "Erling Haaland", "age": 25, "position": "ST", "club": "Manchester City", "league": "Premier League", "caps": 45, "goals": 45, "stat_highlight": "Record-breaking Premier League goalscorer", "scout_note": "An unstoppable goal machine — Norway's first WC since 1998 runs through him.", "player_to_watch": true },
+        { "name": "Martin Ødegaard", "age": 27, "position": "AM", "club": "Arsenal", "league": "Premier League", "caps": 60, "goals": 8, "stat_highlight": "Arsenal captain & chief creator", "scout_note": "Silky playmaker who supplies Haaland — Norway's brain.", "player_to_watch": false },
+        { "name": "Alexander Sørloth", "age": 30, "position": "ST", "club": "Atlético Madrid", "league": "La Liga", "caps": 55, "goals": 15, "stat_highlight": "La Liga 20-goal season", "scout_note": "Powerful aerial forward — a perfect alternative threat.", "player_to_watch": false },
+        { "name": "Antonio Nusa", "age": 20, "position": "LW", "club": "RB Leipzig", "league": "Bundesliga", "caps": 25, "goals": 4, "stat_highlight": "Explosive teenage winger", "scout_note": "Direct, fearless dribbler adding width and pace.", "player_to_watch": false }
+      ]
+    },
+    "ARG": {
+      "name": "Argentina", "flag": "🇦🇷", "group": "J", "fifa_ranking": 1, "coach": "Lionel Scaloni",
+      "colors": { "primary": "#75AADB", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Lionel Messi", "age": 38, "position": "RW/CF", "club": "Inter Miami", "league": "MLS", "caps": 190, "goals": 110, "stat_highlight": "All-time international top scorer for Argentina", "scout_note": "The GOAT's likely final World Cup — vision and passing still unmatched.", "player_to_watch": true },
+        { "name": "Lautaro Martínez", "age": 28, "position": "ST", "club": "Inter", "league": "Serie A", "caps": 70, "goals": 32, "stat_highlight": "Serie A title-winning captain", "scout_note": "Ruthless, hard-working No.9 — Argentina's reigning goal threat.", "player_to_watch": false },
+        { "name": "Enzo Fernández", "age": 25, "position": "CM", "club": "Chelsea", "league": "Premier League", "caps": 40, "goals": 5, "stat_highlight": "WC2022 Best Young Player", "scout_note": "Deep-lying conductor with passing range and drive.", "player_to_watch": false },
+        { "name": "Franco Mastantuono", "age": 18, "position": "AM", "club": "Real Madrid", "league": "La Liga", "caps": 12, "goals": 2, "stat_highlight": "Teen prodigy & big-money signing", "scout_note": "Dazzling young playmaker — Argentina's next jewel.", "player_to_watch": false }
+      ]
+    },
+    "ALG": {
+      "name": "Algeria", "flag": "🇩🇿", "group": "J", "fifa_ranking": 37, "coach": "Vladimir Petković",
+      "colors": { "primary": "#006233", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Riyad Mahrez", "age": 35, "position": "RW", "club": "Al-Ahli", "league": "Saudi Pro League", "caps": 95, "goals": 35, "stat_highlight": "Premier League & AFCON winner", "scout_note": "Magical left foot — Algeria's captain and creative force.", "player_to_watch": true },
+        { "name": "Amine Gouiri", "age": 26, "position": "ST", "club": "Marseille", "league": "Ligue 1", "caps": 30, "goals": 10, "stat_highlight": "Ligue 1 forward in form", "scout_note": "Technical striker who links and finishes.", "player_to_watch": false },
+        { "name": "Ramy Bensebaini", "age": 31, "position": "LB/CB", "club": "Borussia Dortmund", "league": "Bundesliga", "caps": 55, "goals": 8, "stat_highlight": "Goalscoring defender", "scout_note": "Aggressive left-sided defender and a set-piece threat.", "player_to_watch": false },
+        { "name": "Houssem Aouar", "age": 27, "position": "AM", "club": "Roma", "league": "Serie A", "caps": 20, "goals": 3, "stat_highlight": "Technical creative midfielder", "scout_note": "Smooth on the ball, unlocking defences from midfield.", "player_to_watch": false }
+      ]
+    },
+    "AUT": {
+      "name": "Austria", "flag": "🇦🇹", "group": "J", "fifa_ranking": 22, "coach": "Ralf Rangnick",
+      "colors": { "primary": "#ED2939", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Marcel Sabitzer", "age": 31, "position": "CM", "club": "Borussia Dortmund", "league": "Bundesliga", "caps": 85, "goals": 18, "stat_highlight": "Austria's midfield talisman", "scout_note": "Box-to-box leader with goals — Rangnick's on-field general.", "player_to_watch": true },
+        { "name": "David Alaba", "age": 33, "position": "CB", "club": "Real Madrid", "league": "La Liga", "caps": 100, "goals": 15, "stat_highlight": "Multiple Champions League winner", "scout_note": "Elite, versatile defender and Austria's most decorated star.", "player_to_watch": false },
+        { "name": "Konrad Laimer", "age": 28, "position": "CM", "club": "Bayern Munich", "league": "Bundesliga", "caps": 50, "goals": 3, "stat_highlight": "Relentless pressing midfielder", "scout_note": "Tireless runner who embodies Rangnick's high-energy system.", "player_to_watch": false },
+        { "name": "Marko Arnautović", "age": 37, "position": "ST", "club": "Free agent", "league": "—", "caps": 120, "goals": 40, "stat_highlight": "Austria's record scorer", "scout_note": "Experienced, clever forward and big-game presence. [club uncertain]", "player_to_watch": false }
+      ]
+    },
+    "JOR": {
+      "name": "Jordan", "flag": "🇯🇴", "group": "J", "fifa_ranking": 62, "coach": "Jamal Sellami",
+      "colors": { "primary": "#007A3D", "secondary": "#CE1126" },
+      "players": [
+        { "name": "Mousa Al-Tamari", "age": 28, "position": "RW", "club": "Montpellier", "league": "Ligue 1", "caps": 60, "goals": 18, "stat_highlight": "Asian Cup 2023 standout", "scout_note": "Jordan's star winger — pace, dribbling and goals on the big stage.", "player_to_watch": true },
+        { "name": "Yazan Al-Naimat", "age": 26, "position": "ST", "club": "Al-Ahli (QAT)", "league": "QSL", "caps": 45, "goals": 16, "stat_highlight": "Asian Cup goalscorer", "scout_note": "Sharp finisher leading Jordan's historic line.", "player_to_watch": false },
+        { "name": "Nizar Al-Rashdan", "age": 25, "position": "CM", "club": "Al-Wehdat", "league": "Jordanian PL", "caps": 35, "goals": 4, "stat_highlight": "Creative midfield hub", "scout_note": "Tidy passer who knits Jordan's midfield together.", "player_to_watch": false },
+        { "name": "Yazeed Abulaila", "age": 30, "position": "GK", "club": "Al-Hussein", "league": "Jordanian PL", "caps": 40, "goals": 0, "stat_highlight": "Asian Cup penalty hero", "scout_note": "Brave keeper who has stood tall in knockout football.", "player_to_watch": false }
+      ]
+    },
+    "POR": {
+      "name": "Portugal", "flag": "🇵🇹", "group": "K", "fifa_ranking": 6, "coach": "Roberto Martínez",
+      "colors": { "primary": "#006600", "secondary": "#FF0000" },
+      "players": [
+        { "name": "Cristiano Ronaldo", "age": 41, "position": "ST", "club": "Al-Nassr", "league": "Saudi Pro League", "caps": 220, "goals": 135, "stat_highlight": "All-time men's international top scorer", "scout_note": "A record-extending final World Cup — still a relentless penalty-box threat.", "player_to_watch": true },
+        { "name": "Bruno Fernandes", "age": 31, "position": "AM", "club": "Manchester United", "league": "Premier League", "caps": 80, "goals": 25, "stat_highlight": "Portugal's creative engine & captain", "scout_note": "Drives the team — assists, goals and set-pieces in abundance.", "player_to_watch": false },
+        { "name": "Rafael Leão", "age": 26, "position": "LW", "club": "AC Milan", "league": "Serie A", "caps": 40, "goals": 6, "stat_highlight": "Explosive Serie A winger", "scout_note": "Pace and power down the left — a nightmare in transition.", "player_to_watch": false },
+        { "name": "Vitinha", "age": 26, "position": "CM", "club": "Paris Saint-Germain", "league": "Ligue 1", "caps": 35, "goals": 3, "stat_highlight": "Champions League midfield orchestrator", "scout_note": "Press-resistant metronome controlling Portugal's tempo.", "player_to_watch": false }
+      ]
+    },
+    "COD": {
+      "name": "Congo DR", "flag": "🇨🇩", "group": "K", "fifa_ranking": 55, "coach": "Sébastien Desabre",
+      "colors": { "primary": "#007FFF", "secondary": "#F7D618" },
+      "players": [
+        { "name": "Yoane Wissa", "age": 29, "position": "ST", "club": "Newcastle United", "league": "Premier League", "caps": 25, "goals": 9, "stat_highlight": "Premier League goalscorer", "scout_note": "Mobile, two-footed forward — DR Congo's main threat.", "player_to_watch": true },
+        { "name": "Chancel Mbemba", "age": 31, "position": "CB", "club": "Lille", "league": "Ligue 1", "caps": 75, "goals": 4, "stat_highlight": "AFCON 2023 Best XI defender", "scout_note": "Commanding, experienced leader at the back.", "player_to_watch": false },
+        { "name": "Théo Bongonda", "age": 30, "position": "LW", "club": "Spartak Moscow", "league": "Russian PL", "caps": 30, "goals": 5, "stat_highlight": "Tricky wide attacker", "scout_note": "Direct dribbler who carries the ball in transition.", "player_to_watch": false },
+        { "name": "Silas Katompa", "age": 27, "position": "RW", "club": "VfB Stuttgart", "league": "Bundesliga", "caps": 20, "goals": 3, "stat_highlight": "Bundesliga pace", "scout_note": "Quick winger who stretches and attacks the back line.", "player_to_watch": false }
+      ]
+    },
+    "UZB": {
+      "name": "Uzbekistan", "flag": "🇺🇿", "group": "K", "fifa_ranking": 57, "coach": "Timur Kapadze",
+      "colors": { "primary": "#1EB53A", "secondary": "#0099B5" },
+      "players": [
+        { "name": "Abbosbek Fayzullaev", "age": 22, "position": "AM", "club": "CSKA Moscow", "league": "Russian PL", "caps": 35, "goals": 6, "stat_highlight": "Uzbekistan's breakout creator", "scout_note": "Skilful playmaker driving a historic first-ever World Cup squad.", "player_to_watch": true },
+        { "name": "Eldor Shomurodov", "age": 30, "position": "ST", "club": "Roma", "league": "Serie A", "caps": 75, "goals": 38, "stat_highlight": "Uzbekistan's record scorer", "scout_note": "Tall, mobile striker and the team's main goal threat.", "player_to_watch": false },
+        { "name": "Jaloliddin Masharipov", "age": 32, "position": "LW", "club": "Pakhtakor", "league": "Uzbek Super League", "caps": 65, "goals": 18, "stat_highlight": "Experienced wide creator", "scout_note": "Technical winger who supplies the strikers.", "player_to_watch": false },
+        { "name": "Abduqodir Khusanov", "age": 22, "position": "CB", "club": "Manchester City", "league": "Premier League", "caps": 25, "goals": 0, "stat_highlight": "Big-money move to Man City", "scout_note": "Rapid, aggressive young centre-back with huge upside.", "player_to_watch": false }
+      ]
+    },
+    "COL": {
+      "name": "Colombia", "flag": "🇨🇴", "group": "K", "fifa_ranking": 14, "coach": "Néstor Lorenzo",
+      "colors": { "primary": "#FCD116", "secondary": "#003893" },
+      "players": [
+        { "name": "Luis Díaz", "age": 29, "position": "LW", "club": "Bayern Munich", "league": "Bundesliga", "caps": 60, "goals": 18, "stat_highlight": "Champions League standout winger", "scout_note": "Relentless, direct and a big-game scorer — Colombia's spark.", "player_to_watch": true },
+        { "name": "James Rodríguez", "age": 34, "position": "AM", "club": "Club León", "league": "Liga MX", "caps": 110, "goals": 30, "stat_highlight": "2014 World Cup Golden Boot", "scout_note": "Veteran playmaker and captain — still pulls the strings.", "player_to_watch": false },
+        { "name": "Jhon Durán", "age": 22, "position": "ST", "club": "Al-Nassr", "league": "Saudi Pro League", "caps": 25, "goals": 7, "stat_highlight": "Explosive young striker", "scout_note": "Powerful finisher with a rocket shot — raw but dangerous.", "player_to_watch": false },
+        { "name": "Richard Ríos", "age": 25, "position": "CM", "club": "Benfica", "league": "Primeira Liga", "caps": 25, "goals": 2, "stat_highlight": "Copa América breakout", "scout_note": "Ball-carrying midfielder who drives Colombia forward.", "player_to_watch": false }
+      ]
+    },
+    "ENG": {
+      "name": "England", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "group": "L", "fifa_ranking": 4, "coach": "Thomas Tuchel",
+      "colors": { "primary": "#FFFFFF", "secondary": "#CF142B" },
+      "players": [
+        { "name": "Jude Bellingham", "age": 22, "position": "AM", "club": "Real Madrid", "league": "La Liga", "caps": 45, "goals": 8, "stat_highlight": "Real Madrid's midfield superstar", "scout_note": "Complete, fearless midfielder who delivers in the biggest moments.", "player_to_watch": true },
+        { "name": "Harry Kane", "age": 32, "position": "ST", "club": "Bayern Munich", "league": "Bundesliga", "caps": 105, "goals": 70, "stat_highlight": "England's all-time top scorer & captain", "scout_note": "Elite finisher and creator — England's talismanic No.9.", "player_to_watch": false },
+        { "name": "Bukayo Saka", "age": 24, "position": "RW", "club": "Arsenal", "league": "Premier League", "caps": 45, "goals": 13, "stat_highlight": "Arsenal's most consistent attacker", "scout_note": "Direct, two-footed winger with goals and assists.", "player_to_watch": false },
+        { "name": "Cole Palmer", "age": 23, "position": "AM", "club": "Chelsea", "league": "Premier League", "caps": 20, "goals": 4, "stat_highlight": "Euro 2024 final scorer", "scout_note": "Ice-cold creator and finisher — a big-game temperament.", "player_to_watch": false }
+      ]
+    },
+    "CRO": {
+      "name": "Croatia", "flag": "🇭🇷", "group": "L", "fifa_ranking": 10, "coach": "Zlatko Dalić",
+      "colors": { "primary": "#FF0000", "secondary": "#FFFFFF" },
+      "players": [
+        { "name": "Luka Modrić", "age": 40, "position": "CM", "club": "AC Milan", "league": "Serie A", "caps": 185, "goals": 27, "stat_highlight": "Ballon d'Or winner & Croatia captain", "scout_note": "Ageless maestro — passing and game intelligence still elite.", "player_to_watch": true },
+        { "name": "Joško Gvardiol", "age": 24, "position": "CB/LB", "club": "Manchester City", "league": "Premier League", "caps": 40, "goals": 4, "stat_highlight": "World-class young defender", "scout_note": "Quick, ball-playing defender who also attacks from the left.", "player_to_watch": false },
+        { "name": "Mateo Kovačić", "age": 31, "position": "CM", "club": "Manchester City", "league": "Premier League", "caps": 100, "goals": 4, "stat_highlight": "Press-resistant midfielder", "scout_note": "Carries the ball through pressure beside Modrić.", "player_to_watch": false },
+        { "name": "Petar Sučić", "age": 22, "position": "CM", "club": "Inter", "league": "Serie A", "caps": 12, "goals": 1, "stat_highlight": "Croatia's next midfield gem", "scout_note": "Technical young midfielder ready to inherit the engine room.", "player_to_watch": false }
+      ]
+    },
+    "GHA": {
+      "name": "Ghana", "flag": "🇬🇭", "group": "L", "fifa_ranking": 73, "coach": "Otto Addo",
+      "colors": { "primary": "#CE1126", "secondary": "#FCD116" },
+      "players": [
+        { "name": "Mohammed Kudus", "age": 25, "position": "AM/RW", "club": "Tottenham Hotspur", "league": "Premier League", "caps": 40, "goals": 8, "stat_highlight": "Premier League's flair merchant", "scout_note": "Explosive dribbler and goal threat — Ghana's standout talent.", "player_to_watch": true },
+        { "name": "Thomas Partey", "age": 32, "position": "DM", "club": "Villarreal", "league": "La Liga", "caps": 55, "goals": 14, "stat_highlight": "Elite defensive midfielder", "scout_note": "Powerful, intelligent anchor who controls midfield.", "player_to_watch": false },
+        { "name": "Iñaki Williams", "age": 31, "position": "ST", "club": "Athletic Club", "league": "La Liga", "caps": 30, "goals": 6, "stat_highlight": "Relentless La Liga forward", "scout_note": "Pace and power leading the line — runs channels all day.", "player_to_watch": false },
+        { "name": "Antoine Semenyo", "age": 26, "position": "RW", "club": "Bournemouth", "league": "Premier League", "caps": 25, "goals": 5, "stat_highlight": "In-form Premier League winger", "scout_note": "Strong, direct wide man with growing end product.", "player_to_watch": false }
+      ]
+    },
+    "PAN": {
+      "name": "Panama", "flag": "🇵🇦", "group": "L", "fifa_ranking": 31, "coach": "Thomas Christiansen",
+      "colors": { "primary": "#005293", "secondary": "#DA121A" },
+      "players": [
+        { "name": "Adalberto Carrasquilla", "age": 27, "position": "CM", "club": "Pumas UNAM", "league": "Liga MX", "caps": 55, "goals": 6, "stat_highlight": "Panama's midfield orchestrator", "scout_note": "Creative deep-lying playmaker — 'Coco' runs Panama's midfield.", "player_to_watch": true },
+        { "name": "Ismael Díaz", "age": 28, "position": "FW", "club": "León", "league": "Liga MX", "caps": 40, "goals": 12, "stat_highlight": "Gold Cup top performer", "scout_note": "Sharp, mobile forward and a key goal threat.", "player_to_watch": false },
+        { "name": "Michael Murillo", "age": 29, "position": "RB", "club": "Marseille", "league": "Ligue 1", "caps": 65, "goals": 5, "stat_highlight": "Ligue 1 attacking full-back", "scout_note": "Athletic wing-back who bombs forward on the right.", "player_to_watch": false },
+        { "name": "Cecilio Waterman", "age": 29, "position": "ST", "club": "Coquimbo Unido", "league": "Chilean PL", "caps": 35, "goals": 9, "stat_highlight": "Clutch qualifying goals", "scout_note": "Hard-working striker who delivered in qualifying.", "player_to_watch": false }
+      ]
+    }
+  }
+}

@@ -152,6 +152,7 @@
     SCHED[g].forEach(function (r) {
       MATCHES.push({
         id: 'M' + r[3], group: g, md: r[2], no: r[3], time: r[4],
+        ca: r[0], cb: r[1],           // team codes (for player-data lookup)
         a: TEAM[r[0]], b: TEAM[r[1]], status: 'upcoming'
         // result:{a,b} can be added once a match is played → unlocks scoring + ✓/✗
       });
@@ -324,9 +325,9 @@
       return '<div class="wc-pred-card">' +
         '<div class="wc-match-meta"><span>' + mdLabel(m.md) + ' · ' + esc(m.time) + ' ET</span><span>Group ' + esc(m.group) + '</span></div>' +
         '<div class="wc-pred-top">' +
-          '<div class="wc-team"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
+          '<div class="wc-team wc-team-link" data-team="' + m.ca + '"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
           '<span class="wc-vs">VS</span>' +
-          '<div class="wc-team"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
+          '<div class="wc-team wc-team-link" data-team="' + m.cb + '"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
         '</div>' +
         '<div class="wc-pred-btns">' + btns + '</div>' +
         scoreRow + locked +
@@ -580,15 +581,186 @@
         return '<div class="wc-match-card">' +
           '<div class="wc-match-meta"><span>' + mdLabel(m.md) + '</span>' + badgeFor(m) + '</div>' +
           '<div class="wc-match-teams">' +
-            '<div class="wc-team"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
+            '<div class="wc-team wc-team-link" data-team="' + m.ca + '"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
             centerCell(m) +
-            '<div class="wc-team"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
+            '<div class="wc-team wc-team-link" data-team="' + m.cb + '"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
           '</div>' +
         '</div>';
       }).join('');
       return '<div class="wc-date-group"><div class="wc-date-head">Group ' + esc(g) + '</div>' +
              '<div class="wc-match-grid">' + cards + '</div></div>';
     }).join('');
+  }
+
+  /* ===================== PLAYERS + MATCH PREVIEW + TEAM MODAL ===================== */
+  var PLAYERS = null;
+
+  // Coach Scout pre-match analyses for the opening fixtures.
+  // TODO: Generate dynamically via Gemini API before each match day.
+  var MATCH_ANALYSIS = [
+    { no: 1, date: '11 June', text: "Home advantage and a roaring Estadio Azteca should lift Mexico. Santiago Giménez will lead the line against a disciplined South African block marshalled by keeper Ronwen Williams. If El Tri move the ball quickly the opener is theirs — but Bafana Bafana are well organised and dangerous on the break.", scoreline: 'Mexico 2-0 South Africa', confidence: 78, keyBattle: 'Santiago Giménez vs Ronwen Williams', watchCode: 'MEX' },
+    { no: 7, date: '11 June', text: "A heavyweight Group C opener. Brazil's front line of Vinícius and Raphinha against Hakimi's overlapping runs is must-watch. Morocco's 2022 semi-final run proved they fear no one and they will press high. Brazil's individual quality should edge a tight, end-to-end contest.", scoreline: 'Brazil 2-1 Morocco', confidence: 62, keyBattle: 'Vinícius Júnior vs Achraf Hakimi', watchCode: 'BRA' },
+    { no: 4, date: '12 June', text: "Under Pochettino the USA will look to dominate the ball at home. Pulisic is the difference-maker, but Gustavo Alfaro's Paraguay are gritty and well-drilled. Expect the hosts to control possession; the question is whether Enciso can spark something on the counter.", scoreline: 'USA 1-1 Paraguay', confidence: 55, keyBattle: 'Christian Pulisic vs Omar Alderete', watchCode: 'USA' },
+    { no: 19, date: '12 June', text: "The world champions begin their defence. Messi pulling the strings with Lautaro and Julián ahead of him is a frightening prospect for Algeria. Mahrez carries the Algerian threat, but Argentina's control and tournament know-how should see them open with a comfortable win.", scoreline: 'Argentina 3-0 Algeria', confidence: 80, keyBattle: 'Lionel Messi vs Ramy Bensebaini', watchCode: 'ARG' },
+    { no: 22, date: '13 June', text: "A classic in the making. Tuchel's England against Modrić's Croatia revives memories of past tournament drama. Bellingham versus the experienced Croatian midfield is the central battle. England's pace out wide through Saka should be decisive against an ageing back line.", scoreline: 'England 2-1 Croatia', confidence: 58, keyBattle: 'Jude Bellingham vs Luka Modrić', watchCode: 'ENG' }
+  ];
+
+  function loadPlayers() {
+    var url = window.WC_PLAYERS_URL || '/static/data/worldcup-players.json';
+    return fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      PLAYERS = data.teams || {};
+      renderMatchPreview();
+    }).catch(function () {
+      var el = document.getElementById('wcMatchPreviewBody');
+      if (el) el.innerHTML = '<p class="wc-sub" style="text-align:center">Player previews are loading — check back shortly.</p>';
+    });
+  }
+
+  // FIFA Ultimate Team-style player card.
+  function playerCard(p, colors) {
+    var prim = (colors && colors.primary) || '#0E6B9E';
+    var sec  = (colors && colors.secondary) || '#0a1628';
+    var star = p.player_to_watch ? ' <span class="wc-pl-star">★</span>' : '';
+    var watchLabel = p.player_to_watch ? '<div class="wc-pl-watch">⭐ Player to Watch</div>' : '';
+    return '<div class="wc-pl-card' + (p.player_to_watch ? ' is-watch' : '') + '">' +
+      '<div class="wc-pl-bar" style="background:linear-gradient(135deg,' + prim + ' 0%,' + sec + ' 100%)">' +
+        '<div class="wc-pl-avatar" style="background:' + prim + '"><i class="fas fa-user"></i></div>' +
+        '<span class="wc-pl-pos">' + esc(p.position) + '</span>' +
+      '</div>' +
+      '<div class="wc-pl-body">' +
+        '<div class="wc-pl-name">' + esc(p.name) + star + '</div>' +
+        '<div class="wc-pl-club">' + esc(p.club) + ' · ' + esc(p.league) + '</div>' +
+        '<div class="wc-pl-stat"><i class="fas fa-bolt"></i> ' + esc(p.stat_highlight) + '</div>' +
+        '<div class="wc-pl-metarow">Age ' + esc(p.age) + ' · ' + esc(p.caps) + ' caps · ' + esc(p.goals) + ' goals</div>' +
+        '<div class="wc-pl-note">&ldquo;' + esc(p.scout_note) + '&rdquo;</div>' +
+        watchLabel +
+      '</div>' +
+    '</div>';
+  }
+
+  function findMatchByNo(no) {
+    for (var i = 0; i < MATCHES.length; i++) { if (MATCHES[i].no === no) return MATCHES[i]; }
+    return null;
+  }
+
+  function renderMatchPreview() {
+    var body = document.getElementById('wcMatchPreviewBody');
+    if (!body || !PLAYERS) return;
+
+    var blocks = MATCH_ANALYSIS.map(function (an) {
+      var m = findMatchByNo(an.no);
+      if (!m) return '';
+      var tA = PLAYERS[m.ca], tB = PLAYERS[m.cb];
+      if (!tA || !tB) return '';
+
+      var watchTeam = an.watchCode === m.cb ? tB : tA;
+      var watchPlayer = watchTeam.players.filter(function (p) { return p.player_to_watch; })[0] || watchTeam.players[0];
+
+      var header =
+        '<div class="wc-mp-header">' +
+          '<div class="wc-mp-team wc-team-link" data-team="' + m.ca + '"><span class="wc-mp-flag">' + m.a.f + '</span><span>' + esc(m.a.n) + '</span></div>' +
+          '<span class="wc-mp-vs">VS</span>' +
+          '<div class="wc-mp-team wc-team-link" data-team="' + m.cb + '"><span class="wc-mp-flag">' + m.b.f + '</span><span>' + esc(m.b.n) + '</span></div>' +
+        '</div>' +
+        '<div class="wc-mp-meta">Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + esc(an.date) + ' · ' + esc(m.time) + ' ET</div>';
+
+      var analysis =
+        '<div class="wc-analysis">' +
+          '<div class="wc-analysis-head">🤖 Coach Scout&rsquo;s Pre-Match Analysis</div>' +
+          '<p class="wc-analysis-text">&ldquo;' + esc(an.text) + '&rdquo;</p>' +
+          '<div class="wc-analysis-foot">' +
+            '<div><span class="wc-analysis-k">🤖 Prediction:</span> ' + esc(an.scoreline) + ' <span class="wc-analysis-conf">(' + an.confidence + '% confidence)</span></div>' +
+            '<div><span class="wc-analysis-k">Key Battle:</span> ' + esc(an.keyBattle) + '</div>' +
+            '<div><span class="wc-analysis-k">Player to Watch:</span> ⭐ ' + esc(watchPlayer.name) + ' (' + esc(watchTeam.name) + ')</div>' +
+          '</div>' +
+        '</div>';
+
+      var colA = tA.players.map(function (p) { return playerCard(p, tA.colors); }).join('');
+      var colB = tB.players.map(function (p) { return playerCard(p, tB.colors); }).join('');
+      var comparison =
+        '<div class="wc-mp-compare">' +
+          '<div class="wc-mp-col"><div class="wc-mp-colhead wc-team-link" data-team="' + m.ca + '">' + m.a.f + ' ' + esc(m.a.n) + '</div>' + colA + '</div>' +
+          '<div class="wc-mp-col"><div class="wc-mp-colhead wc-team-link" data-team="' + m.cb + '">' + m.b.f + ' ' + esc(m.b.n) + '</div>' + colB + '</div>' +
+        '</div>';
+
+      return '<div class="wc-mp-block fade-in">' + header + analysis + comparison + '</div>';
+    }).join('');
+
+    body.innerHTML = blocks || '<p class="wc-sub" style="text-align:center">No upcoming fixtures to preview.</p>';
+  }
+
+  // Coach Scout tournament outlook from FIFA ranking (expanded 48-team / Round-of-32 format).
+  function predictFor(team) {
+    var r = team.fifa_ranking || 99;
+    var star = (team.players.filter(function (p) { return p.player_to_watch; })[0] || team.players[0] || {}).name || 'their key man';
+    if (r <= 2)  return { result: 'Champions',       reason: 'Tournament favourites — squad depth and ' + star + ' make them the team to beat.' };
+    if (r <= 5)  return { result: 'Runners-up',      reason: 'Genuine contenders who should reach the business end behind only the very best.' };
+    if (r <= 9)  return { result: 'Semi Finals',     reason: 'Elite quality throughout — a deep run is well within reach.' };
+    if (r <= 16) return { result: 'Quarter Finals',  reason: 'A strong side that can trouble anyone, led by ' + star + '.' };
+    if (r <= 28) return { result: 'Round of 16',     reason: 'Capable of escaping the group and springing a knockout surprise.' };
+    if (r <= 45) return { result: 'Round of 32',     reason: 'The expanded 48-team format gives them a real shot at the knockouts.' };
+    return { result: 'Group stage exit', reason: 'A tough draw, but the pride of competing on the world stage awaits.' };
+  }
+
+  function openTeamModal(code) {
+    var modal = document.getElementById('wcTeamModal');
+    var body = document.getElementById('wcTeamModalBody');
+    if (!modal || !body || !PLAYERS) return;
+    var t = PLAYERS[code];
+    if (!t) return;
+    var pred = predictFor(t);
+    var prim = (t.colors && t.colors.primary) || '#0E6B9E';
+    var roster = t.players.map(function (p) { return playerCard(p, t.colors); }).join('');
+    body.innerHTML =
+      '<div class="wc-tm-hero" style="background:linear-gradient(135deg,' + prim + ' 0%, #0a1628 100%)">' +
+        '<div class="wc-tm-flag">' + t.flag + '</div>' +
+        '<div class="wc-tm-name">' + esc(t.name) + '</div>' +
+        '<div class="wc-tm-tags">' +
+          '<span><i class="fas fa-ranking-star"></i> FIFA #' + esc(t.fifa_ranking) + '</span>' +
+          '<span><i class="fas fa-layer-group"></i> Group ' + esc(t.group) + '</span>' +
+          '<span><i class="fas fa-user-tie"></i> ' + esc(t.coach) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="wc-tm-predict">' +
+        '<div class="wc-tm-predict-head">🤖 Coach Scout&rsquo;s Prediction</div>' +
+        '<div class="wc-tm-predict-result">' + esc(pred.result) + '</div>' +
+        '<p class="wc-tm-predict-reason">' + esc(pred.reason) + '</p>' +
+      '</div>' +
+      '<div class="wc-tm-rostertitle">Featured Players</div>' +
+      '<div class="wc-tm-roster">' + roster + '</div>' +
+      '<button type="button" class="wc-btn wc-btn--green wc-tm-backbtn" id="wcTeamBack"><i class="fas fa-arrow-left"></i> Back to Fan Zone</button>';
+    modal.hidden = false;
+    requestAnimationFrame(function () { modal.classList.add('open'); });
+    document.body.style.overflow = 'hidden';
+    var dlg = modal.querySelector('.wc-tm-dialog'); if (dlg) dlg.scrollTop = 0;
+    var back = document.getElementById('wcTeamBack');
+    if (back) back.addEventListener('click', closeTeamModal);
+  }
+
+  function closeTeamModal() {
+    var modal = document.getElementById('wcTeamModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(function () { modal.hidden = true; }, 250);
+  }
+
+  function initTeamModal() {
+    var modal = document.getElementById('wcTeamModal');
+    if (modal) {
+      var overlay = modal.querySelector('.wc-tm-overlay');
+      var x = modal.querySelector('.wc-tm-close');
+      if (overlay) overlay.addEventListener('click', closeTeamModal);
+      if (x) x.addEventListener('click', closeTeamModal);
+    }
+    // Delegate clicks: any element (or ancestor) carrying data-team opens that team.
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-team]') : null;
+      if (el && el.getAttribute('data-team')) openTeamModal(el.getAttribute('data-team'));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeTeamModal();
+    });
   }
 
   /* ===================== INIT ===================== */
@@ -602,6 +774,8 @@
     renderPredShare();
     initTrivia();
     updateLeaderboard();
+    initTeamModal();
+    loadPlayers();       // async — renders match preview when ready
     checkRegistration(); // gate last (after content is rendered)
   });
 })();
