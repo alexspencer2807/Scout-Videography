@@ -258,14 +258,15 @@
       var backing = backingEl ? backingEl.value : '';
       var follows = document.getElementById('wcFollow').checked;
       var err = document.getElementById('wcFormError');
-      err.textContent = '';
+      err.textContent = ''; // Clear previous error message
+      err.classList.remove('wc-error-msg'); // Remove error styling
 
       if (!name) { err.textContent = 'Please enter your name.'; return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email address.'; return; }
       if (!insta) { err.textContent = 'Please enter your Instagram handle.'; return; }
       if (!backing) { err.textContent = 'Pick the team you\'re backing.'; return; }
       if (!follows) { err.textContent = 'Please confirm you follow @scoutvideoja to enter.'; return; }
-
+      // If we reach here, validation passed, so no error class is needed.
       var reg = { name: name, email: email, instagram: insta, backing: backing, registered: true };
       write(LS.reg, reg);
 
@@ -278,6 +279,7 @@
 
       unlockFanZone(reg);
       var success = document.getElementById('wcRegSuccess');
+      if (err.textContent) err.classList.add('wc-error-msg'); // Add error styling if an error occurred
       if (success && success.scrollIntoView) success.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   }
@@ -363,13 +365,30 @@
     if (preds[matchId]) return; // already locked
     var sa = document.getElementById('sa-' + matchId);
     var sb = document.getElementById('sb-' + matchId);
+    var scoreA = sa && sa.value !== '' ? +sa.value : null;
+    var scoreB = sb && sb.value !== '' ? +sb.value : null;
     preds[matchId] = {
       pick: pick,
-      scoreA: sa && sa.value !== '' ? +sa.value : null,
-      scoreB: sb && sb.value !== '' ? +sb.value : null,
+      scoreA: scoreA,
+      scoreB: scoreB,
       timestamp: new Date().toISOString()
     };
     write(LS.preds, preds);
+
+    // Sync to the shared backend so this prediction can be scored server-side
+    // once the match has a result (fire-and-forget — never block the UI).
+    var reg = read(LS.reg, null);
+    if (reg && reg.email) {
+      fetch('/api/worldcup/prediction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: reg.email, match_id: matchId, pick: pick,
+          score_a: scoreA, score_b: scoreB
+        })
+      }).catch(function () {});
+    }
+
     loadPredictions();
     updateLeaderboard();
   }
@@ -454,6 +473,17 @@
     var best = read(LS.triviaBest, 0);
     if (trivia.score > best) { best = trivia.score; write(LS.triviaBest, best); }
 
+    // Sync this attempt to the shared backend; the server keeps the best score
+    // and reflects it on the multi-user leaderboard (fire-and-forget).
+    var reg = read(LS.reg, null);
+    if (reg && reg.email) {
+      fetch('/api/worldcup/trivia', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: reg.email, score: trivia.score })
+      }).catch(function () {});
+    }
+
     var shareMsg = 'I scored ' + trivia.score + '/' + QUESTIONS.length +
       ' on the Scout World Cup Trivia! ⚽🏆 Try it: scoutvideoja.com/worldcup @scoutvideoja';
 
@@ -486,36 +516,62 @@
     updateLeaderboard();
   }
 
-  /* ===================== LEADERBOARD ===================== */
-  function updateLeaderboard() {
+  /* ===================== LEADERBOARD (shared, multi-user) =====================
+     The board is sourced from the Firestore-backed API so every fan sees the
+     same standings. We render optimistically from the last fetch, then refresh
+     from the server. The current fan's own row is rendered from live local
+     values (so points update instantly), and Coach Scout is computed client-side
+     from MATCH_ANALYSIS. */
+  var _serverBoard = [];
+
+  function normHandle(h) { return String(h || '').replace(/^@+/, '').toLowerCase(); }
+
+  function renderLeaderboard() {
     var board = document.getElementById('wcBoard');
     if (!board) return;
     var reg = read(LS.reg, null);
     var predPts = predictionPoints();
     var triviaBest = read(LS.triviaBest, 0);
-    var total = predPts + triviaBest;
+    var youTotal = predPts + triviaBest;
+    var youHandleNorm = reg ? normHandle(reg.instagram) : '';
 
-    var youName = reg && reg.name ? reg.name : 'You';
-    var backing = reg && reg.backing ? reg.backing : '';
-    var youHandle = reg && reg.instagram ? '@' + reg.instagram : '@yourhandle';
-    if (backing) youHandle += ' · backing ' + flagFor(backing) + ' ' + backing;
+    // Other fans from the shared server board (exclude the current user — we add
+    // a live local row for them below to avoid duplicates / stale points).
+    var rows = _serverBoard.filter(function (e) {
+      return !(youHandleNorm && normHandle(e.instagram) === youHandleNorm);
+    }).map(function (e) {
+      var handle = e.instagram || '';
+      if (e.backing) handle += (handle ? ' · ' : '') + 'backing ' + flagFor(e.backing) + ' ' + e.backing;
+      return { name: esc(e.name || 'Anonymous'), handle: esc(handle),
+               pred: e.prediction_points || 0, trivia: e.trivia_best || 0,
+               total: e.total_points || 0 };
+    });
+
+    // The current fan — registered users get a live row.
+    if (reg && reg.registered) {
+      var youHandle = reg.instagram ? '@' + reg.instagram : '@yourhandle';
+      if (reg.backing) youHandle += ' · backing ' + flagFor(reg.backing) + ' ' + reg.backing;
+      var serverYou = _serverBoard.filter(function (e) {
+        return youHandleNorm && normHandle(e.instagram) === youHandleNorm;
+      })[0];
+      var bestTotal = Math.max(youTotal, serverYou ? (serverYou.total_points || 0) : 0);
+      rows.push({ name: esc(reg.name || 'You'), handle: esc(youHandle),
+                  pred: predPts, trivia: triviaBest, total: bestTotal, you: true });
+    }
 
     // Coach Scout competes too — default avatar, swapping to winning-streak on a 3+ run.
     var coach = coachScoutRecord();
     var coachName = '<img class="coach-scout-avatar sm wc-board-av" src="' + coachImg(coach.avatar) + '" alt="Coach Scout"> Coach Scout' +
       (coach.streak >= 3 ? ' <span class="wc-board-streak">🔥 ' + coach.streak + ' in a row</span>' : '');
-    var coachHandle = 'AI Analyst · ' + coach.correct + '/' + coach.completed + ' correct';
+    rows.push({ name: coachName, handle: 'AI Analyst · ' + coach.correct + '/' + coach.completed + ' correct',
+                pred: coach.pts, trivia: '🤖', total: coach.pts, isCoach: true });
 
-    // Real competitors sorted by total points (desc), then placeholders fill the rest.
-    var real = [
-      { name: esc(youName), handle: esc(youHandle), pred: predPts, trivia: triviaBest, total: total, you: true },
-      { name: coachName, handle: coachHandle, pred: coach.pts, trivia: '🤖', total: coach.pts, isCoach: true }
-    ].sort(function (a, b) { return b.total - a.total; });
-
-    var ranks = ['🥇', '🥈', '🥉', '4', '5'];
-    var rows = real.map(function (r, i) { r.rank = ranks[i]; return r; });
+    // Sort by numeric total, assign medal/number ranks, pad to at least 4 rows.
+    rows.sort(function (a, b) { return (b.total || 0) - (a.total || 0); });
+    var medals = ['🥇', '🥈', '🥉'];
+    rows.forEach(function (r, i) { r.rank = i < 3 ? medals[i] : String(i + 1); });
     while (rows.length < 4) {
-      rows.push({ rank: ranks[rows.length], name: 'Coming soon…', handle: '—', pred: '—', trivia: '—', total: '—' });
+      rows.push({ rank: String(rows.length + 1), name: 'Coming soon…', handle: '—', pred: '—', trivia: '—', total: '—' });
     }
 
     board.innerHTML =
@@ -532,6 +588,17 @@
           '<span class="wc-board-total">' + r.total + '</span>' +
         '</div>';
       }).join('');
+  }
+
+  function updateLeaderboard() {
+    renderLeaderboard();   // optimistic render from cached data
+    fetch('/api/worldcup/leaderboard')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        _serverBoard = (data && data.leaderboard) || [];
+        renderLeaderboard();
+      })
+      .catch(function () { /* offline — keep the optimistic render */ });
   }
 
   /* ===================== SCHEDULE + FILTER TABS ===================== */
@@ -670,6 +737,41 @@
       var el = document.getElementById('wcMatchPreviewBody');
       if (el) el.innerHTML = '<p class="wc-sub" style="text-align:center">Player previews are loading — check back shortly.</p>';
     });
+  }
+
+  // Merge AI-generated Coach Scout predictions into MATCH_ANALYSIS, replacing any
+  // hardcoded entry for the same match (by `no`) and appending new ones.
+  function mergeCoachAnalysis(list) {
+    list.forEach(function (item) {
+      if (item == null || item.no == null) return;
+      var idx = -1;
+      for (var i = 0; i < MATCH_ANALYSIS.length; i++) {
+        if (MATCH_ANALYSIS[i].no === item.no) { idx = i; break; }
+      }
+      var entry = {
+        no: item.no, date: item.date || '', text: item.text || '',
+        scoreline: item.scoreline || '', confidence: item.confidence || 0,
+        keyBattle: item.keyBattle || '', watchCode: item.watchCode || ''
+      };
+      if (idx >= 0) MATCH_ANALYSIS[idx] = entry; else MATCH_ANALYSIS.push(entry);
+    });
+    MATCH_ANALYSIS.sort(function (a, b) { return a.no - b.no; });
+  }
+
+  // Pull shared, AI-generated predictions from the backend. When present they
+  // override the hardcoded defaults across the preview, leaderboard & ask tool.
+  function loadCoachPredictions() {
+    return fetch('/api/worldcup/coach-predictions')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var list = (data && data.predictions) || [];
+        if (!list.length) return;
+        mergeCoachAnalysis(list);
+        renderMatchPreview();
+        populateCoachAsk();
+        updateLeaderboard();
+      })
+      .catch(function () { /* keep hardcoded defaults if the API is unavailable */ });
   }
 
   // FIFA Ultimate Team-style player card.
@@ -829,6 +931,70 @@
     });
   }
 
+  /* ===================== ASK COACH SCOUT TOOL ===================== */
+  // Populate (or repopulate) the match dropdown from the current MATCH_ANALYSIS.
+  // Kept separate so it can be rebuilt when AI predictions load asynchronously.
+  function populateCoachAsk() {
+    var select = document.getElementById('wcCoachAskSelect');
+    if (!select) return;
+    var placeholder = select.options[0];           // keep the "choose a match" option
+    select.innerHTML = '';
+    if (placeholder) select.appendChild(placeholder);
+    MATCH_ANALYSIS.forEach(function (an) {
+      var m = findMatchByNo(an.no);
+      if (!m) return;
+      var opt = document.createElement('option');
+      opt.value = an.no;
+      opt.textContent = m.a.n + ' vs ' + m.b.n;
+      select.appendChild(opt);
+    });
+  }
+
+  function initCoachAsk() {
+    var select = document.getElementById('wcCoachAskSelect');
+    var btn = document.getElementById('wcCoachAskBtn');
+    var resultEl = document.getElementById('wcCoachAskResult');
+    if (!select || !btn || !resultEl) return;
+
+    populateCoachAsk();
+
+    select.addEventListener('change', function() {
+      btn.disabled = !select.value;
+    });
+
+    btn.addEventListener('click', function() {
+      var matchNo = +select.value;
+      if (!matchNo) return;
+
+      var analysis = MATCH_ANALYSIS.filter(function(an) { return an.no === matchNo; })[0];
+      if (!analysis) return;
+
+      var watchPlayer = analysis.watchCode ? (PLAYERS[analysis.watchCode] || { players: [{}] }).players.filter(function(p) { return p.player_to_watch; })[0] : null;
+      var watchPlayerName = watchPlayer ? watchPlayer.name : 'the key players';
+
+      resultEl.innerHTML =
+        '<div class="wc-analysis">' +
+          '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg('analyzing') + '" alt="Coach Scout"> Coach Scout&rsquo;s Analysis</div>' +
+          '<p class="wc-analysis-text">&ldquo;' + esc(analysis.text) + '&rdquo;</p>' +
+          '<div class="wc-analysis-foot">' +
+            '<div><span class="wc-analysis-k">🤖 Prediction:</span> ' + esc(analysis.scoreline) + ' <span class="wc-analysis-conf">(' + analysis.confidence + '% confidence)</span></div>' +
+            '<div><span class="wc-analysis-k">Key Battle:</span> ' + esc(analysis.keyBattle) + '</div>' +
+            '<div><span class="wc-analysis-k">Player to Watch:</span> ⭐ ' + esc(watchPlayerName) + '</div>' +
+          '</div>' +
+        '</div>';
+
+      // Animate the result card in
+      resultEl.style.maxHeight = '0px';
+      resultEl.style.opacity = '0';
+      requestAnimationFrame(function() {
+        resultEl.style.transition = 'max-height 0.5s ease, opacity 0.5s ease';
+        resultEl.style.maxHeight = resultEl.scrollHeight + 'px';
+        resultEl.style.opacity = '1';
+        if (resultEl.scrollIntoView) resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+  }
+
   /* ===================== INIT ===================== */
   document.addEventListener('DOMContentLoaded', function () {
     initCountdown();
@@ -841,7 +1007,9 @@
     initTrivia();
     updateLeaderboard();
     initTeamModal();
-    loadPlayers();       // async — renders match preview when ready
+    initCoachAsk();
+    loadPlayers().then(loadCoachPredictions); // render preview, then layer in AI predictions
     checkRegistration(); // gate last (after content is rendered)
+    setInterval(updateLeaderboard, 30000); // keep the shared board fresh
   });
 })();
