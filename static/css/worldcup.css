@@ -45,7 +45,7 @@
     radial-gradient(120% 80% at 20% -10%, rgba(38,201,111,0.22), transparent 55%),
     radial-gradient(120% 80% at 80% -10%, rgba(255,215,0,0.14), transparent 55%),
     linear-gradient(180deg, rgba(10,22,40,0.74) 0%, rgba(10,22,40,0.88) 55%, var(--wc-navy) 100%),
-    url('/static/media/hero-bg.jpg') center 30% / cover no-repeat,
+    url('/static/media/wc-hero-azteca.jpg') center 35% / cover no-repeat,
     var(--wc-navy);
 }
 /* stadium light beams + pitch lines (CSS only) */
@@ -516,6 +516,14 @@
     align-items: center;
   }
   .wc-coach-ask-form select { flex-grow: 1; }
+}
+
+/* ============ ASK COACH SCOUT banner ============ */
+.wc-coachask-banner {
+  display: block; width: 100%; max-width: 520px; margin: 22px auto 4px;
+  aspect-ratio: 16 / 10; object-fit: cover;
+  border-radius: 16px; border: 1px solid var(--wc-line);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.45);
 }
 
 /* ============ COMPACT TOP-3 LEADERBOARD (near hero) ============ */

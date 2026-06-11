@@ -4,6 +4,8 @@ __pycache__/
 venv/
 .DS_Store
 static/media/*.mp4
+# Raw AI-image masters — optimized JPGs are committed instead
+Gemini_Generated_Image_*.png
 receipt_*.pdf
 receipt_Customer.pdf
 .claude/
