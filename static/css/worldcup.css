@@ -483,3 +483,35 @@
   .wc-mp-compare { grid-template-columns: 1fr 1fr; gap: 18px; }
   .wc-tm-roster { grid-template-columns: 1fr 1fr; }
 }
+
+/* ============ ASK COACH SCOUT ============ */
+.wc-coach-ask-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  max-width: 480px;
+}
+
+.wc-coach-ask-form .wc-btn:disabled {
+  background: var(--wc-card);
+  color: var(--wc-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.wc-coach-ask-result {
+  margin-top: 20px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+}
+
+@media (min-width: 768px) {
+  .wc-coach-ask-form {
+    flex-direction: row;
+    align-items: center;
+  }
+  .wc-coach-ask-form select { flex-grow: 1; }
+}

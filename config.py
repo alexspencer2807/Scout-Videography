@@ -7,6 +7,11 @@ class Config:
     STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
     ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
+    # Firestore (World Cup Fan Zone leaderboard).
+    # Uses Application Default Credentials on Cloud Run — no API key needed; it
+    # authenticates via the service account automatically.
+    FIRESTORE_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT", "scout-videography")
+
     # Database (Phase 2)
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///scout.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

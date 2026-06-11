@@ -1652,6 +1652,53 @@ img { max-width: 100%; display: block; }
   .announce-track { animation: none; }
 }
 
+/* ================= WORLD CUP FAN ZONE — REGISTRATION FORM ERRORS ================= */
+.wc-error-msg {
+  color: var(--coral); /* Use the defined coral color for errors */
+  font-weight: 600;
+  margin-top: 8px;
+  text-align: center; /* Center the error message for better visibility */
+}
+
+/* ================= WORLD CUP FAN ZONE — ASK COACH SCOUT ================= */
+.wc-coach-ask-section {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 24px;
+}
+
+.wc-coach-ask-section .wc-h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wc-coach-ask-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  max-width: 420px;
+}
+
+.wc-coach-ask-result {
+  margin-top: 20px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Use existing analysis styles for the result card */
+.wc-coach-ask-result .wc-analysis {
+  border: 1px solid var(--slate-200);
+}
+
+@media (min-width: 768px) {
+  .wc-coach-ask-form { flex-direction: row; }
+  .wc-coach-ask-form select { flex-grow: 1; }
+}
 /* ================= AUDIENCE SELECTOR (2) ================= */
 .audience-grid {
   display: grid;

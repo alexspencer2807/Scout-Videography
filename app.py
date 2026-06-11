@@ -27,6 +27,7 @@ def create_app(config_name=None):
     from blueprints.analyst import analyst_bp
     from blueprints.auth import auth_bp
     from blueprints.notify import notify_bp
+    from blueprints.worldcup import worldcup_bp
 
     app.register_blueprint(pages_bp)
     app.register_blueprint(shop_bp)
@@ -34,6 +35,7 @@ def create_app(config_name=None):
     app.register_blueprint(analyst_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(notify_bp)
+    app.register_blueprint(worldcup_bp)
 
     return app
 
