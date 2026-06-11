@@ -131,20 +131,21 @@
     J: ['ARG','ALG','AUT','JOR'], K: ['POR','COD','UZB','COL'], L: ['ENG','CRO','GHA','PAN']
   };
 
-  // Per group: [homeCode, awayCode, matchday, matchNo, kickoffET]
+  // Per group: [homeCode, awayCode, matchday, matchNo, kickoffET, dateISO, venueCity]
+  // Verified against ESPN's official 2026 fixture list (Jun 2026). All times US Eastern.
   var SCHED = {
-    A: [['MEX','RSA',1,1,'15:00'],['KOR','CZE',1,2,'22:00'],['MEX','KOR',2,28,'21:00'],['CZE','RSA',2,25,'12:00'],['CZE','MEX',3,53,'21:00'],['RSA','KOR',3,54,'21:00']],
-    B: [['CAN','BIH',1,3,'15:00'],['QAT','SUI',1,8,'15:00'],['CAN','QAT',2,27,'18:00'],['SUI','BIH',2,26,'15:00'],['SUI','CAN',3,51,'15:00'],['BIH','QAT',3,52,'15:00']],
-    C: [['BRA','MAR',1,7,'18:00'],['HAI','SCO',1,5,'21:00'],['BRA','HAI',2,29,'20:30'],['SCO','MAR',2,30,'18:00'],['SCO','BRA',3,49,'18:00'],['MAR','HAI',3,50,'18:00']],
-    D: [['USA','PAR',1,4,'21:00'],['AUS','TUR',1,6,'00:00'],['USA','AUS',2,32,'15:00'],['TUR','PAR',2,31,'23:00'],['TUR','USA',3,59,'22:00'],['PAR','AUS',3,60,'22:00']],
-    E: [['GER','CUW',1,10,'13:00'],['CIV','ECU',1,9,'19:00'],['GER','CIV',2,33,'16:00'],['ECU','CUW',2,34,'20:00'],['ECU','GER',3,56,'16:00'],['CUW','CIV',3,55,'16:00']],
-    F: [['NED','JPN',1,11,'16:00'],['SWE','TUN',1,12,'22:00'],['NED','SWE',2,35,'13:00'],['TUN','JPN',2,36,'00:00'],['TUN','NED',3,58,'19:00'],['JPN','SWE',3,57,'19:00']],
-    G: [['BEL','EGY',1,16,'15:00'],['IRN','NZL',1,15,'21:00'],['BEL','IRN',2,39,'15:00'],['NZL','EGY',2,40,'21:00'],['NZL','BEL',3,64,'23:00'],['EGY','IRN',3,63,'23:00']],
-    H: [['ESP','CPV',1,14,'12:00'],['KSA','URU',1,13,'18:00'],['ESP','KSA',2,38,'12:00'],['URU','CPV',2,37,'18:00'],['URU','ESP',3,66,'20:00'],['CPV','KSA',3,65,'20:00']],
-    I: [['FRA','SEN',1,17,'15:00'],['IRQ','NOR',1,18,'18:00'],['FRA','IRQ',2,42,'17:00'],['NOR','SEN',2,41,'20:00'],['NOR','FRA',3,61,'15:00'],['SEN','IRQ',3,62,'15:00']],
-    J: [['ARG','ALG',1,19,'21:00'],['AUT','JOR',1,20,'00:00'],['ARG','AUT',2,43,'13:00'],['JOR','ALG',2,44,'23:00'],['JOR','ARG',3,70,'22:00'],['ALG','AUT',3,69,'22:00']],
-    K: [['POR','COD',1,23,'13:00'],['UZB','COL',1,24,'22:00'],['POR','UZB',2,47,'13:00'],['COL','COD',2,48,'22:00'],['COL','POR',3,71,'19:30'],['COD','UZB',3,72,'19:30']],
-    L: [['ENG','CRO',1,22,'16:00'],['GHA','PAN',1,21,'19:00'],['ENG','GHA',2,45,'16:00'],['PAN','CRO',2,46,'19:00'],['PAN','ENG',3,67,'17:00'],['CRO','GHA',3,68,'17:00']]
+    A: [['MEX','RSA',1,1,'15:00','2026-06-11','Mexico City'],['KOR','CZE',1,2,'22:00','2026-06-11','Guadalajara'],['CZE','RSA',2,25,'12:00','2026-06-18','Atlanta'],['MEX','KOR',2,28,'23:00','2026-06-18','Guadalajara'],['CZE','MEX',3,53,'21:00','2026-06-24','Mexico City'],['RSA','KOR',3,54,'21:00','2026-06-24','Monterrey']],
+    B: [['CAN','BIH',1,3,'15:00','2026-06-12','Toronto'],['QAT','SUI',1,8,'15:00','2026-06-13','San Francisco'],['SUI','BIH',2,26,'15:00','2026-06-18','Los Angeles'],['CAN','QAT',2,27,'18:00','2026-06-18','Vancouver'],['SUI','CAN',3,51,'15:00','2026-06-24','Vancouver'],['BIH','QAT',3,52,'15:00','2026-06-24','Seattle']],
+    C: [['HAI','SCO',1,5,'21:00','2026-06-13','Boston'],['BRA','MAR',1,7,'18:00','2026-06-13','New York/NJ'],['BRA','HAI',2,29,'21:00','2026-06-19','Philadelphia'],['SCO','MAR',2,30,'18:00','2026-06-19','Boston'],['SCO','BRA',3,49,'18:00','2026-06-24','Miami'],['MAR','HAI',3,50,'18:00','2026-06-24','Atlanta']],
+    D: [['USA','PAR',1,4,'21:00','2026-06-12','Los Angeles'],['AUS','TUR',1,6,'00:00','2026-06-14','Vancouver'],['USA','AUS',2,32,'15:00','2026-06-19','Seattle'],['TUR','PAR',2,31,'00:00','2026-06-20','San Francisco'],['TUR','USA',3,59,'22:00','2026-06-25','Los Angeles'],['PAR','AUS',3,60,'22:00','2026-06-25','San Francisco']],
+    E: [['CIV','ECU',1,9,'19:00','2026-06-14','Philadelphia'],['GER','CUW',1,10,'13:00','2026-06-14','Houston'],['GER','CIV',2,33,'16:00','2026-06-20','Toronto'],['ECU','CUW',2,34,'20:00','2026-06-20','Kansas City'],['CUW','CIV',3,55,'16:00','2026-06-25','Philadelphia'],['ECU','GER',3,56,'16:00','2026-06-25','New York/NJ']],
+    F: [['NED','JPN',1,11,'16:00','2026-06-14','Dallas'],['SWE','TUN',1,12,'22:00','2026-06-14','Monterrey'],['NED','SWE',2,35,'13:00','2026-06-20','Houston'],['TUN','JPN',2,36,'00:00','2026-06-21','Monterrey'],['JPN','SWE',3,57,'19:00','2026-06-25','Dallas'],['TUN','NED',3,58,'19:00','2026-06-25','Kansas City']],
+    G: [['IRN','NZL',1,15,'00:00','2026-06-16','Los Angeles'],['BEL','EGY',1,16,'18:00','2026-06-15','Seattle'],['BEL','IRN',2,39,'15:00','2026-06-21','Los Angeles'],['NZL','EGY',2,40,'21:00','2026-06-21','Vancouver'],['EGY','IRN',3,63,'23:00','2026-06-26','Seattle'],['NZL','BEL',3,64,'23:00','2026-06-26','Vancouver']],
+    H: [['KSA','URU',1,13,'18:00','2026-06-15','Miami'],['ESP','CPV',1,14,'13:00','2026-06-15','Atlanta'],['URU','CPV',2,37,'18:00','2026-06-21','Miami'],['ESP','KSA',2,38,'12:00','2026-06-21','Atlanta'],['CPV','KSA',3,65,'20:00','2026-06-26','Houston'],['URU','ESP',3,66,'20:00','2026-06-26','Guadalajara']],
+    I: [['FRA','SEN',1,17,'15:00','2026-06-16','New York/NJ'],['IRQ','NOR',1,18,'18:00','2026-06-16','Boston'],['NOR','SEN',2,41,'20:00','2026-06-22','New York/NJ'],['FRA','IRQ',2,42,'17:00','2026-06-22','Philadelphia'],['NOR','FRA',3,61,'15:00','2026-06-26','Boston'],['SEN','IRQ',3,62,'15:00','2026-06-26','Toronto']],
+    J: [['ARG','ALG',1,19,'21:00','2026-06-16','Kansas City'],['AUT','JOR',1,20,'00:00','2026-06-17','San Francisco'],['ARG','AUT',2,43,'13:00','2026-06-22','Dallas'],['JOR','ALG',2,44,'23:00','2026-06-22','San Francisco'],['ALG','AUT',3,69,'22:00','2026-06-27','Kansas City'],['JOR','ARG',3,70,'22:00','2026-06-27','Dallas']],
+    K: [['POR','COD',1,23,'13:00','2026-06-17','Houston'],['UZB','COL',1,24,'22:00','2026-06-17','Mexico City'],['POR','UZB',2,47,'13:00','2026-06-23','Houston'],['COL','COD',2,48,'22:00','2026-06-23','Guadalajara'],['COL','POR',3,71,'19:30','2026-06-27','Miami'],['COD','UZB',3,72,'19:30','2026-06-27','Atlanta']],
+    L: [['GHA','PAN',1,21,'19:00','2026-06-17','Toronto'],['ENG','CRO',1,22,'16:00','2026-06-17','Dallas'],['ENG','GHA',2,45,'16:00','2026-06-23','Boston'],['PAN','CRO',2,46,'19:00','2026-06-23','Toronto'],['PAN','ENG',3,67,'17:00','2026-06-27','New York/NJ'],['CRO','GHA',3,68,'17:00','2026-06-27','Philadelphia']]
   };
 
   var MATCHES = [];
@@ -152,6 +153,7 @@
     SCHED[g].forEach(function (r) {
       MATCHES.push({
         id: 'M' + r[3], group: g, md: r[2], no: r[3], time: r[4],
+        date: r[5], venue: r[6],
         ca: r[0], cb: r[1],           // team codes (for player-data lookup)
         a: TEAM[r[0]], b: TEAM[r[1]], status: 'upcoming'
         // result:{a,b} can be added once a match is played → unlocks scoring + ✓/✗
@@ -160,6 +162,21 @@
   });
 
   function mdLabel(md) { return 'Matchday ' + md; }
+
+  var WC_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var WC_DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function fmtMatchDate(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2], 12));
+    return WC_DOW[d.getUTCDay()] + ' ' + (+p[2]) + ' ' + WC_MONTHS[+p[1] - 1];
+  }
+  function fmtTime(t) {
+    if (!t) return '';
+    var pp = t.split(':'), h = +pp[0];
+    var ap = h >= 12 ? 'PM' : 'AM', h12 = h % 12 || 12;
+    return h12 + ':' + pp[1] + ' ' + ap;
+  }
 
   function winnerOf(res) {
     if (!res) return null;
@@ -323,7 +340,7 @@
       }
 
       return '<div class="wc-pred-card">' +
-        '<div class="wc-match-meta"><span>' + mdLabel(m.md) + ' · ' + esc(m.time) + ' ET</span><span>Group ' + esc(m.group) + '</span></div>' +
+        '<div class="wc-match-meta"><span>' + mdLabel(m.md) + ' · ' + fmtMatchDate(m.date) + ' · ' + fmtTime(m.time) + ' ET</span><span>Group ' + esc(m.group) + '</span></div>' +
         '<div class="wc-pred-top">' +
           '<div class="wc-team wc-team-link" data-team="' + m.ca + '"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
           '<span class="wc-vs">VS</span>' +
@@ -563,7 +580,7 @@
     if (m.status === 'complete' && m.result) {
       return '<span class="wc-score">' + m.result.a + ' – ' + m.result.b + '</span>';
     }
-    return '<span class="wc-vs">' + esc(m.time) + '<br>ET</span>';
+    return '<span class="wc-vs">' + fmtTime(m.time) + '<br>ET</span>';
   }
 
   function filterSchedule(filter) {
@@ -596,6 +613,7 @@
             centerCell(m) +
             '<div class="wc-team wc-team-link" data-team="' + m.cb + '"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
           '</div>' +
+          '<div class="wc-match-venue">' + fmtMatchDate(m.date) + ' · ' + esc(m.venue) + '</div>' +
         '</div>';
       }).join('');
       return '<div class="wc-date-group"><div class="wc-date-head">Group ' + esc(g) + '</div>' +
@@ -700,7 +718,7 @@
           '<span class="wc-mp-vs">VS</span>' +
           '<div class="wc-mp-team wc-team-link" data-team="' + m.cb + '"><span class="wc-mp-flag">' + m.b.f + '</span><span>' + esc(m.b.n) + '</span></div>' +
         '</div>' +
-        '<div class="wc-mp-meta">Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + esc(an.date) + ' · ' + esc(m.time) + ' ET</div>';
+        '<div class="wc-mp-meta">Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + fmtMatchDate(m.date) + ' · ' + fmtTime(m.time) + ' ET · ' + esc(m.venue) + '</div>';
 
       // Avatar reflects Coach Scout's outcome once the match has a result.
       var coachState = 'analyzing';
