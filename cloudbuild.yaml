@@ -31,6 +31,9 @@ steps:
       - '3'
       - '--port'
       - '8080'
+      # Link secrets required by the application
+      - '--set-secrets'
+      - 'FLASK_SECRET_KEY=FLASK_SECRET_KEY:latest,STRIPE_SECRET_KEY=STRIPE_SECRET_KEY:latest,STRIPE_PUBLIC_KEY=STRIPE_PUBLIC_KEY:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest,EMAIL_HOST=EMAIL_HOST:latest,EMAIL_PORT=EMAIL_PORT:latest,EMAIL_USER=EMAIL_USER:latest,EMAIL_PASS=EMAIL_PASS:latest,EMAIL_FROM=EMAIL_FROM:latest'
 
 images:
   - 'gcr.io/$PROJECT_ID/scout-videography'
