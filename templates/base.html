@@ -6,7 +6,7 @@
   <title>{% block title %}Scout Videography Jamaica | Soccer Highlights, VR Training & AI Analysis{% endblock %}</title>
   <meta name="description" content="{% block description %}Professional soccer highlight videos, VR skills training with Rezzil, and AI-powered performance analysis. Serving athletes in Kingston & St. Andrew, Jamaica.{% endblock %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
   {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -18,14 +18,14 @@
   {% include 'partials/footer.html' %}
   {% include 'partials/whatsapp.html' %}
 
-  <script src="{{ url_for('static', filename='js/notification.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/hamburger.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/scroll-animations.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/counters.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/announcement.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/contact-fab.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+  <script src="{{ asset('js/notification.js') }}"></script>
+  <script src="{{ asset('js/cart.js') }}"></script>
+  <script src="{{ asset('js/hamburger.js') }}"></script>
+  <script src="{{ asset('js/scroll-animations.js') }}"></script>
+  <script src="{{ asset('js/counters.js') }}"></script>
+  <script src="{{ asset('js/announcement.js') }}"></script>
+  <script src="{{ asset('js/contact-fab.js') }}"></script>
+  <script src="{{ asset('js/quiz.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

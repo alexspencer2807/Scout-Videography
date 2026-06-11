@@ -37,6 +37,22 @@ def create_app(config_name=None):
     app.register_blueprint(notify_bp)
     app.register_blueprint(worldcup_bp)
 
+    # Cache-busting helper: asset('css/x.css') -> /static/css/x.css?v=<mtime>.
+    # The version changes whenever the file does, so a deploy never serves stale
+    # CSS/JS from the browser or CDN cache.
+    @app.context_processor
+    def _asset_helper():
+        from flask import url_for
+
+        def asset(filename):
+            try:
+                ver = int(os.path.getmtime(os.path.join(app.static_folder, filename)))
+            except OSError:
+                ver = 0
+            return url_for("static", filename=filename, v=ver)
+
+        return {"asset": asset}
+
     return app
 
 

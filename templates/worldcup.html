@@ -3,7 +3,7 @@
 {% block description %}Predictions, trivia, watch parties and the countdown to the FIFA World Cup 2026 — the Scout Videography Jamaica Fan Zone. Play, predict, and follow the action.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/worldcup.css') }}">
+<link rel="stylesheet" href="{{ asset('css/worldcup.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -29,6 +29,15 @@
     <a href="#wcRegister" class="wc-btn wc-btn--green"><i class="fas fa-futbol"></i> Join the Fan Zone</a>
   </section>
 
+  <!-- ============ LIVE TOP 3 (compact) ============ -->
+  <section class="wc-minilb-wrap" id="wcMiniBoardSection">
+    <div class="container">
+      <div class="wc-minilb-title"><i class="fas fa-trophy"></i> Live Leaderboard — Top Fans</div>
+      <div class="wc-minilb" id="wcBoardMini" aria-label="Top fans leaderboard"></div>
+      <a href="#wcRegister" class="wc-minilb-link">Join the Fan Zone to climb the board →</a>
+    </div>
+  </section>
+
   <!-- ============ MATCH DAY PREVIEW ============ -->
   <section class="wc-section wc-center fade-in" id="wcMatchPreview">
     <div class="container">
@@ -36,6 +45,22 @@
       <h2 class="wc-h2">Upcoming Matches</h2>
       <p class="wc-sub" style="margin:0 auto">Coach Scout breaks down the opening fixtures — squads, key battles &amp; predictions. Tap any team to open its full profile.</p>
       <div id="wcMatchPreviewBody" class="wc-mp-wrap"></div>
+    </div>
+  </section>
+
+  <!-- ============ ASK COACH SCOUT ============ -->
+  <section class="wc-section wc-section--alt wc-center fade-in" id="wcCoachAsk">
+    <div class="container">
+      <div class="wc-eyebrow">Ask Coach Scout 🤖</div>
+      <h2 class="wc-h2">Get an Instant Match Breakdown</h2>
+      <p class="wc-sub" style="margin:0 auto">Pick a fixture and Coach Scout serves up the prediction, key battle &amp; player to watch.</p>
+      <div class="wc-coach-ask-form" style="margin-left:auto;margin-right:auto;">
+        <select class="wc-input wc-select" id="wcCoachAskSelect" aria-label="Choose a match">
+          <option value="">Choose a match…</option>
+        </select>
+        <button type="button" class="wc-btn wc-btn--green" id="wcCoachAskBtn" disabled>Ask Coach Scout</button>
+      </div>
+      <div class="wc-coach-ask-result" id="wcCoachAskResult"></div>
     </div>
   </section>
 
@@ -200,5 +225,5 @@
 {% block scripts %}
 {{ super() }}
 <script>window.WC_PLAYERS_URL = "{{ url_for('static', filename='data/worldcup-players.json') }}";</script>
-<script src="{{ url_for('static', filename='js/worldcup.js') }}"></script>
+<script src="{{ asset('js/worldcup.js') }}"></script>
 {% endblock %}

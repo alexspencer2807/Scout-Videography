@@ -42,9 +42,11 @@
   padding: 64px 16px 56px;
   overflow: hidden;
   background:
-    radial-gradient(120% 80% at 20% -10%, rgba(38,201,111,0.20), transparent 55%),
-    radial-gradient(120% 80% at 80% -10%, rgba(255,215,0,0.12), transparent 55%),
-    linear-gradient(180deg, #0c1c30 0%, var(--wc-navy) 70%);
+    radial-gradient(120% 80% at 20% -10%, rgba(38,201,111,0.22), transparent 55%),
+    radial-gradient(120% 80% at 80% -10%, rgba(255,215,0,0.14), transparent 55%),
+    linear-gradient(180deg, rgba(10,22,40,0.74) 0%, rgba(10,22,40,0.88) 55%, var(--wc-navy) 100%),
+    url('/static/media/hero-bg.jpg') center 30% / cover no-repeat,
+    var(--wc-navy);
 }
 /* stadium light beams + pitch lines (CSS only) */
 .wc-hero::before {
@@ -515,3 +517,34 @@
   }
   .wc-coach-ask-form select { flex-grow: 1; }
 }
+
+/* ============ COMPACT TOP-3 LEADERBOARD (near hero) ============ */
+.wc-minilb-wrap { padding: 22px 16px 6px; text-align: center; }
+.wc-minilb-title {
+  font-family: 'Archivo Black', sans-serif; font-size: 13px; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--wc-gold); margin-bottom: 12px;
+}
+.wc-minilb-title i { margin-right: 6px; }
+.wc-minilb {
+  max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px;
+}
+.wc-minilb-row {
+  display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 10px; text-align: left;
+  background: var(--wc-card); border: 1px solid var(--wc-line);
+}
+.wc-minilb-row.you { background: rgba(38,201,111,0.12); border-color: var(--wc-green); }
+.wc-minilb-row.is-coach { border-color: var(--wc-gold); }
+.wc-minilb-rank { font-family: 'Archivo Black', sans-serif; font-size: 18px; }
+.wc-minilb-name { font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wc-minilb-name img { vertical-align: middle; margin-right: 6px; }
+.wc-minilb-pts { font-family: 'Archivo Black', sans-serif; color: var(--wc-green); white-space: nowrap; }
+.wc-minilb-link {
+  display: inline-block; margin-top: 14px; color: var(--wc-green); font-weight: 700;
+  font-size: 14px; text-decoration: none;
+}
+.wc-minilb-link:hover { text-decoration: underline; }
+
+/* ============ SCHEDULE: collapse toggle ============ */
+.wc-sched-toggle-wrap { text-align: center; margin-top: 20px; }
+.wc-sched-toggle { cursor: pointer; }

@@ -588,6 +588,19 @@
           '<span class="wc-board-total">' + r.total + '</span>' +
         '</div>';
       }).join('');
+
+    // Compact top-3 mirror near the top of the page (shown to everyone).
+    var mini = document.getElementById('wcBoardMini');
+    if (mini) {
+      mini.innerHTML = rows.slice(0, 3).map(function (r) {
+        var pts = typeof r.total === 'number' ? r.total + ' pts' : r.total;
+        return '<div class="wc-minilb-row' + (r.you ? ' you' : '') + (r.isCoach ? ' is-coach' : '') + '">' +
+          '<span class="wc-minilb-rank">' + r.rank + '</span>' +
+          '<span class="wc-minilb-name">' + r.name + '</span>' +
+          '<span class="wc-minilb-pts">' + pts + '</span>' +
+        '</div>';
+      }).join('');
+    }
   }
 
   function updateLeaderboard() {
@@ -603,6 +616,14 @@
 
   /* ===================== SCHEDULE + FILTER TABS ===================== */
   var currentFilter = 'all';
+  var scheduleExpanded = false; // "All Matches" starts collapsed to the next matchday
+
+  // The earliest matchday that still has unplayed fixtures.
+  function nextMatchday() {
+    var mds = MATCHES.filter(function (m) { return m.status !== 'complete'; })
+                     .map(function (m) { return m.md; });
+    return mds.length ? Math.min.apply(null, mds) : 1;
+  }
 
   function buildTabs() {
     var tabsEl = document.getElementById('wcTabs');
@@ -656,6 +677,17 @@
     if (!el) return;
     var list = matchesForFilter(filter);
 
+    // "All Matches" is collapsed to the next matchday by default to save space;
+    // a toggle reveals the full fixture list. Group tabs always show in full.
+    var collapsible = (filter === 'all');
+    var nmd = nextMatchday();
+    var note = '';
+    if (collapsible && !scheduleExpanded) {
+      list = list.filter(function (m) { return m.md === nmd; });
+      note = '<p class="wc-sub" style="text-align:center;margin:0 auto 18px">Showing ' +
+             mdLabel(nmd) + ' — the next fixtures up.</p>';
+    }
+
     if (!list.length) {
       el.innerHTML = '<p class="wc-sub" style="text-align:center;margin:24px auto">No fixtures to show yet — check back soon.</p>';
       return;
@@ -670,7 +702,7 @@
     });
     order.sort();
 
-    el.innerHTML = order.map(function (g) {
+    var groupsHtml = order.map(function (g) {
       var matches = byGroup[g].slice().sort(function (x, y) { return x.no - y.no; });
       var cards = matches.map(function (m) {
         return '<div class="wc-match-card">' +
@@ -686,6 +718,21 @@
       return '<div class="wc-date-group"><div class="wc-date-head">Group ' + esc(g) + '</div>' +
              '<div class="wc-match-grid">' + cards + '</div></div>';
     }).join('');
+
+    var toggle = '';
+    if (collapsible) {
+      toggle = '<div class="wc-sched-toggle-wrap">' +
+        '<button type="button" class="wc-btn wc-btn--ghost wc-sched-toggle" id="wcSchedToggle">' +
+        (scheduleExpanded ? 'Show less ▲' : 'View all 72 fixtures ▼') + '</button></div>';
+    }
+
+    el.innerHTML = note + groupsHtml + toggle;
+
+    var tgl = document.getElementById('wcSchedToggle');
+    if (tgl) tgl.addEventListener('click', function () {
+      scheduleExpanded = !scheduleExpanded;
+      filterSchedule('all');
+    });
   }
 
   /* ===================== PLAYERS + MATCH PREVIEW + TEAM MODAL ===================== */
