@@ -283,6 +283,53 @@ def store_get_coach_prediction(match_id):
     return {k: v for k, v in d.items() if k != "updated_at"}
 
 
+# --- Generic admin CRUD over a collection (read / update / delete) ----------
+def _json_safe(d):
+    """Coerce a Firestore/memory doc to JSON-serialisable values (timestamps -> ISO)."""
+    out = {}
+    for k, v in (d or {}).items():
+        out[k] = v.isoformat() if hasattr(v, "isoformat") else v
+    return out
+
+
+def store_list(collection, mem):
+    db = _fs()
+    rows = []
+    if db is not None:
+        for doc in db.collection(collection).stream():
+            r = _json_safe(doc.to_dict())
+            r["_id"] = doc.id
+            rows.append(r)
+    else:
+        for k, v in mem.items():
+            r = _json_safe(v)
+            r["_id"] = k
+            rows.append(r)
+    return rows
+
+
+def store_update(collection, mem, doc_id, fields):
+    db = _fs()
+    if db is not None:
+        try:
+            db.collection(collection).document(doc_id).update(fields)
+            return True
+        except Exception:
+            return False  # e.g. document doesn't exist
+    if doc_id in mem:
+        mem[doc_id].update(fields)
+        return True
+    return False
+
+
+def store_delete(collection, mem, doc_id):
+    db = _fs()
+    if db is not None:
+        db.collection(collection).document(doc_id).delete()
+        return True
+    return mem.pop(doc_id, None) is not None
+
+
 _PLAYERS_CACHE = None
 
 
@@ -609,3 +656,82 @@ def coach_forecast(match_id):
 
     store_save_coach_prediction(mid, doc)
     return jsonify({"prediction": doc, "cached": False})
+
+
+# --- Admin database CRUD (view / edit / delete) -----------------------------
+# Editable + numeric fields are allow-listed per entity so edits can't write
+# arbitrary keys. Doc ids: users=email, coach=M<no>, predictions=<email>_<id>.
+DB_ENTITIES = {
+    "users": {
+        "col": USERS, "mem": _mem_users,
+        "fields": {"name", "instagram", "backing", "trivia_best",
+                   "prediction_points", "bracket_points", "total_points"},
+        "nums": {"trivia_best", "prediction_points", "bracket_points", "total_points"},
+    },
+    "coach": {
+        "col": COACH_PREDS, "mem": _mem_coach,
+        "fields": {"text", "scoreline", "confidence", "keyBattle", "watchCode", "date"},
+        "nums": {"confidence"},
+    },
+    "predictions": {
+        "col": PREDICTIONS, "mem": _mem_preds,
+        "fields": {"pick", "score_a", "score_b", "points", "scored"},
+        "nums": {"score_a", "score_b", "points"},
+    },
+}
+
+
+@worldcup_bp.route("/api/worldcup/admin/db/<entity>")
+def admin_db_list(entity):
+    if not _admin_ok():
+        return _admin_error()
+    e = DB_ENTITIES.get(entity)
+    if not e:
+        return jsonify({"error": "unknown entity"}), 404
+    return jsonify({"rows": store_list(e["col"], e["mem"])})
+
+
+@worldcup_bp.route("/api/worldcup/admin/db/<entity>/update", methods=["POST"])
+def admin_db_update(entity):
+    if not _admin_ok():
+        return _admin_error()
+    e = DB_ENTITIES.get(entity)
+    if not e:
+        return jsonify({"error": "unknown entity"}), 404
+    data = request.get_json(silent=True) or {}
+    doc_id = str(data.get("id") or "").strip()
+    fields_in = data.get("fields")
+    if not doc_id or not isinstance(fields_in, dict):
+        return jsonify({"error": "id and fields are required"}), 400
+
+    clean = {}
+    for k, v in fields_in.items():
+        if k not in e["fields"]:
+            continue
+        if k in e["nums"]:
+            try:
+                v = int(v)
+            except (TypeError, ValueError):
+                continue
+        clean[k] = v
+    if not clean:
+        return jsonify({"error": "no editable fields supplied"}), 400
+    if not store_update(e["col"], e["mem"], doc_id, clean):
+        return jsonify({"error": "record not found"}), 404
+    return jsonify({"status": "ok", "id": doc_id, "updated": clean})
+
+
+@worldcup_bp.route("/api/worldcup/admin/db/<entity>/delete", methods=["POST"])
+def admin_db_delete(entity):
+    if not _admin_ok():
+        return _admin_error()
+    e = DB_ENTITIES.get(entity)
+    if not e:
+        return jsonify({"error": "unknown entity"}), 404
+    data = request.get_json(silent=True) or {}
+    doc_id = str(data.get("id") or "").strip()
+    if not doc_id:
+        return jsonify({"error": "id is required"}), 400
+    if not store_delete(e["col"], e["mem"], doc_id):
+        return jsonify({"error": "record not found"}), 404
+    return jsonify({"status": "ok", "deleted": doc_id})

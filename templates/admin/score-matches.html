@@ -70,6 +70,44 @@
   </div>
 </div>
 
+<div class="container" style="padding: 0 20px 80px; max-width: 1000px; margin: 0 auto;">
+  <hr style="border:none;border-top:1px solid #2a3a55;margin:8px 0 32px;">
+  <h2 style="color:#fff;font-size:22px;margin-bottom:6px;">Database — view · edit · delete</h2>
+  <p style="color:#9fb0c3;margin-bottom:18px;">Edit a field and hit <strong>Save</strong> for that row; <strong>Del</strong> removes it permanently. Uses the admin key above.</p>
+
+  <div class="db-panel">
+    <div class="db-panel-head"><strong>👤 Users / Leaderboard</strong><button type="button" class="db-load" onclick="dbLoad('users')">Load / Refresh</button></div>
+    <div id="db-users" class="db-box"></div>
+  </div>
+  <div class="db-panel">
+    <div class="db-panel-head"><strong>🤖 Coach Forecasts</strong><button type="button" class="db-load" onclick="dbLoad('coach')">Load / Refresh</button></div>
+    <div id="db-coach" class="db-box"></div>
+  </div>
+  <div class="db-panel">
+    <div class="db-panel-head"><strong>🎯 User Predictions</strong><button type="button" class="db-load" onclick="dbLoad('predictions')">Load / Refresh</button></div>
+    <div id="db-predictions" class="db-box"></div>
+  </div>
+</div>
+
+<style>
+  .db-panel { margin-bottom: 26px; }
+  .db-panel-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+  .db-panel-head strong { color:#fff; font-size:16px; }
+  .db-load { padding:8px 14px; border:none; border-radius:8px; background:#0d4a7a; color:#fff; font-weight:700; cursor:pointer; }
+  .db-box { color:#cfe; }
+  .db-tablewrap { overflow-x:auto; border:1px solid #2a3a55; border-radius:10px; }
+  .db-table { border-collapse:collapse; width:100%; font-size:13px; }
+  .db-table th, .db-table td { padding:8px 10px; border-bottom:1px solid #22324c; text-align:left; white-space:nowrap; vertical-align:top; }
+  .db-table th { background:#142436; color:#9fb0c3; text-transform:uppercase; font-size:10px; letter-spacing:.5px; }
+  .db-table td.db-id { color:#9fb0c3; max-width:200px; overflow:hidden; text-overflow:ellipsis; }
+  .db-table input, .db-table textarea { background:#0f1c30; border:1px solid #2a3a55; border-radius:6px; color:#fff; padding:6px 8px; font:inherit; }
+  .db-table input[type=number] { width:78px; }
+  .db-table textarea { min-width:280px; }
+  .db-save, .db-del { padding:6px 10px; border:none; border-radius:6px; font-weight:700; cursor:pointer; margin-right:6px; }
+  .db-save { background:#26C96F; color:#06121f; }
+  .db-del { background:#7a1d2a; color:#fff; }
+</style>
+
 <script>
 // Persist the admin key for this tab so it survives both actions / reloads.
 (function () {
@@ -139,5 +177,77 @@ async function generatePredictions() {
     out.textContent = '❌ Network error.';
   }
 }
+
+// ---------- Database CRUD ----------
+var DB_VIEWS = {
+  users: { cols: [ {k:'name'}, {k:'instagram'}, {k:'backing'},
+                   {k:'trivia_best',num:true}, {k:'prediction_points',num:true}, {k:'total_points',num:true} ] },
+  coach: { cols: [ {k:'scoreline'}, {k:'confidence',num:true}, {k:'keyBattle'}, {k:'watchCode'}, {k:'text',wide:true} ] },
+  predictions: { cols: [ {k:'email',ro:true}, {k:'match_id',ro:true}, {k:'pick'},
+                         {k:'score_a',num:true}, {k:'score_b',num:true}, {k:'points',num:true} ] }
+};
+
+function dbEsc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+
+async function dbLoad(entity) {
+  var box = document.getElementById('db-' + entity);
+  if (!box) return;
+  if (!(document.getElementById('adminKey').value || '').trim()) { box.textContent = '🔒 Enter your admin key first.'; return; }
+  box.textContent = 'Loading…';
+  try {
+    var res = await fetch('/api/worldcup/admin/db/' + entity, { headers: adminHeaders() });
+    var data = await res.json();
+    if (!res.ok) { box.textContent = '❌ ' + (data.error || 'error'); return; }
+    var rows = data.rows || [];
+    if (!rows.length) { box.innerHTML = '<p style="color:#9fb0c3">No records.</p>'; return; }
+    var cfg = DB_VIEWS[entity];
+    var head = '<th>id</th>' + cfg.cols.map(function (c) { return '<th>' + c.k + '</th>'; }).join('') + '<th>actions</th>';
+    var body = rows.map(function (r) {
+      var cells = cfg.cols.map(function (c) {
+        var v = r[c.k] == null ? '' : r[c.k];
+        if (c.ro) return '<td>' + dbEsc(v) + '</td>';
+        if (c.wide) return '<td><textarea data-k="' + c.k + '" rows="2">' + dbEsc(v) + '</textarea></td>';
+        return '<td><input data-k="' + c.k + '" type="' + (c.num ? 'number' : 'text') + '" value="' + dbEsc(v) + '"></td>';
+      }).join('');
+      var id = dbEsc(r._id);
+      return '<tr data-id="' + id + '" data-entity="' + entity + '">' +
+        '<td class="db-id" title="' + id + '">' + id + '</td>' + cells +
+        '<td class="db-actions"><button type="button" class="db-save">Save</button><button type="button" class="db-del">Del</button></td></tr>';
+    }).join('');
+    box.innerHTML = '<div class="db-tablewrap"><table class="db-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
+      '<p style="color:#6b7d92;font-size:12px;margin-top:6px;">' + rows.length + ' record(s)</p>';
+  } catch (e) { box.textContent = '❌ network error'; }
+}
+
+function dbFlash(btn, msg) { var o = btn.textContent; btn.textContent = msg; setTimeout(function () { btn.textContent = o; }, 1600); }
+
+document.addEventListener('click', async function (e) {
+  var saveBtn = e.target.closest ? e.target.closest('.db-save') : null;
+  var delBtn = e.target.closest ? e.target.closest('.db-del') : null;
+  if (!saveBtn && !delBtn) return;
+  var tr = (saveBtn || delBtn).closest('tr');
+  var entity = tr.getAttribute('data-entity'), id = tr.getAttribute('data-id');
+  if (saveBtn) {
+    var fields = {};
+    tr.querySelectorAll('[data-k]').forEach(function (inp) { fields[inp.getAttribute('data-k')] = inp.value; });
+    saveBtn.disabled = true;
+    try {
+      var res = await fetch('/api/worldcup/admin/db/' + entity + '/update', { method: 'POST', headers: adminHeaders(), body: JSON.stringify({ id: id, fields: fields }) });
+      dbFlash(saveBtn, res.ok ? 'Saved ✓' : 'Error');
+    } catch (e2) { dbFlash(saveBtn, 'Error'); }
+    saveBtn.disabled = false;
+  } else {
+    if (!confirm('Delete this record?\n' + id + '\nThis cannot be undone.')) return;
+    delBtn.disabled = true;
+    try {
+      var res = await fetch('/api/worldcup/admin/db/' + entity + '/delete', { method: 'POST', headers: adminHeaders(), body: JSON.stringify({ id: id }) });
+      if (res.ok) { tr.remove(); } else { dbFlash(delBtn, 'Error'); delBtn.disabled = false; }
+    } catch (e3) { dbFlash(delBtn, 'Error'); delBtn.disabled = false; }
+  }
+});
 </script>
 {% endblock %}
