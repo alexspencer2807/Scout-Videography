@@ -221,10 +221,14 @@ def store_score_match(match_id, winner, actual_a, actual_b):
                 "actual_winner": winner,
                 "actual_score_a": actual_a, "actual_score_b": actual_b,
             })
-            batch.update(db.collection(USERS).document(pred.get("email")), {
+            # set(merge=True) rather than update(): the user may have made
+            # predictions before their Firestore profile existed, so the doc
+            # might not be there yet. update() would raise NotFound; merge
+            # creates it if missing and increments otherwise.
+            batch.set(db.collection(USERS).document(pred.get("email")), {
                 "prediction_points": firestore.Increment(pts),
                 "total_points": firestore.Increment(pts),
-            })
+            }, merge=True)
             scored += 1
         batch.commit()
         return scored
@@ -235,10 +239,12 @@ def store_score_match(match_id, winner, actual_a, actual_b):
         pts = points_for(pred)
         pred.update({"scored": True, "points": pts, "actual_winner": winner,
                      "actual_score_a": actual_a, "actual_score_b": actual_b})
-        user = _mem_users.get(pred.get("email"))
-        if user:
-            user["prediction_points"] = user.get("prediction_points", 0) + pts
-            user["total_points"] = user.get("total_points", 0) + pts
+        email = pred.get("email")
+        user = _mem_users.get(email)
+        if not user:                       # orphan prediction — create the profile
+            user = _mem_users[email] = {"email": email, "prediction_points": 0, "total_points": 0}
+        user["prediction_points"] = user.get("prediction_points", 0) + pts
+        user["total_points"] = user.get("total_points", 0) + pts
         scored += 1
     return scored
 
