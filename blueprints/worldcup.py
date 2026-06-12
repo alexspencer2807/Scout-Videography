@@ -85,14 +85,28 @@ def _blank_user(name, email, instagram, backing):
     }
 
 
+_POINT_FIELDS = ("prediction_points", "trivia_best", "bracket_points", "total_points")
+
+
 def _ensure_coach_user():
-    """Make sure the Coach Scout (AI) user document exists, without touching its
-    accumulated points (merge only writes the profile fields)."""
+    """Make sure the Coach Scout (AI) user exists with the point fields present
+    (as 0) so it shows on the leaderboard — Firestore's order_by skips docs that
+    lack total_points. Never resets points: existing point fields are left as-is."""
     db = _fs()
     if db is not None:
-        db.collection(USERS).document(COACH_EMAIL).set(dict(COACH_PROFILE), merge=True)
+        ref = db.collection(USERS).document(COACH_EMAIL)
+        snap = ref.get()
+        existing = snap.to_dict() if snap.exists else {}
+        patch = dict(COACH_PROFILE)
+        for f in _POINT_FIELDS:
+            if f not in existing:
+                patch[f] = 0
+        ref.set(patch, merge=True)
     else:
-        _mem_users.setdefault(COACH_EMAIL, {}).update(COACH_PROFILE)
+        u = _mem_users.setdefault(COACH_EMAIL, {})
+        u.update(COACH_PROFILE)
+        for f in _POINT_FIELDS:
+            u.setdefault(f, 0)
 
 
 def _parse_scoreline(s):
