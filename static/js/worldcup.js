@@ -815,7 +815,6 @@
         if (!list.length) return;
         mergeCoachAnalysis(list);
         renderMatchPreview();
-        populateCoachAsk();
         updateLeaderboard();
       })
       .catch(function () { /* keep hardcoded defaults if the API is unavailable */ });
@@ -1034,65 +1033,173 @@
   /* ===================== ASK COACH SCOUT TOOL ===================== */
   // Populate (or repopulate) the match dropdown from the current MATCH_ANALYSIS.
   // Kept separate so it can be rebuilt when AI predictions load asynchronously.
-  function populateCoachAsk() {
-    var select = document.getElementById('wcCoachAskSelect');
-    if (!select) return;
-    var placeholder = select.options[0];           // keep the "choose a match" option
-    select.innerHTML = '';
-    if (placeholder) select.appendChild(placeholder);
-    MATCH_ANALYSIS.forEach(function (an) {
-      var m = findMatchByNo(an.no);
-      if (!m) return;
-      var opt = document.createElement('option');
-      opt.value = an.no;
-      opt.textContent = m.a.n + ' vs ' + m.b.n;
-      select.appendChild(opt);
+  /* Searchable typeahead over ALL fixtures. Picking a match shows its forecast —
+     from the client cache if present, else generated on demand by the backend. */
+  var _coachItems = null;   // sorted match items for the combobox
+  var _coachSelNo = null;   // currently selected match number
+  var _coachActiveIdx = -1; // keyboard-highlighted option
+
+  function buildCoachItems() {
+    _coachItems = MATCHES.slice().sort(function (a, b) {
+      if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+      if (a.time !== b.time) return a.time < b.time ? -1 : 1;
+      return a.no - b.no;
+    }).map(function (m) {
+      return {
+        no: m.no, nameA: m.a.n, nameB: m.b.n, flagA: m.a.f, flagB: m.b.f,
+        date: fmtMatchDate(m.date), time: fmtTime(m.time), group: m.group,
+        status: m.result ? 'FT' : 'Upcoming',
+        text: m.a.n + ' vs ' + m.b.n,
+        search: (m.a.n + ' ' + m.b.n + ' group ' + m.group + ' ' + fmtMatchDate(m.date)).toLowerCase()
+      };
     });
   }
 
-  function initCoachAsk() {
-    var select = document.getElementById('wcCoachAskSelect');
+  function renderCoachList(q) {
+    var listEl = document.getElementById('wcCoachAskList');
+    var input = document.getElementById('wcCoachAskInput');
+    if (!listEl || !_coachItems) return;
+    var ql = (q || '').trim().toLowerCase();
+    var items = ql ? _coachItems.filter(function (it) { return it.search.indexOf(ql) !== -1; }) : _coachItems;
+    _coachActiveIdx = -1;
+    listEl.innerHTML = items.length ? items.map(function (it) {
+      return '<li class="wc-combo-opt" role="option" data-no="' + it.no + '">' +
+        '<span class="wc-combo-opt-main">' + it.flagA + ' ' + esc(it.nameA) + ' <span class="wc-combo-vs">vs</span> ' + it.flagB + ' ' + esc(it.nameB) + '</span>' +
+        '<span class="wc-combo-opt-meta">' + esc(it.date) + ' · ' + esc(it.time) + ' ET · Grp ' + esc(it.group) +
+          ' <span class="wc-combo-badge' + (it.status === 'FT' ? ' ft' : '') + '">' + it.status + '</span></span>' +
+      '</li>';
+    }).join('') : '<li class="wc-combo-empty">No matches found</li>';
+    listEl.hidden = false;
+    if (input) input.setAttribute('aria-expanded', 'true');
+  }
+
+  function hideCoachList() {
+    var listEl = document.getElementById('wcCoachAskList');
+    var input = document.getElementById('wcCoachAskInput');
+    if (listEl) listEl.hidden = true;
+    if (input) input.setAttribute('aria-expanded', 'false');
+    _coachActiveIdx = -1;
+  }
+
+  function selectCoachMatch(no) {
+    var it = _coachItems.filter(function (x) { return x.no === no; })[0];
+    if (!it) return;
+    _coachSelNo = no;
+    var input = document.getElementById('wcCoachAskInput');
     var btn = document.getElementById('wcCoachAskBtn');
-    var resultEl = document.getElementById('wcCoachAskResult');
-    if (!select || !btn || !resultEl) return;
+    if (input) input.value = it.text;
+    if (btn) btn.disabled = false;
+    hideCoachList();
+  }
 
-    populateCoachAsk();
+  function animateCoachResult(el) {
+    el.style.maxHeight = '0px';
+    el.style.opacity = '0';
+    requestAnimationFrame(function () {
+      el.style.transition = 'max-height 0.5s ease, opacity 0.5s ease';
+      el.style.maxHeight = el.scrollHeight + 'px';
+      el.style.opacity = '1';
+      if (el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
 
-    select.addEventListener('change', function() {
-      btn.disabled = !select.value;
+  function renderCoachResult(an) {
+    var el = document.getElementById('wcCoachAskResult');
+    if (!el) return;
+    var watchTeam = an.watchCode && PLAYERS ? PLAYERS[an.watchCode] : null;
+    var watchPlayer = watchTeam ? (watchTeam.players.filter(function (p) { return p.player_to_watch; })[0] || watchTeam.players[0]) : null;
+    var watchName = watchPlayer ? watchPlayer.name : 'the key players';
+    el.innerHTML =
+      '<div class="wc-analysis">' +
+        '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg('analyzing') + '" alt="Coach Scout"> Coach Scout&rsquo;s Analysis</div>' +
+        '<p class="wc-analysis-text">&ldquo;' + esc(an.text) + '&rdquo;</p>' +
+        '<div class="wc-analysis-foot">' +
+          '<div><span class="wc-analysis-k">🤖 Prediction:</span> ' + esc(an.scoreline) + ' <span class="wc-analysis-conf">(' + an.confidence + '% confidence)</span></div>' +
+          '<div><span class="wc-analysis-k">Key Battle:</span> ' + esc(an.keyBattle) + '</div>' +
+          '<div><span class="wc-analysis-k">Player to Watch:</span> ⭐ ' + esc(watchName) + '</div>' +
+        '</div>' +
+      '</div>';
+    animateCoachResult(el);
+  }
+
+  function showCoachMessage(headHtml, bodyHtml) {
+    var el = document.getElementById('wcCoachAskResult');
+    if (!el) return;
+    el.innerHTML = '<div class="wc-analysis"><div class="wc-analysis-head">' + headHtml + '</div>' +
+      '<p class="wc-analysis-text">' + bodyHtml + '</p></div>';
+    animateCoachResult(el);
+  }
+
+  function askCoach() {
+    if (_coachSelNo == null) return;
+    var no = _coachSelNo;
+    var existing = MATCH_ANALYSIS.filter(function (an) { return an.no === no; })[0];
+    if (existing) { renderCoachResult(existing); return; }
+
+    var btn = document.getElementById('wcCoachAskBtn');
+    if (btn) btn.disabled = true;
+    showCoachMessage(
+      '<img class="coach-scout-avatar sm" src="' + coachImg('analyzing') + '" alt="Coach Scout"> Coach Scout is analysing…',
+      'Crunching the matchup — this can take a few seconds ⚽');
+
+    fetch('/api/worldcup/coach-forecast/M' + no)
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.j || !res.j.prediction) {
+          showCoachMessage('🤖 Coach Scout',
+            esc((res.j && res.j.error) || 'Couldn\'t analyse this one right now — please try again shortly.'));
+          return;
+        }
+        mergeCoachAnalysis([res.j.prediction]);   // cache client-side + feed preview/leaderboard
+        var an = MATCH_ANALYSIS.filter(function (a) { return a.no === no; })[0] || res.j.prediction;
+        renderCoachResult(an);
+      })
+      .catch(function () { showCoachMessage('🤖 Coach Scout', 'Network error — please try again.'); })
+      .then(function () { if (btn) btn.disabled = (_coachSelNo == null); });
+  }
+
+  function initCoachAsk() {
+    var input = document.getElementById('wcCoachAskInput');
+    var btn = document.getElementById('wcCoachAskBtn');
+    var listEl = document.getElementById('wcCoachAskList');
+    if (!input || !btn || !listEl) return;
+
+    buildCoachItems();
+
+    input.addEventListener('focus', function () { renderCoachList(input.value); });
+    input.addEventListener('input', function () {
+      _coachSelNo = null; btn.disabled = true;   // editing clears the selection
+      renderCoachList(input.value);
+    });
+    input.addEventListener('keydown', function (e) {
+      var opts = listEl.querySelectorAll('.wc-combo-opt');
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!opts.length) return;
+        _coachActiveIdx += (e.key === 'ArrowDown' ? 1 : -1);
+        if (_coachActiveIdx < 0) _coachActiveIdx = opts.length - 1;
+        if (_coachActiveIdx >= opts.length) _coachActiveIdx = 0;
+        opts.forEach(function (o, i) { o.classList.toggle('active', i === _coachActiveIdx); });
+        opts[_coachActiveIdx].scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        if (_coachActiveIdx >= 0 && opts[_coachActiveIdx]) {
+          e.preventDefault();
+          selectCoachMatch(+opts[_coachActiveIdx].getAttribute('data-no'));
+        }
+      } else if (e.key === 'Escape') {
+        hideCoachList();
+      }
+    });
+    listEl.addEventListener('mousedown', function (e) {
+      var li = e.target.closest ? e.target.closest('.wc-combo-opt') : null;
+      if (li) { e.preventDefault(); selectCoachMatch(+li.getAttribute('data-no')); }
+    });
+    document.addEventListener('click', function (e) {
+      var combo = document.getElementById('wcCoachCombo');
+      if (combo && !combo.contains(e.target)) hideCoachList();
     });
 
-    btn.addEventListener('click', function() {
-      var matchNo = +select.value;
-      if (!matchNo) return;
-
-      var analysis = MATCH_ANALYSIS.filter(function(an) { return an.no === matchNo; })[0];
-      if (!analysis) return;
-
-      var watchPlayer = analysis.watchCode ? (PLAYERS[analysis.watchCode] || { players: [{}] }).players.filter(function(p) { return p.player_to_watch; })[0] : null;
-      var watchPlayerName = watchPlayer ? watchPlayer.name : 'the key players';
-
-      resultEl.innerHTML =
-        '<div class="wc-analysis">' +
-          '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg('analyzing') + '" alt="Coach Scout"> Coach Scout&rsquo;s Analysis</div>' +
-          '<p class="wc-analysis-text">&ldquo;' + esc(analysis.text) + '&rdquo;</p>' +
-          '<div class="wc-analysis-foot">' +
-            '<div><span class="wc-analysis-k">🤖 Prediction:</span> ' + esc(analysis.scoreline) + ' <span class="wc-analysis-conf">(' + analysis.confidence + '% confidence)</span></div>' +
-            '<div><span class="wc-analysis-k">Key Battle:</span> ' + esc(analysis.keyBattle) + '</div>' +
-            '<div><span class="wc-analysis-k">Player to Watch:</span> ⭐ ' + esc(watchPlayerName) + '</div>' +
-          '</div>' +
-        '</div>';
-
-      // Animate the result card in
-      resultEl.style.maxHeight = '0px';
-      resultEl.style.opacity = '0';
-      requestAnimationFrame(function() {
-        resultEl.style.transition = 'max-height 0.5s ease, opacity 0.5s ease';
-        resultEl.style.maxHeight = resultEl.scrollHeight + 'px';
-        resultEl.style.opacity = '1';
-        if (resultEl.scrollIntoView) resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
-    });
+    btn.addEventListener('click', askCoach);
   }
 
   /* ===================== INIT ===================== */

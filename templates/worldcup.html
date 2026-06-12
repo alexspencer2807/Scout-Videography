@@ -56,9 +56,12 @@
       <p class="wc-sub" style="margin:0 auto">Pick a fixture and Coach Scout serves up the prediction, key battle &amp; player to watch.</p>
       <img class="wc-coachask-banner" src="{{ asset('media/wc-connected-ball.jpg') }}" alt="World Cup 2026 connected match ball with real-time tracking technology" loading="lazy">
       <div class="wc-coach-ask-form" style="margin-left:auto;margin-right:auto;">
-        <select class="wc-input wc-select" id="wcCoachAskSelect" aria-label="Choose a match">
-          <option value="">Choose a match…</option>
-        </select>
+        <div class="wc-combo" id="wcCoachCombo">
+          <input type="text" class="wc-input" id="wcCoachAskInput" autocomplete="off"
+                 placeholder="Search a match — team, group or date…"
+                 role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="wcCoachAskList">
+          <ul class="wc-combo-list" id="wcCoachAskList" role="listbox" hidden></ul>
+        </div>
         <button type="button" class="wc-btn wc-btn--green" id="wcCoachAskBtn" disabled>Ask Coach Scout</button>
       </div>
       <div class="wc-coach-ask-result" id="wcCoachAskResult"></div>

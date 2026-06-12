@@ -268,6 +268,21 @@ def store_coach_predictions():
     return [{k: v for k, v in d.items() if k != "updated_at"} for d in docs]
 
 
+def store_get_coach_prediction(match_id):
+    """Return one cached Coach Scout prediction (JSON-safe), or None."""
+    db = _fs()
+    if db is not None:
+        snap = db.collection(COACH_PREDS).document(match_id).get()
+        if not snap.exists:
+            return None
+        d = snap.to_dict()
+    else:
+        d = _mem_coach.get(match_id)
+    if not d:
+        return None
+    return {k: v for k, v in d.items() if k != "updated_at"}
+
+
 _PLAYERS_CACHE = None
 
 
@@ -343,6 +358,31 @@ def _parse_prediction(raw):
         if s[:4].lower() == "json":
             s = s[4:].strip()
     return json.loads(s)
+
+
+def _forecast_doc(m, teams):
+    """Build a Coach Scout forecast doc for fixture `m` via Gemini.
+    Raises on missing team data or a generation/parse failure."""
+    team_a, team_b = teams.get(m["home"]), teams.get(m["away"])
+    if not team_a or not team_b:
+        raise ValueError(f"missing team data for {m['home']} or {m['away']}")
+    parsed = _parse_prediction(_generate_one(_prediction_prompt(m, team_a, team_b)))
+    watch = parsed.get("watchCode")
+    if watch not in (m["home"], m["away"]):
+        watch = m["home"]
+    try:
+        conf = max(0, min(100, int(parsed.get("confidence", 0))))
+    except (TypeError, ValueError):
+        conf = 0
+    return {
+        "no": m["no"], "match_id": f"M{m['no']}", "date": m["date_label"],
+        "text": str(parsed.get("text", "")).strip(),
+        "scoreline": str(parsed.get("scoreline", "")).strip(),
+        "confidence": conf,
+        "keyBattle": str(parsed.get("keyBattle", "")).strip(),
+        "watchCode": watch,
+        "home": m["home"], "away": m["away"], "group": m["group"], "md": m["md"],
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -525,45 +565,47 @@ def generate_predictions():
     generated, matches, errors = 0, [], []
 
     for raw_id in ids:
-        mid = str(raw_id or "").strip().upper()
-        m = match_by_id(mid)
+        m = match_by_id(raw_id)
         if not m:
-            errors.append(f"{mid or raw_id}: unknown match id")
+            errors.append(f"{raw_id}: unknown match id")
             continue
         mid = f"M{m['no']}"  # canonical id
-        team_a, team_b = teams.get(m["home"]), teams.get(m["away"])
-        if not team_a or not team_b:
-            errors.append(f"{mid}: missing team data for {m['home']} or {m['away']}")
-            continue
-
         try:
-            parsed = _parse_prediction(_generate_one(_prediction_prompt(m, team_a, team_b)))
+            doc = _forecast_doc(m, teams)
         except Exception as e:
             errors.append(f"{mid}: generation failed ({e})")
             continue
-
-        watch = parsed.get("watchCode")
-        if watch not in (m["home"], m["away"]):
-            watch = m["home"]
-        try:
-            conf = max(0, min(100, int(parsed.get("confidence", 0))))
-        except (TypeError, ValueError):
-            conf = 0
-
-        doc = {
-            "no": m["no"],
-            "match_id": mid,
-            "date": m["date_label"],
-            "text": str(parsed.get("text", "")).strip(),
-            "scoreline": str(parsed.get("scoreline", "")).strip(),
-            "confidence": conf,
-            "keyBattle": str(parsed.get("keyBattle", "")).strip(),
-            "watchCode": watch,
-            "home": m["home"], "away": m["away"],
-            "group": m["group"], "md": m["md"],
-        }
         store_save_coach_prediction(mid, doc)
         generated += 1
         matches.append(mid)
 
     return jsonify({"status": "ok", "generated": generated, "matches": matches, "errors": errors})
+
+
+@worldcup_bp.route("/api/worldcup/coach-forecast/<match_id>")
+def coach_forecast(match_id):
+    """Public, cache-first single-match forecast for the Ask Coach Scout tool.
+
+    Returns the stored forecast if one exists; otherwise generates it once via
+    Gemini, caches it in Firestore, and returns it. Bounded to the 72 known
+    fixtures, so total Gemini calls are capped and every repeat is a cache hit.
+    """
+    m = match_by_id(match_id)
+    if not m:
+        return jsonify({"error": "Unknown match id"}), 404
+    mid = f"M{m['no']}"
+
+    cached = store_get_coach_prediction(mid)
+    if cached:
+        return jsonify({"prediction": cached, "cached": True})
+
+    if not os.getenv("GEMINI_API_KEY"):
+        return jsonify({"error": "Coach Scout is not configured yet"}), 503
+
+    try:
+        doc = _forecast_doc(m, _players())
+    except Exception as e:
+        return jsonify({"error": f"Generation failed: {e}"}), 502
+
+    store_save_coach_prediction(mid, doc)
+    return jsonify({"prediction": doc, "cached": False})
