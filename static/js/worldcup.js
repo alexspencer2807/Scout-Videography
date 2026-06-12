@@ -286,8 +286,15 @@
 
   /* ===================== PREDICTIONS ===================== */
   function predictableMatches() {
-    // Matchday-1 fixtures are the next ones up — feature them for predictions.
-    return MATCHES.filter(function (m) { return m.md === 1 && m.status !== 'complete'; }).slice(0, 6);
+    // Rolling 3-day window (same as the Match Day Preview), ordered by date then
+    // kickoff time — so today's fixtures always appear.
+    var dates = rollingDates();
+    return MATCHES.filter(function (m) {
+      return dates.indexOf(m.date) !== -1 && m.status !== 'complete';
+    }).sort(function (a, b) {
+      if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+      return a.time < b.time ? -1 : (a.time > b.time ? 1 : 0);
+    });
   }
 
   // Kick-off in UTC (ET is UTC-4 in June). A prediction is editable until then.
@@ -300,59 +307,71 @@
   // (Prediction points are computed server-side and read from the leaderboard
   //  API; the client no longer tallies them — it has no match results.)
 
+  function predCardHtml(m, preds) {
+    var p = preds[m.id] || null;
+    var picks = [
+      { k: 'A', label: m.a.n + ' Win' },
+      { k: 'D', label: 'Draw' },
+      { k: 'B', label: m.b.n + ' Win' }
+    ];
+    // Editable until kickoff; locked once the match has started or has a result.
+    var started = hasStarted(m);
+    var locked = started || !!m.result;
+    var btns = picks.map(function (x) {
+      var sel = p && p.pick === x.k ? ' selected' : '';
+      var dis = locked ? ' disabled' : '';
+      return '<button type="button" class="wc-pred-btn' + sel + '"' + dis +
+             ' data-match="' + m.id + '" data-pick="' + x.k + '">' + esc(x.label) + '</button>';
+    }).join('');
+
+    var scoreA = p && p.scoreA != null ? p.scoreA : '';
+    var scoreB = p && p.scoreB != null ? p.scoreB : '';
+    var dis = locked ? 'disabled' : '';
+    var scoreRow = '<div class="wc-pred-score">' +
+      '<input type="number" min="0" max="20" id="sa-' + m.id + '" value="' + esc(scoreA) + '" ' + dis + ' aria-label="' + esc(m.a.n) + ' score">' +
+      '<span>score (optional)</span>' +
+      '<input type="number" min="0" max="20" id="sb-' + m.id + '" value="' + esc(scoreB) + '" ' + dis + ' aria-label="' + esc(m.b.n) + ' score">' +
+      '</div>';
+
+    var status = '';
+    if (m.result) {
+      var ok = p && p.pick === winnerOf(m.result);
+      status = '<div class="wc-pred-locked' + (ok ? '' : ' wrong') + '">' +
+               (ok ? 'Correct ✓ +3 pts' : 'Not this time ✗') + '</div>';
+    } else if (started) {
+      status = '<div class="wc-pred-locked">🔒 Kicked off — predictions locked</div>';
+    } else if (p) {
+      status = '<div class="wc-pred-locked">Saved ✓ — tap a pick to change before kickoff</div>';
+    }
+
+    return '<div class="wc-pred-card">' +
+      '<div class="wc-match-meta"><span>' + fmtTime(m.time) + ' ET · ' + mdLabel(m.md) + '</span><span>Group ' + esc(m.group) + '</span></div>' +
+      '<div class="wc-pred-top">' +
+        '<div class="wc-team wc-team-link" data-team="' + m.ca + '"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
+        '<span class="wc-vs">VS</span>' +
+        '<div class="wc-team wc-team-link" data-team="' + m.cb + '"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
+      '</div>' +
+      '<div class="wc-pred-btns">' + btns + '</div>' +
+      scoreRow + status +
+    '</div>';
+  }
+
   function loadPredictions() {
     var grid = document.getElementById('wcPredGrid');
     if (!grid) return;
     var preds = read(LS.preds, {});
     var list = predictableMatches();
-    grid.innerHTML = list.map(function (m) {
-      var p = preds[m.id] || null;
-      var picks = [
-        { k: 'A', label: m.a.n + ' Win' },
-        { k: 'D', label: 'Draw' },
-        { k: 'B', label: m.b.n + ' Win' }
-      ];
-      // Editable until kickoff; locked once the match has started or has a result.
-      var started = hasStarted(m);
-      var locked = started || !!m.result;
-      var btns = picks.map(function (x) {
-        var sel = p && p.pick === x.k ? ' selected' : '';
-        var dis = locked ? ' disabled' : '';
-        return '<button type="button" class="wc-pred-btn' + sel + '"' + dis +
-               ' data-match="' + m.id + '" data-pick="' + x.k + '">' + esc(x.label) + '</button>';
-      }).join('');
 
-      var scoreA = p && p.scoreA != null ? p.scoreA : '';
-      var scoreB = p && p.scoreB != null ? p.scoreB : '';
-      var dis = locked ? 'disabled' : '';
-      var scoreRow = '<div class="wc-pred-score">' +
-        '<input type="number" min="0" max="20" id="sa-' + m.id + '" value="' + esc(scoreA) + '" ' + dis + ' aria-label="' + esc(m.a.n) + ' score">' +
-        '<span>score (optional)</span>' +
-        '<input type="number" min="0" max="20" id="sb-' + m.id + '" value="' + esc(scoreB) + '" ' + dis + ' aria-label="' + esc(m.b.n) + ' score">' +
-        '</div>';
-
-      var status = '';
-      if (m.result) {
-        var ok = p && p.pick === winnerOf(m.result);
-        status = '<div class="wc-pred-locked' + (ok ? '' : ' wrong') + '">' +
-                 (ok ? 'Correct ✓ +3 pts' : 'Not this time ✗') + '</div>';
-      } else if (started) {
-        status = '<div class="wc-pred-locked">🔒 Kicked off — predictions locked</div>';
-      } else if (p) {
-        status = '<div class="wc-pred-locked">Saved ✓ — tap a pick to change before kickoff</div>';
+    // Group by day with a full-width header so it reads as a rolling 3-day slate.
+    var html = '', lastDate = null;
+    list.forEach(function (m) {
+      if (m.date !== lastDate) {
+        html += '<div class="wc-pred-day">' + fmtFullDate(m.date) + '</div>';
+        lastDate = m.date;
       }
-
-      return '<div class="wc-pred-card">' +
-        '<div class="wc-match-meta"><span>' + mdLabel(m.md) + ' · ' + fmtMatchDate(m.date) + ' · ' + fmtTime(m.time) + ' ET</span><span>Group ' + esc(m.group) + '</span></div>' +
-        '<div class="wc-pred-top">' +
-          '<div class="wc-team wc-team-link" data-team="' + m.ca + '"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
-          '<span class="wc-vs">VS</span>' +
-          '<div class="wc-team wc-team-link" data-team="' + m.cb + '"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
-        '</div>' +
-        '<div class="wc-pred-btns">' + btns + '</div>' +
-        scoreRow + status +
-      '</div>';
-    }).join('');
+      html += predCardHtml(m, preds);
+    });
+    grid.innerHTML = html || '<p class="wc-sub" style="text-align:center;grid-column:1/-1">No upcoming fixtures right now — check back soon.</p>';
 
     grid.querySelectorAll('.wc-pred-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {

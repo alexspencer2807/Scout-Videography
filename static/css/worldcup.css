@@ -224,6 +224,11 @@
 
 .wc-pred-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
 .wc-pred-card { background: var(--wc-card); border: 1px solid var(--wc-line); border-radius: 14px; padding: 18px; }
+.wc-pred-day {
+  grid-column: 1 / -1; margin: 8px 0 2px; font-family: 'Archivo Black', sans-serif;
+  font-size: 13px; letter-spacing: 0.5px; color: var(--wc-gold);
+  border-bottom: 1px solid var(--wc-line); padding-bottom: 8px;
+}
 /* 3 equal columns matching .wc-pred-btns so each team sits directly above its
    own button (Team A | VS/Draw | Team B). */
 .wc-pred-top { display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; gap: 8px; margin-bottom: 14px; }
