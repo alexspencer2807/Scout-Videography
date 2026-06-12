@@ -1095,20 +1095,43 @@
     });
   }
 
+  function coachOptHtml(it) {
+    return '<li class="wc-combo-opt" role="option" data-no="' + it.no + '">' +
+      '<span class="wc-combo-opt-main">' + it.flagA + ' ' + esc(it.nameA) + ' <span class="wc-combo-vs">vs</span> ' + it.flagB + ' ' + esc(it.nameB) + '</span>' +
+      '<span class="wc-combo-opt-meta">' + esc(it.date) + ' · ' + esc(it.time) + ' ET · Grp ' + esc(it.group) +
+        ' <span class="wc-combo-badge' + (it.status === 'FT' ? ' ft' : '') + '">' + it.status + '</span></span>' +
+    '</li>';
+  }
+
+  // Match numbers in the rolling 3-day window (same logic as the Match Day Preview).
+  function upcomingNos() {
+    var dates = rollingDates();
+    var set = {};
+    MATCHES.forEach(function (m) { if (dates.indexOf(m.date) !== -1) set[m.no] = true; });
+    return set;
+  }
+
   function renderCoachList(q) {
     var listEl = document.getElementById('wcCoachAskList');
     var input = document.getElementById('wcCoachAskInput');
     if (!listEl || !_coachItems) return;
     var ql = (q || '').trim().toLowerCase();
-    var items = ql ? _coachItems.filter(function (it) { return it.search.indexOf(ql) !== -1; }) : _coachItems;
     _coachActiveIdx = -1;
-    listEl.innerHTML = items.length ? items.map(function (it) {
-      return '<li class="wc-combo-opt" role="option" data-no="' + it.no + '">' +
-        '<span class="wc-combo-opt-main">' + it.flagA + ' ' + esc(it.nameA) + ' <span class="wc-combo-vs">vs</span> ' + it.flagB + ' ' + esc(it.nameB) + '</span>' +
-        '<span class="wc-combo-opt-meta">' + esc(it.date) + ' · ' + esc(it.time) + ' ET · Grp ' + esc(it.group) +
-          ' <span class="wc-combo-badge' + (it.status === 'FT' ? ' ft' : '') + '">' + it.status + '</span></span>' +
-      '</li>';
-    }).join('') : '<li class="wc-combo-empty">No matches found</li>';
+
+    if (!ql) {
+      // Default view: the next 3 days up top, then a prompt to search all fixtures.
+      var ups = upcomingNos();
+      var upItems = _coachItems.filter(function (it) { return ups[it.no]; });
+      listEl.innerHTML =
+        '<li class="wc-combo-head">📅 Upcoming</li>' +
+        (upItems.length ? upItems.map(coachOptHtml).join('') : '<li class="wc-combo-empty">No upcoming fixtures</li>') +
+        '<li class="wc-combo-divider">🔍 Search all fixtures — start typing</li>';
+    } else {
+      var items = _coachItems.filter(function (it) { return it.search.indexOf(ql) !== -1; });
+      listEl.innerHTML = items.length
+        ? items.map(coachOptHtml).join('')
+        : '<li class="wc-combo-empty">No matches found</li>';
+    }
     listEl.hidden = false;
     if (input) input.setAttribute('aria-expanded', 'true');
   }
