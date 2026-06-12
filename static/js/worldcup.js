@@ -870,6 +870,33 @@
     return (upcoming.length ? upcoming : dates.slice(-3)).slice(0, 3);
   }
 
+  // Coach Scout's analysis block for a match that has a forecast (`an`).
+  function analysisHtml(m, an) {
+    var tA = PLAYERS[m.ca], tB = PLAYERS[m.cb];
+    // Avatar reflects Coach Scout's outcome once the match has a result.
+    var coachState = 'analyzing';
+    if (m.result) {
+      var pg = parseScore(an.scoreline);
+      var pw = pg.a > pg.b ? 'A' : (pg.a < pg.b ? 'B' : 'D');
+      var aw = m.result.a > m.result.b ? 'A' : (m.result.a < m.result.b ? 'B' : 'D');
+      coachState = (pw === aw) ? 'celebrating' : 'shocked';
+    }
+    var watchTeam = an.watchCode === m.cb ? tB : tA;
+    var watchPlayer = watchTeam && watchTeam.players
+      ? (watchTeam.players.filter(function (p) { return p.player_to_watch; })[0] || watchTeam.players[0])
+      : null;
+    var watchLine = watchPlayer ? ' ⭐ ' + esc(watchPlayer.name) + ' (' + esc(watchTeam.name) + ')' : ' the key players';
+    return '<div class="wc-analysis">' +
+      '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg(coachState) + '" alt="Coach Scout"> Coach Scout&rsquo;s Pre-Match Analysis</div>' +
+      '<p class="wc-analysis-text">&ldquo;' + esc(an.text) + '&rdquo;</p>' +
+      '<div class="wc-analysis-foot">' +
+        '<div><span class="wc-analysis-k">🤖 Prediction:</span> ' + esc(an.scoreline) + ' <span class="wc-analysis-conf">(' + an.confidence + '% confidence)</span></div>' +
+        '<div><span class="wc-analysis-k">Key Battle:</span> ' + esc(an.keyBattle) + '</div>' +
+        '<div><span class="wc-analysis-k">Player to Watch:</span>' + watchLine + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
   // One match block: teams + (Coach Scout analysis if available) + player profiles.
   function matchPreviewBlock(m, an) {
     var tA = PLAYERS[m.ca], tB = PLAYERS[m.cb];
@@ -883,29 +910,13 @@
       '</div>' +
       '<div class="wc-mp-meta"><strong class="wc-mp-time">' + fmtTime(m.time) + ' ET</strong> · Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + esc(m.venue) + '</div>';
 
-    var analysis = '';
-    if (an) {
-      // Avatar reflects Coach Scout's outcome once the match has a result.
-      var coachState = 'analyzing';
-      if (m.result) {
-        var pg = parseScore(an.scoreline);
-        var pw = pg.a > pg.b ? 'A' : (pg.a < pg.b ? 'B' : 'D');
-        var aw = m.result.a > m.result.b ? 'A' : (m.result.a < m.result.b ? 'B' : 'D');
-        coachState = (pw === aw) ? 'celebrating' : 'shocked';
-      }
-      var watchTeam = an.watchCode === m.cb ? tB : tA;
-      var watchPlayer = watchTeam.players.filter(function (p) { return p.player_to_watch; })[0] || watchTeam.players[0];
-      analysis =
-        '<div class="wc-analysis">' +
-          '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg(coachState) + '" alt="Coach Scout"> Coach Scout&rsquo;s Pre-Match Analysis</div>' +
-          '<p class="wc-analysis-text">&ldquo;' + esc(an.text) + '&rdquo;</p>' +
-          '<div class="wc-analysis-foot">' +
-            '<div><span class="wc-analysis-k">🤖 Prediction:</span> ' + esc(an.scoreline) + ' <span class="wc-analysis-conf">(' + an.confidence + '% confidence)</span></div>' +
-            '<div><span class="wc-analysis-k">Key Battle:</span> ' + esc(an.keyBattle) + '</div>' +
-            '<div><span class="wc-analysis-k">Player to Watch:</span> ⭐ ' + esc(watchPlayer.name) + ' (' + esc(watchTeam.name) + ')</div>' +
-          '</div>' +
-        '</div>';
-    }
+    // Every match shows Coach Scout's analysis. If we already have it, render it;
+    // otherwise drop a placeholder that fillPendingForecasts() fills in on demand.
+    var analysis = an ? analysisHtml(m, an) :
+      '<div class="wc-analysis wc-analysis-pending" data-fc="' + m.no + '">' +
+        '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg('analyzing') + '" alt="Coach Scout"> Coach Scout&rsquo;s Pre-Match Analysis</div>' +
+        '<p class="wc-analysis-text wc-coach-loading">Analysing this matchup…</p>' +
+      '</div>';
 
     var colA = tA.players.map(function (p) { return playerCard(p, tA.colors); }).join('');
     var colB = tB.players.map(function (p) { return playerCard(p, tB.colors); }).join('');
@@ -950,10 +961,48 @@
 
     body.querySelectorAll('.wc-day-head').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var open = btn.parentNode.classList.toggle('open');
+        var group = btn.parentNode;
+        var open = group.classList.toggle('open');
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) fillPendingForecasts(group);   // generate any missing forecasts for this day
       });
     });
+
+    // Forecast the matches in the day that's open on load.
+    fillPendingForecasts(body.querySelector('.wc-day-group.open'));
+  }
+
+  // Lazily fetch Coach Scout forecasts (cache-first) for any shown match that
+  // lacks one, filling its analysis slot. Sequential, so a fresh day generates
+  // one match at a time rather than firing a burst of Gemini calls at once.
+  function fillPendingForecasts(scope) {
+    if (!scope) return;
+    var queue = Array.prototype.slice.call(scope.querySelectorAll('.wc-analysis-pending[data-fc]'))
+      .filter(function (el) { return !el.getAttribute('data-loading'); });
+    (function next() {
+      if (!queue.length) return;
+      var el = queue.shift();
+      if (!document.body.contains(el)) { next(); return; }   // re-rendered — skip
+      el.setAttribute('data-loading', '1');
+      var no = +el.getAttribute('data-fc');
+      var m = findMatchByNo(no);
+      function fail() {
+        var t = el.querySelector('.wc-analysis-text');
+        if (t) { t.classList.remove('wc-coach-loading'); t.textContent = 'Pre-match analysis coming soon.'; }
+      }
+      fetch('/api/worldcup/coach-forecast/M' + no)
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j && j.prediction && m) {
+            mergeCoachAnalysis([j.prediction]);
+            var an = MATCH_ANALYSIS.filter(function (a) { return a.no === no; })[0];
+            if (an && el.parentNode) el.outerHTML = analysisHtml(m, an);
+            else fail();
+          } else { fail(); }
+        })
+        .catch(fail)
+        .then(next);   // process the next pending card sequentially
+    })();
   }
 
   // Coach Scout tournament outlook from FIFA ranking (expanded 48-team / Round-of-32 format).

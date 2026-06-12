@@ -518,6 +518,10 @@
   .wc-coach-ask-form select { flex-grow: 1; }
 }
 
+/* Coach Scout "analysing…" placeholder while a forecast is generated */
+.wc-coach-loading { font-style: italic; color: var(--wc-muted); opacity: 0.85; animation: wc-pulse 1.4s ease-in-out infinite; }
+@keyframes wc-pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
 /* ============ ASK COACH SCOUT: searchable combobox ============ */
 .wc-combo { position: relative; flex-grow: 1; }
 .wc-combo .wc-input { width: 100%; }
