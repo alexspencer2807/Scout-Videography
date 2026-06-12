@@ -174,27 +174,21 @@ def store_save_prediction(email, match_id, pick, score_a, score_b):
 
 
 def store_save_trivia(email, score):
-    """Keep the user's best trivia score; bump total_points by the improvement."""
+    """Track the user's best trivia score only. Trivia does NOT count toward the
+    leaderboard total — predictions are the only scoring (3 win + 5 exact)."""
     db = _fs()
     if db is not None:
-        from google.cloud import firestore
         ref = db.collection(USERS).document(email)
         snap = ref.get()
         if not snap.exists:
             return False
-        best = snap.to_dict().get("trivia_best", 0) or 0
-        if score > best:
-            ref.update({
-                "trivia_best": score,
-                "total_points": firestore.Increment(score - best),
-            })
+        if score > (snap.to_dict().get("trivia_best", 0) or 0):
+            ref.update({"trivia_best": score})
         return True
     user = _mem_users.get(email)
     if not user:
         return False
-    best = user.get("trivia_best", 0) or 0
-    if score > best:
-        user["total_points"] = user.get("total_points", 0) + (score - best)
+    if score > (user.get("trivia_best", 0) or 0):
         user["trivia_best"] = score
     return True
 
@@ -812,6 +806,28 @@ def admin_db_update(entity):
     if not store_update(e["col"], e["mem"], doc_id, clean):
         return jsonify({"error": "record not found"}), 404
     return jsonify({"status": "ok", "id": doc_id, "updated": clean})
+
+
+@worldcup_bp.route("/api/worldcup/admin/recompute-totals", methods=["POST"])
+def admin_recompute_totals():
+    """Recompute every user's total_points = prediction_points + bracket_points
+    (trivia excluded). One-shot maintenance to correct historical totals after
+    the scoring rule changed; idempotent."""
+    if not _admin_ok():
+        return _admin_error()
+    db = _fs()
+    n = 0
+    if db is not None:
+        for doc in db.collection(USERS).stream():
+            d = doc.to_dict()
+            total = (d.get("prediction_points", 0) or 0) + (d.get("bracket_points", 0) or 0)
+            doc.reference.update({"total_points": total})
+            n += 1
+    else:
+        for u in _mem_users.values():
+            u["total_points"] = (u.get("prediction_points", 0) or 0) + (u.get("bracket_points", 0) or 0)
+            n += 1
+    return jsonify({"status": "ok", "updated": n})
 
 
 @worldcup_bp.route("/api/worldcup/admin/db/<entity>/delete", methods=["POST"])

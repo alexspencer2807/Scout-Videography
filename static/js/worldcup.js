@@ -532,7 +532,7 @@
     var reg = read(LS.reg, null);
     var predPts = predictionPoints();
     var triviaBest = read(LS.triviaBest, 0);
-    var youTotal = predPts + triviaBest;
+    var youTotal = predPts;   // trivia does not count toward the leaderboard total
     var youHandleNorm = reg ? normHandle(reg.instagram) : '';
 
     // Everyone from the shared server board — including Coach Scout, which now
