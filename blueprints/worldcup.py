@@ -11,6 +11,7 @@ Prediction picks use the same vocabulary as the front-end (static/js/worldcup.js
 The admin scoring endpoint speaks the same codes so picks actually match.
 """
 import os
+import re
 import json
 
 from flask import Blueprint, request, jsonify, render_template, current_app
@@ -23,6 +24,15 @@ worldcup_bp = Blueprint("worldcup", __name__)
 USERS = "worldcup_users"
 PREDICTIONS = "worldcup_predictions"
 COACH_PREDS = "worldcup_coach_predictions"
+
+# Coach Scout competes on the leaderboard as a real (AI) user.
+COACH_EMAIL = "ai@scoutvideoja.com"
+COACH_PROFILE = {
+    "name": "🤖 Coach Scout",
+    "email": COACH_EMAIL,
+    "instagram": "@scoutvideoja",
+    "is_ai": True,
+}
 
 # ---------------------------------------------------------------------------
 # In-memory fallback store (used whenever Firestore is unavailable).
@@ -73,6 +83,35 @@ def _blank_user(name, email, instagram, backing):
         "bracket_points": 0,
         "total_points": 0,
     }
+
+
+def _ensure_coach_user():
+    """Make sure the Coach Scout (AI) user document exists, without touching its
+    accumulated points (merge only writes the profile fields)."""
+    db = _fs()
+    if db is not None:
+        db.collection(USERS).document(COACH_EMAIL).set(dict(COACH_PROFILE), merge=True)
+    else:
+        _mem_users.setdefault(COACH_EMAIL, {}).update(COACH_PROFILE)
+
+
+def _parse_scoreline(s):
+    """Pull (home, away) goals out of a scoreline like 'Mexico 2-0 South Africa'."""
+    m = re.search(r"(\d+)\s*[-–]\s*(\d+)", str(s or ""))
+    return (int(m.group(1)), int(m.group(2))) if m else None
+
+
+def _coach_prediction_points(scoreline, winner, actual_a, actual_b):
+    """Same scoring as fans: +3 correct winner, +5 bonus for the exact score."""
+    sc = _parse_scoreline(scoreline)
+    if not sc:
+        return 0
+    pa, pb = sc
+    pw = "A" if pa > pb else ("B" if pa < pb else "D")
+    pts = 3 if pw == winner else 0
+    if pa == actual_a and pb == actual_b:
+        pts += 5
+    return pts
 
 
 # ---------------------------------------------------------------------------
@@ -168,6 +207,7 @@ def store_leaderboard(limit=20):
             "trivia_best": u.get("trivia_best", 0),
             "bracket_points": u.get("bracket_points", 0),
             "total_points": u.get("total_points", 0),
+            "is_ai": bool(u.get("is_ai", False)),
         })
     board.sort(key=lambda x: x["total_points"], reverse=True)
     for i, entry in enumerate(board):
@@ -230,6 +270,20 @@ def store_score_match(match_id, winner, actual_a, actual_b):
                 "total_points": firestore.Increment(pts),
             }, merge=True)
             scored += 1
+
+        # Coach Scout competes too — score its own forecast for this match (once).
+        m = match_by_id(match_id)
+        if m:
+            coach_ref = db.collection(COACH_PREDS).document(f"M{m['no']}")
+            csnap = coach_ref.get()
+            if csnap.exists and not csnap.to_dict().get("scored"):
+                cpts = _coach_prediction_points(csnap.to_dict().get("scoreline"), winner, actual_a, actual_b)
+                batch.update(coach_ref, {"scored": True, "points": cpts})
+                batch.set(db.collection(USERS).document(COACH_EMAIL), dict(COACH_PROFILE, **{
+                    "prediction_points": firestore.Increment(cpts),
+                    "total_points": firestore.Increment(cpts),
+                }), merge=True)
+
         batch.commit()
         return scored
     # memory
@@ -246,6 +300,20 @@ def store_score_match(match_id, winner, actual_a, actual_b):
         user["prediction_points"] = user.get("prediction_points", 0) + pts
         user["total_points"] = user.get("total_points", 0) + pts
         scored += 1
+
+    # Coach Scout competes too (memory backend).
+    m = match_by_id(match_id)
+    if m:
+        cp = _mem_coach.get(f"M{m['no']}")
+        if cp and not cp.get("scored"):
+            cpts = _coach_prediction_points(cp.get("scoreline"), winner, actual_a, actual_b)
+            cp["scored"] = True
+            cp["points"] = cpts
+            cu = _mem_users.get(COACH_EMAIL)
+            if not cu:
+                cu = _mem_users[COACH_EMAIL] = dict(COACH_PROFILE)
+            cu["prediction_points"] = cu.get("prediction_points", 0) + cpts
+            cu["total_points"] = cu.get("total_points", 0) + cpts
     return scored
 
 
@@ -253,6 +321,7 @@ def store_score_match(match_id, winner, actual_a, actual_b):
 # Coach Scout predictions (AI-generated, shared) — store + Gemini generation
 # ---------------------------------------------------------------------------
 def store_save_coach_prediction(match_id, doc):
+    _ensure_coach_user()   # Coach Scout exists on the leaderboard once it has a forecast
     db = _fs()
     if db is not None:
         from google.cloud import firestore

@@ -535,11 +535,20 @@
     var youTotal = predPts + triviaBest;
     var youHandleNorm = reg ? normHandle(reg.instagram) : '';
 
-    // Other fans from the shared server board (exclude the current user — we add
-    // a live local row for them below to avoid duplicates / stale points).
+    // Everyone from the shared server board — including Coach Scout, which now
+    // earns real points and arrives like any other user (flagged is_ai). We only
+    // drop the current fan, re-adding them as a live local row below.
     var rows = _serverBoard.filter(function (e) {
-      return !(youHandleNorm && normHandle(e.instagram) === youHandleNorm);
+      return !(youHandleNorm && normHandle(e.instagram) === youHandleNorm && !e.is_ai);
     }).map(function (e) {
+      if (e.is_ai) {
+        return {
+          name: '<img class="coach-scout-avatar sm wc-board-av" src="' + coachImg('default') + '" alt="Coach Scout"> ' + esc(e.name || 'Coach Scout'),
+          handle: 'AI Analyst · ' + esc(e.instagram || '@scoutvideoja'),
+          pred: e.prediction_points || 0, trivia: '🤖',
+          total: e.total_points || 0, isCoach: true
+        };
+      }
       var handle = e.instagram || '';
       if (e.backing) handle += (handle ? ' · ' : '') + 'backing ' + flagFor(e.backing) + ' ' + e.backing;
       return { name: esc(e.name || 'Anonymous'), handle: esc(handle),
@@ -559,12 +568,7 @@
                   pred: predPts, trivia: triviaBest, total: bestTotal, you: true });
     }
 
-    // Coach Scout competes too — default avatar, swapping to winning-streak on a 3+ run.
-    var coach = coachScoutRecord();
-    var coachName = '<img class="coach-scout-avatar sm wc-board-av" src="' + coachImg(coach.avatar) + '" alt="Coach Scout"> Coach Scout' +
-      (coach.streak >= 3 ? ' <span class="wc-board-streak">🔥 ' + coach.streak + ' in a row</span>' : '');
-    rows.push({ name: coachName, handle: 'AI Analyst · ' + coach.correct + '/' + coach.completed + ' correct',
-                pred: coach.pts, trivia: '🤖', total: coach.pts, isCoach: true });
+    // (Coach Scout is no longer injected here — it comes from the server board.)
 
     // Sort by numeric total, assign medal/number ranks, pad to at least 4 rows.
     rows.sort(function (a, b) { return (b.total || 0) - (a.total || 0); });
@@ -755,25 +759,8 @@
     var m = String(s).match(/(\d+)\s*-\s*(\d+)/);
     return m ? { a: +m[1], b: +m[2] } : { a: 0, b: 0 };
   }
-  // Tally Coach Scout's own predictions (MATCH_ANALYSIS scorelines) against any
-  // completed results. Used for the leaderboard entry + winning-streak avatar.
-  function coachScoutRecord() {
-    var correct = 0, exact = 0, pts = 0, streak = 0, completed = 0;
-    MATCH_ANALYSIS.slice().sort(function (a, b) { return a.no - b.no; }).forEach(function (an) {
-      var m = findMatchByNo(an.no);
-      if (!m || !m.result) return;
-      completed++;
-      var pg = parseScore(an.scoreline);
-      var pw = pg.a > pg.b ? 'A' : (pg.a < pg.b ? 'B' : 'D');
-      var aw = m.result.a > m.result.b ? 'A' : (m.result.a < m.result.b ? 'B' : 'D');
-      if (pw === aw) {
-        correct++; pts += 3; streak++;
-        if (pg.a === m.result.a && pg.b === m.result.b) { exact++; pts += 5; }
-      } else { streak = 0; }
-    });
-    return { correct: correct, exact: exact, pts: pts, streak: streak, completed: completed,
-             avatar: streak >= 3 ? 'winning-streak' : 'default' };
-  }
+  // (Coach Scout's leaderboard standing is now tracked server-side in Firestore
+  //  and arrives via /api/worldcup/leaderboard, so no client-side tally here.)
 
   function loadPlayers() {
     var url = window.WC_PLAYERS_URL || '/static/data/worldcup-players.json';
