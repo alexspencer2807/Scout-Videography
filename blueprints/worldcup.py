@@ -391,7 +391,10 @@ def _generate_one(raw_prompt):
         contents=[{"role": "user", "parts": [{"text": raw_prompt}]}],
         config={
             "temperature": 0.7,
-            "max_output_tokens": 600,
+            # Gemini 2.5 spends output tokens on internal "thinking"; disable it
+            # and give enough room so the JSON is never truncated mid-string.
+            "max_output_tokens": 2048,
+            "thinking_config": {"thinking_budget": 0},
             "system_instruction": COACH_SYSTEM_PROMPT,
             "response_mime_type": "application/json",
         },
