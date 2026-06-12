@@ -518,6 +518,26 @@
   .wc-coach-ask-form select { flex-grow: 1; }
 }
 
+/* ============ ROLLING 3-DAY PREVIEW: collapsible day groups ============ */
+.wc-day-group { border-top: 2px solid var(--wc-line); }
+.wc-day-head {
+  width: 100%; display: flex; align-items: center; gap: 12px;
+  background: transparent; border: none; cursor: pointer;
+  padding: 18px 4px; color: #fff; text-align: left;
+}
+.wc-day-head:hover .wc-day-date { color: var(--wc-green); }
+.wc-day-date {
+  font-family: 'Archivo Black', sans-serif; font-size: 16px; margin-right: auto;
+  transition: color 0.2s;
+}
+.wc-day-count {
+  color: var(--wc-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.wc-day-chev { color: var(--wc-green); font-size: 14px; transition: transform 0.25s; }
+.wc-day-group.open .wc-day-chev { transform: rotate(180deg); }
+.wc-day-body { display: none; }
+.wc-day-group.open .wc-day-body { display: block; padding-bottom: 16px; }
+
 /* ============ ASK COACH SCOUT banner ============ */
 .wc-coachask-banner {
   display: block; width: 100%; max-width: 520px; margin: 22px auto 4px;

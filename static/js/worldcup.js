@@ -848,27 +848,44 @@
     return null;
   }
 
-  function renderMatchPreview() {
-    var body = document.getElementById('wcMatchPreviewBody');
-    if (!body || !PLAYERS) return;
+  // Full weekday for the day separators, e.g. "Thursday · 11 June".
+  var WC_DOW_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function fmtFullDate(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2], 12));
+    return WC_DOW_FULL[d.getUTCDay()] + ' · ' + (+p[2]) + ' ' + WC_MONTHS[+p[1] - 1];
+  }
+  function localISO(d) {
+    var m = d.getMonth() + 1, day = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
+  }
+  // The next 3 distinct fixture dates from today — the rolling 3-day window.
+  // Falls back to the last 3 dates once the tournament is over.
+  function rollingDates() {
+    var seen = {}, dates = [];
+    MATCHES.forEach(function (m) { if (!seen[m.date]) { seen[m.date] = 1; dates.push(m.date); } });
+    dates.sort();
+    var todayISO = localISO(new Date());
+    var upcoming = dates.filter(function (d) { return d >= todayISO; });
+    return (upcoming.length ? upcoming : dates.slice(-3)).slice(0, 3);
+  }
 
-    var blocks = MATCH_ANALYSIS.map(function (an) {
-      var m = findMatchByNo(an.no);
-      if (!m) return '';
-      var tA = PLAYERS[m.ca], tB = PLAYERS[m.cb];
-      if (!tA || !tB) return '';
+  // One match block: teams + (Coach Scout analysis if available) + player profiles.
+  function matchPreviewBlock(m, an) {
+    var tA = PLAYERS[m.ca], tB = PLAYERS[m.cb];
+    if (!tA || !tB) return '';
 
-      var watchTeam = an.watchCode === m.cb ? tB : tA;
-      var watchPlayer = watchTeam.players.filter(function (p) { return p.player_to_watch; })[0] || watchTeam.players[0];
+    var header =
+      '<div class="wc-mp-header">' +
+        '<div class="wc-mp-team wc-team-link" data-team="' + m.ca + '"><span class="wc-mp-flag">' + m.a.f + '</span><span>' + esc(m.a.n) + '</span></div>' +
+        '<span class="wc-mp-vs">VS</span>' +
+        '<div class="wc-mp-team wc-team-link" data-team="' + m.cb + '"><span class="wc-mp-flag">' + m.b.f + '</span><span>' + esc(m.b.n) + '</span></div>' +
+      '</div>' +
+      '<div class="wc-mp-meta"><strong class="wc-mp-time">' + fmtTime(m.time) + ' ET</strong> · Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + esc(m.venue) + '</div>';
 
-      var header =
-        '<div class="wc-mp-header">' +
-          '<div class="wc-mp-team wc-team-link" data-team="' + m.ca + '"><span class="wc-mp-flag">' + m.a.f + '</span><span>' + esc(m.a.n) + '</span></div>' +
-          '<span class="wc-mp-vs">VS</span>' +
-          '<div class="wc-mp-team wc-team-link" data-team="' + m.cb + '"><span class="wc-mp-flag">' + m.b.f + '</span><span>' + esc(m.b.n) + '</span></div>' +
-        '</div>' +
-        '<div class="wc-mp-meta">Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + fmtMatchDate(m.date) + ' · ' + fmtTime(m.time) + ' ET · ' + esc(m.venue) + '</div>';
-
+    var analysis = '';
+    if (an) {
       // Avatar reflects Coach Scout's outcome once the match has a result.
       var coachState = 'analyzing';
       if (m.result) {
@@ -877,7 +894,9 @@
         var aw = m.result.a > m.result.b ? 'A' : (m.result.a < m.result.b ? 'B' : 'D');
         coachState = (pw === aw) ? 'celebrating' : 'shocked';
       }
-      var analysis =
+      var watchTeam = an.watchCode === m.cb ? tB : tA;
+      var watchPlayer = watchTeam.players.filter(function (p) { return p.player_to_watch; })[0] || watchTeam.players[0];
+      analysis =
         '<div class="wc-analysis">' +
           '<div class="wc-analysis-head"><img class="coach-scout-avatar sm" src="' + coachImg(coachState) + '" alt="Coach Scout"> Coach Scout&rsquo;s Pre-Match Analysis</div>' +
           '<p class="wc-analysis-text">&ldquo;' + esc(an.text) + '&rdquo;</p>' +
@@ -887,21 +906,55 @@
             '<div><span class="wc-analysis-k">Player to Watch:</span> ⭐ ' + esc(watchPlayer.name) + ' (' + esc(watchTeam.name) + ')</div>' +
           '</div>' +
         '</div>';
+    }
 
-      var colA = tA.players.map(function (p) { return playerCard(p, tA.colors); }).join('');
-      var colB = tB.players.map(function (p) { return playerCard(p, tB.colors); }).join('');
-      var comparison =
-        '<div class="wc-mp-compare">' +
-          '<div class="wc-mp-col"><div class="wc-mp-colhead wc-team-link" data-team="' + m.ca + '">' + m.a.f + ' ' + esc(m.a.n) + '</div>' + colA + '</div>' +
-          '<div class="wc-mp-col"><div class="wc-mp-colhead wc-team-link" data-team="' + m.cb + '">' + m.b.f + ' ' + esc(m.b.n) + '</div>' + colB + '</div>' +
-        '</div>';
+    var colA = tA.players.map(function (p) { return playerCard(p, tA.colors); }).join('');
+    var colB = tB.players.map(function (p) { return playerCard(p, tB.colors); }).join('');
+    var comparison =
+      '<div class="wc-mp-compare">' +
+        '<div class="wc-mp-col"><div class="wc-mp-colhead wc-team-link" data-team="' + m.ca + '">' + m.a.f + ' ' + esc(m.a.n) + '</div>' + colA + '</div>' +
+        '<div class="wc-mp-col"><div class="wc-mp-colhead wc-team-link" data-team="' + m.cb + '">' + m.b.f + ' ' + esc(m.b.n) + '</div>' + colB + '</div>' +
+      '</div>';
 
-      // Note: no .fade-in here — these blocks are injected after the scroll
-      // observer has already run, so they'd never receive the .visible class.
-      return '<div class="wc-mp-block">' + header + analysis + comparison + '</div>';
+    return '<div class="wc-mp-block">' + header + analysis + comparison + '</div>';
+  }
+
+  function renderMatchPreview() {
+    var body = document.getElementById('wcMatchPreviewBody');
+    if (!body || !PLAYERS) return;
+
+    var dates = rollingDates();
+    if (!dates.length) {
+      body.innerHTML = '<p class="wc-sub" style="text-align:center">No upcoming fixtures to preview.</p>';
+      return;
+    }
+
+    var analysisByNo = {};
+    MATCH_ANALYSIS.forEach(function (an) { analysisByNo[an.no] = an; });
+
+    // One collapsible group per day, days ordered by date, matches by kickoff time.
+    body.innerHTML = dates.map(function (dateISO, di) {
+      var dayMatches = MATCHES.filter(function (m) { return m.date === dateISO; })
+        .sort(function (a, b) { return a.time < b.time ? -1 : (a.time > b.time ? 1 : 0); });
+      var blocks = dayMatches.map(function (m) { return matchPreviewBlock(m, analysisByNo[m.no]); }).join('');
+      var open = di === 0;                 // nearest day expanded; the rest collapsed
+      var n = dayMatches.length;
+      return '<div class="wc-day-group' + (open ? ' open' : '') + '">' +
+        '<button type="button" class="wc-day-head" aria-expanded="' + open + '">' +
+          '<span class="wc-day-date">' + fmtFullDate(dateISO) + '</span>' +
+          '<span class="wc-day-count">' + n + ' match' + (n === 1 ? '' : 'es') + '</span>' +
+          '<span class="wc-day-chev" aria-hidden="true">▾</span>' +
+        '</button>' +
+        '<div class="wc-day-body">' + (blocks || '<p class="wc-sub" style="text-align:center;margin:16px auto">No fixtures.</p>') + '</div>' +
+      '</div>';
     }).join('');
 
-    body.innerHTML = blocks || '<p class="wc-sub" style="text-align:center">No upcoming fixtures to preview.</p>';
+    body.querySelectorAll('.wc-day-head').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var open = btn.parentNode.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
   }
 
   // Coach Scout tournament outlook from FIFA ranking (expanded 48-team / Round-of-32 format).
