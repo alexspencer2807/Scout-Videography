@@ -605,6 +605,30 @@ def save_trivia_score():
     return jsonify({"status": "ok"})
 
 
+@worldcup_bp.route("/api/worldcup/prediction-stats/<match_id>")
+def prediction_stats(match_id):
+    """Aggregate crowd pick distribution for a match — counts only, no user data."""
+    m = match_by_id(match_id)
+    mid = f"M{m['no']}" if m else (match_id or "").strip()
+    counts = {"A": 0, "D": 0, "B": 0}
+    db = _fs()
+    if db is not None:
+        for d in db.collection(PREDICTIONS).where("match_id", "==", mid).stream():
+            pk = (d.to_dict().get("pick") or "").upper()
+            if pk in counts:
+                counts[pk] += 1
+    else:
+        for pr in _mem_preds.values():
+            if pr.get("match_id") == mid:
+                pk = (pr.get("pick") or "").upper()
+                if pk in counts:
+                    counts[pk] += 1
+    return jsonify({
+        "total": counts["A"] + counts["D"] + counts["B"],
+        "team_a": counts["A"], "draw": counts["D"], "team_b": counts["B"],
+    })
+
+
 @worldcup_bp.route("/api/worldcup/leaderboard")
 def get_leaderboard():
     return jsonify({"leaderboard": store_leaderboard(20)})
@@ -834,6 +858,51 @@ def admin_recompute_totals():
             u["total_points"] = (u.get("prediction_points", 0) or 0) + (u.get("bracket_points", 0) or 0)
             n += 1
     return jsonify({"status": "ok", "updated": n})
+
+
+@worldcup_bp.route("/api/worldcup/admin/fan-predictions")
+def admin_fan_predictions():
+    """All fan predictions grouped by match, joined with fan names + match labels."""
+    if not _admin_ok():
+        return _admin_error()
+    db = _fs()
+    if db is not None:
+        users = {d.id: d.to_dict() for d in db.collection(USERS).stream()}
+        preds = [d.to_dict() for d in db.collection(PREDICTIONS).stream()]
+    else:
+        users = dict(_mem_users)
+        preds = list(_mem_preds.values())
+
+    teams = _players()
+    groups = {}
+    for pr in preds:
+        groups.setdefault(pr.get("match_id"), []).append(pr)
+
+    out = []
+    for mid, plist in groups.items():
+        m = match_by_id(mid)
+        if m:
+            ta = (teams.get(m["home"]) or {}).get("name", m["home"])
+            tb = (teams.get(m["away"]) or {}).get("name", m["away"])
+            label, no = f"{ta} vs {tb}", m["no"]
+        else:
+            ta, tb, label, no = "?", "?", str(mid), 9999
+        entries = []
+        for pr in plist:
+            pick = pr.get("pick")
+            entries.append({
+                "name": (users.get(pr.get("email")) or {}).get("name") or pr.get("email") or "Anonymous",
+                "pick": pick,
+                "pick_label": ta if pick == "A" else (tb if pick == "B" else "Draw"),
+                "score_a": pr.get("score_a"), "score_b": pr.get("score_b"),
+                "points": pr.get("points", 0), "scored": bool(pr.get("scored")),
+            })
+        entries.sort(key=lambda e: (-e["points"], e["name"].lower()))
+        out.append({"match_id": mid, "no": no, "label": label,
+                    "total": len(entries), "predictions": entries})
+
+    out.sort(key=lambda x: x["no"])
+    return jsonify({"matches": out})
 
 
 @worldcup_bp.route("/api/worldcup/admin/db/<entity>/delete", methods=["POST"])

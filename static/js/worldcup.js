@@ -344,6 +344,11 @@
       status = '<div class="wc-pred-locked">Saved ✓ — tap a pick to change before kickoff</div>';
     }
 
+    // Crowd distribution shown only once the fan has committed their own pick
+    // (or the match has started) — so they can't peek before predicting.
+    var statsHtml = (p || started || m.result)
+      ? '<div class="wc-pred-stats" data-no="' + m.no + '"></div>' : '';
+
     return '<div class="wc-pred-card">' +
       '<div class="wc-match-meta"><span>' + fmtTime(m.time) + ' ET · ' + mdLabel(m.md) + '</span><span>Group ' + esc(m.group) + '</span></div>' +
       '<div class="wc-pred-top">' +
@@ -352,8 +357,32 @@
         '<div class="wc-team wc-team-link" data-team="' + m.cb + '"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
       '</div>' +
       '<div class="wc-pred-btns">' + btns + '</div>' +
-      scoreRow + status +
+      scoreRow + status + statsHtml +
     '</div>';
+  }
+
+  // Fetch + render the crowd pick distribution bar for one match card.
+  function loadPredStats(el) {
+    var no = +el.getAttribute('data-no');
+    var m = findMatchByNo(no);
+    if (!m) return;
+    fetch('/api/worldcup/prediction-stats/M' + no)
+      .then(function (r) { return r.json(); })
+      .then(function (s) {
+        if (!s || !s.total) { el.innerHTML = '<div class="wc-pred-statnote">No picks yet — you’re first in!</div>'; return; }
+        var pa = Math.round(s.team_a / s.total * 100);
+        var pd = Math.round(s.draw / s.total * 100);
+        var pb = Math.max(0, 100 - pa - pd);
+        el.innerHTML =
+          '<div class="wc-pred-statbar-title">How fans are picking · ' + s.total + (s.total === 1 ? ' pick' : ' picks') + '</div>' +
+          '<div class="wc-pred-statbar">' +
+            (pa > 0 ? '<div class="wc-seg seg-a" style="width:' + pa + '%">' + pa + '%</div>' : '') +
+            (pd > 0 ? '<div class="wc-seg seg-d" style="width:' + pd + '%">' + pd + '%</div>' : '') +
+            (pb > 0 ? '<div class="wc-seg seg-b" style="width:' + pb + '%">' + pb + '%</div>' : '') +
+          '</div>' +
+          '<div class="wc-pred-statlabels"><span>' + esc(m.a.n) + '</span><span>Draw</span><span>' + esc(m.b.n) + '</span></div>';
+      })
+      .catch(function () { /* leave empty on error */ });
   }
 
   function loadPredictions() {
@@ -378,6 +407,7 @@
         savePrediction(btn.dataset.match, btn.dataset.pick);
       });
     });
+    grid.querySelectorAll('.wc-pred-stats').forEach(loadPredStats);
   }
 
   function savePrediction(matchId, pick) {

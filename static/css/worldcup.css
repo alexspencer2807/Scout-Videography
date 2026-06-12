@@ -250,6 +250,17 @@
 .wc-pred-locked { margin-top: 12px; text-align: center; font-size: 13px; font-weight: 700; color: var(--wc-green); }
 .wc-pred-locked.wrong { color: #ff7b87; }
 
+/* Crowd pick distribution bar */
+.wc-pred-stats { margin-top: 14px; }
+.wc-pred-statbar-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--wc-muted); text-align: center; margin-bottom: 6px; }
+.wc-pred-statbar { display: flex; height: 22px; border-radius: 8px; overflow: hidden; background: var(--wc-card-2); }
+.wc-seg { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; white-space: nowrap; min-width: 18px; transition: width 0.4s ease; }
+.wc-seg.seg-a { background: var(--wc-green); color: #06231a; }
+.wc-seg.seg-d { background: #6b7d92; color: #08131f; }
+.wc-seg.seg-b { background: var(--wc-gold); color: #2a2200; }
+.wc-pred-statlabels { display: flex; justify-content: space-between; font-size: 11px; color: var(--wc-muted); margin-top: 4px; }
+.wc-pred-statnote { margin-top: 12px; text-align: center; font-size: 12px; color: var(--wc-muted); }
+
 /* ============ TRIVIA ============ */
 .wc-quiz { max-width: 560px; margin: 24px auto 0; background: var(--wc-card); border: 1px solid var(--wc-line); border-radius: 16px; padding: 24px; }
 .wc-quiz-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 50px; overflow: hidden; margin-bottom: 8px; }
