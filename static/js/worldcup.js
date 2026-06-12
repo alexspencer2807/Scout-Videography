@@ -290,18 +290,8 @@
     return MATCHES.filter(function (m) { return m.md === 1 && m.status !== 'complete'; }).slice(0, 6);
   }
 
-  function predictionPoints() {
-    var preds = read(LS.preds, {});
-    var pts = 0;
-    MATCHES.forEach(function (m) {
-      var p = preds[m.id];
-      if (!p || !m.result) return;
-      if (p.pick === winnerOf(m.result)) pts += 3;
-      if (p.scoreA != null && p.scoreB != null &&
-          +p.scoreA === m.result.a && +p.scoreB === m.result.b) pts += 5;
-    });
-    return pts;
-  }
+  // (Prediction points are computed server-side and read from the leaderboard
+  //  API; the client no longer tallies them — it has no match results.)
 
   function loadPredictions() {
     var grid = document.getElementById('wcPredGrid');
@@ -530,17 +520,16 @@
     var board = document.getElementById('wcBoard');
     if (!board) return;
     var reg = read(LS.reg, null);
-    var predPts = predictionPoints();
     var triviaBest = read(LS.triviaBest, 0);
-    var youTotal = predPts;   // trivia does not count toward the leaderboard total
     var youHandleNorm = reg ? normHandle(reg.instagram) : '';
 
-    // Everyone from the shared server board — including Coach Scout, which now
-    // earns real points and arrives like any other user (flagged is_ai). We only
-    // drop the current fan, re-adding them as a live local row below.
-    var rows = _serverBoard.filter(function (e) {
-      return !(youHandleNorm && normHandle(e.instagram) === youHandleNorm && !e.is_ai);
-    }).map(function (e) {
+    // Render every fan straight from the shared server board (the source of
+    // truth for points) — including Coach Scout (is_ai). The current fan's row
+    // is the same server row, just flagged `you` for highlighting; we never
+    // recompute their points locally (the client has no match results, so that
+    // would always read 0).
+    var foundYou = false;
+    var rows = _serverBoard.map(function (e) {
       if (e.is_ai) {
         return {
           name: '<img class="coach-scout-avatar sm wc-board-av" src="' + coachImg('default') + '" alt="Coach Scout"> ' + esc(e.name || 'Coach Scout'),
@@ -549,23 +538,22 @@
           total: e.total_points || 0, isCoach: true
         };
       }
+      var isYou = youHandleNorm && normHandle(e.instagram) === youHandleNorm;
+      if (isYou) foundYou = true;
       var handle = e.instagram || '';
       if (e.backing) handle += (handle ? ' · ' : '') + 'backing ' + flagFor(e.backing) + ' ' + e.backing;
       return { name: esc(e.name || 'Anonymous'), handle: esc(handle),
                pred: e.prediction_points || 0, trivia: e.trivia_best || 0,
-               total: e.total_points || 0 };
+               total: e.total_points || 0, you: !!isYou };
     });
 
-    // The current fan — registered users get a live row.
-    if (reg && reg.registered) {
+    // Newly-registered fan not on the server board yet (e.g. before the first
+    // refresh) — show a local placeholder row so they see themselves.
+    if (reg && reg.registered && !foundYou) {
       var youHandle = reg.instagram ? '@' + reg.instagram : '@yourhandle';
       if (reg.backing) youHandle += ' · backing ' + flagFor(reg.backing) + ' ' + reg.backing;
-      var serverYou = _serverBoard.filter(function (e) {
-        return youHandleNorm && normHandle(e.instagram) === youHandleNorm;
-      })[0];
-      var bestTotal = Math.max(youTotal, serverYou ? (serverYou.total_points || 0) : 0);
       rows.push({ name: esc(reg.name || 'You'), handle: esc(youHandle),
-                  pred: predPts, trivia: triviaBest, total: bestTotal, you: true });
+                  pred: 0, trivia: triviaBest, total: 0, you: true });
     }
 
     // (Coach Scout is no longer injected here — it comes from the server board.)
