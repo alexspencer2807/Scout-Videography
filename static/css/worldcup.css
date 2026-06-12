@@ -278,7 +278,7 @@
 /* ============ LEADERBOARD ============ */
 .wc-board { max-width: 720px; margin: 24px auto 0; border: 1px solid var(--wc-line); border-radius: 14px; overflow: hidden; }
 .wc-board-head, .wc-board-row {
-  display: grid; grid-template-columns: 44px 1fr 70px 70px; align-items: center; gap: 8px;
+  display: grid; grid-template-columns: 44px 1fr 70px; align-items: center; gap: 8px;
   padding: 12px 14px; font-size: 13px;
 }
 .wc-board-head { background: var(--wc-card-2); color: var(--wc-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-size: 11px; }
@@ -340,7 +340,7 @@
   .wc-match-grid { grid-template-columns: repeat(2, 1fr); }
   .wc-pred-grid { grid-template-columns: repeat(2, 1fr); }
   .wc-events { grid-template-columns: repeat(3, 1fr); }
-  .wc-board-head, .wc-board-row { grid-template-columns: 56px 1fr 90px 90px 90px; }
+  .wc-board-head, .wc-board-row { grid-template-columns: 56px 1fr 90px 90px; }
   .wc-board-head .wc-hide-sm, .wc-board-row .wc-hide-sm { display: block; text-align: right; }
   .wc-quiz-actions { flex-direction: row; justify-content: center; }
 }

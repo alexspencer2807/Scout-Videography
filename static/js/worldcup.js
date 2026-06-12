@@ -578,29 +578,28 @@
     rows.sort(function (a, b) { return (b.total || 0) - (a.total || 0); });
     var medals = ['🥇', '🥈', '🥉'];
     rows.forEach(function (r, i) { r.rank = i < 3 ? medals[i] : String(i + 1); });
-    while (rows.length < 4) {
-      rows.push({ rank: String(rows.length + 1), name: 'Coming soon…', handle: '—', pred: '—', trivia: '—', total: '—' });
+    while (rows.length < 5) {
+      rows.push({ rank: String(rows.length + 1), name: 'Coming soon…', handle: '—', pred: '—', total: '—' });
     }
 
     board.innerHTML =
       '<div class="wc-board-head">' +
         '<span>#</span><span>Fan</span>' +
-        '<span class="wc-hide-sm">Predict</span><span class="wc-hide-sm">Trivia</span><span style="text-align:right">Total</span>' +
+        '<span class="wc-hide-sm">Predict</span><span style="text-align:right">Total</span>' +
       '</div>' +
       rows.map(function (r) {
         return '<div class="wc-board-row' + (r.you ? ' you' : '') + (r.isCoach ? ' is-coach' : '') + '">' +
           '<span class="wc-board-rank">' + r.rank + '</span>' +
           '<span class="wc-board-name">' + r.name + '<small>' + r.handle + '</small></span>' +
           '<span class="wc-board-col wc-hide-sm">' + r.pred + '</span>' +
-          '<span class="wc-board-col wc-hide-sm">' + r.trivia + '</span>' +
           '<span class="wc-board-total">' + r.total + '</span>' +
         '</div>';
       }).join('');
 
-    // Compact top-3 mirror near the top of the page (shown to everyone).
+    // Compact top-5 mirror near the top of the page (shown to everyone).
     var mini = document.getElementById('wcBoardMini');
     if (mini) {
-      mini.innerHTML = rows.slice(0, 3).map(function (r) {
+      mini.innerHTML = rows.slice(0, 5).map(function (r) {
         var pts = typeof r.total === 'number' ? r.total + ' pts' : r.total;
         return '<div class="wc-minilb-row' + (r.you ? ' you' : '') + (r.isCoach ? ' is-coach' : '') + '">' +
           '<span class="wc-minilb-rank">' + r.rank + '</span>' +
