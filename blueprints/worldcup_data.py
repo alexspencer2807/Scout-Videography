@@ -8,6 +8,8 @@ the front-end's MATCH_ANALYSIS entries (`no`) line up against.
 Rows: [home_code, away_code, matchday, match_no, date_iso]
 """
 
+from datetime import datetime, timezone, timedelta
+
 _MONTHS = ["January", "February", "March", "April", "May", "June",
            "July", "August", "September", "October", "November", "December"]
 
@@ -51,17 +53,44 @@ _SCHED = {
 }
 
 
+# Kick-off time (US Eastern, HH:MM) per match number — mirrors the JS schedule.
+_TIMES = {
+    1: '15:00', 2: '22:00', 3: '15:00', 4: '21:00', 5: '21:00', 6: '00:00', 7: '18:00', 8: '15:00',
+    9: '19:00', 10: '13:00', 11: '16:00', 12: '22:00', 13: '18:00', 14: '13:00', 15: '00:00', 16: '18:00',
+    17: '15:00', 18: '18:00', 19: '21:00', 20: '00:00', 21: '19:00', 22: '16:00', 23: '13:00', 24: '22:00',
+    25: '12:00', 26: '15:00', 27: '18:00', 28: '23:00', 29: '21:00', 30: '18:00', 31: '00:00', 32: '15:00',
+    33: '16:00', 34: '20:00', 35: '13:00', 36: '00:00', 37: '18:00', 38: '12:00', 39: '15:00', 40: '21:00',
+    41: '20:00', 42: '17:00', 43: '13:00', 44: '23:00', 45: '16:00', 46: '19:00', 47: '13:00', 48: '22:00',
+    49: '18:00', 50: '18:00', 51: '15:00', 52: '15:00', 53: '21:00', 54: '21:00', 55: '16:00', 56: '16:00',
+    57: '19:00', 58: '19:00', 59: '22:00', 60: '22:00', 61: '15:00', 62: '15:00', 63: '23:00', 64: '23:00',
+    65: '20:00', 66: '20:00', 67: '17:00', 68: '17:00', 69: '22:00', 70: '22:00', 71: '19:30', 72: '19:30',
+}
+
+# US Eastern is UTC-4 in June (EDT), so kickoff_utc = ET wall-clock + 4h.
+_ET_TO_UTC = timedelta(hours=4)
+
+
 def _date_label(iso):
     y, mo, d = iso.split("-")
     return f"{int(d)} {_MONTHS[int(mo) - 1]}"
 
 
+def _kickoff_utc(iso, hhmm):
+    """Epoch seconds (UTC) for an ET kickoff on the given date."""
+    y, mo, d = (int(x) for x in iso.split("-"))
+    h, mi = (int(x) for x in hhmm.split(":"))
+    dt = datetime(y, mo, d, h, mi) + _ET_TO_UTC
+    return dt.replace(tzinfo=timezone.utc).timestamp()
+
+
 MATCHES_BY_NO = {}
 for _group, _rows in _SCHED.items():
     for _home, _away, _md, _no, _iso in _rows:
+        _t = _TIMES.get(_no, "00:00")
         MATCHES_BY_NO[_no] = {
             "no": _no, "home": _home, "away": _away, "group": _group,
             "md": _md, "date_iso": _iso, "date_label": _date_label(_iso),
+            "time_et": _t, "kickoff_utc": _kickoff_utc(_iso, _t),
         }
 
 

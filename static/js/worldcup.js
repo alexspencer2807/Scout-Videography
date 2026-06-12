@@ -290,6 +290,13 @@
     return MATCHES.filter(function (m) { return m.md === 1 && m.status !== 'complete'; }).slice(0, 6);
   }
 
+  // Kick-off in UTC (ET is UTC-4 in June). A prediction is editable until then.
+  function kickoffUTC(m) {
+    var dp = (m.date || '').split('-'), tp = (m.time || '00:00').split(':');
+    return Date.UTC(+dp[0], +dp[1] - 1, +dp[2], +tp[0] + 4, +tp[1], 0);
+  }
+  function hasStarted(m) { return Date.now() >= kickoffUTC(m); }
+
   // (Prediction points are computed server-side and read from the leaderboard
   //  API; the client no longer tallies them — it has no match results.)
 
@@ -305,30 +312,34 @@
         { k: 'D', label: 'Draw' },
         { k: 'B', label: m.b.n + ' Win' }
       ];
+      // Editable until kickoff; locked once the match has started or has a result.
+      var started = hasStarted(m);
+      var locked = started || !!m.result;
       var btns = picks.map(function (x) {
         var sel = p && p.pick === x.k ? ' selected' : '';
-        var dis = p ? ' disabled' : '';
+        var dis = locked ? ' disabled' : '';
         return '<button type="button" class="wc-pred-btn' + sel + '"' + dis +
                ' data-match="' + m.id + '" data-pick="' + x.k + '">' + esc(x.label) + '</button>';
       }).join('');
 
       var scoreA = p && p.scoreA != null ? p.scoreA : '';
       var scoreB = p && p.scoreB != null ? p.scoreB : '';
+      var dis = locked ? 'disabled' : '';
       var scoreRow = '<div class="wc-pred-score">' +
-        '<input type="number" min="0" max="20" id="sa-' + m.id + '" value="' + esc(scoreA) + '" ' + (p ? 'disabled' : '') + ' aria-label="' + esc(m.a.n) + ' score">' +
+        '<input type="number" min="0" max="20" id="sa-' + m.id + '" value="' + esc(scoreA) + '" ' + dis + ' aria-label="' + esc(m.a.n) + ' score">' +
         '<span>score (optional)</span>' +
-        '<input type="number" min="0" max="20" id="sb-' + m.id + '" value="' + esc(scoreB) + '" ' + (p ? 'disabled' : '') + ' aria-label="' + esc(m.b.n) + ' score">' +
+        '<input type="number" min="0" max="20" id="sb-' + m.id + '" value="' + esc(scoreB) + '" ' + dis + ' aria-label="' + esc(m.b.n) + ' score">' +
         '</div>';
 
-      var locked = '';
-      if (p) {
-        if (m.result) {
-          var ok = p.pick === winnerOf(m.result);
-          locked = '<div class="wc-pred-locked' + (ok ? '' : ' wrong') + '">' +
-                   (ok ? 'Correct ✓ +3 pts' : 'Not this time ✗') + '</div>';
-        } else {
-          locked = '<div class="wc-pred-locked">Your prediction is locked ✓</div>';
-        }
+      var status = '';
+      if (m.result) {
+        var ok = p && p.pick === winnerOf(m.result);
+        status = '<div class="wc-pred-locked' + (ok ? '' : ' wrong') + '">' +
+                 (ok ? 'Correct ✓ +3 pts' : 'Not this time ✗') + '</div>';
+      } else if (started) {
+        status = '<div class="wc-pred-locked">🔒 Kicked off — predictions locked</div>';
+      } else if (p) {
+        status = '<div class="wc-pred-locked">Saved ✓ — tap a pick to change before kickoff</div>';
       }
 
       return '<div class="wc-pred-card">' +
@@ -339,7 +350,7 @@
           '<div class="wc-team wc-team-link" data-team="' + m.cb + '"><span class="wc-flag">' + m.b.f + '</span><span class="wc-team-name">' + esc(m.b.n) + '</span></div>' +
         '</div>' +
         '<div class="wc-pred-btns">' + btns + '</div>' +
-        scoreRow + locked +
+        scoreRow + status +
       '</div>';
     }).join('');
 
@@ -351,8 +362,11 @@
   }
 
   function savePrediction(matchId, pick) {
+    // Predictions can be set or changed only before kickoff.
+    var m = findMatchByNo(+String(matchId).replace(/^M/i, ''));
+    if (m && (hasStarted(m) || m.result)) { loadPredictions(); return; }
+
     var preds = read(LS.preds, {});
-    if (preds[matchId]) return; // already locked
     var sa = document.getElementById('sa-' + matchId);
     var sb = document.getElementById('sb-' + matchId);
     var scoreA = sa && sa.value !== '' ? +sa.value : null;
@@ -365,8 +379,8 @@
     };
     write(LS.preds, preds);
 
-    // Sync to the shared backend so this prediction can be scored server-side
-    // once the match has a result (fire-and-forget — never block the UI).
+    // Sync to the shared backend (it also enforces the kickoff lock). If the
+    // server says the match already started, re-render to reflect the lock.
     var reg = read(LS.reg, null);
     if (reg && reg.email) {
       fetch('/api/worldcup/prediction', {
@@ -376,6 +390,8 @@
           email: reg.email, match_id: matchId, pick: pick,
           score_a: scoreA, score_b: scoreB
         })
+      }).then(function (r) {
+        if (r.status === 403) { loadPredictions(); }   // kickoff passed server-side
       }).catch(function () {});
     }
 

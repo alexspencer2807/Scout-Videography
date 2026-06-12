@@ -13,6 +13,7 @@ The admin scoring endpoint speaks the same codes so picks actually match.
 import os
 import re
 import json
+import time
 
 from flask import Blueprint, request, jsonify, render_template, current_app
 
@@ -570,6 +571,11 @@ def save_prediction():
 
     if not email or not match_id or not pick:
         return jsonify({"error": "Missing fields"}), 400
+
+    # Predictions can be created or changed only until the match kicks off.
+    m = match_by_id(match_id)
+    if m and time.time() >= m.get("kickoff_utc", float("inf")):
+        return jsonify({"error": "This match has kicked off — predictions are locked."}), 403
 
     def _int_or_none(v):
         try:
