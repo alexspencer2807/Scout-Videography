@@ -386,7 +386,8 @@ def _generate_one(raw_prompt):
     from google import genai
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     resp = client.models.generate_content(
-        model="gemini-2.0-flash-exp",
+        # Overridable via env so a retired model is a config change, not a redeploy.
+        model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
         contents=[{"role": "user", "parts": [{"text": raw_prompt}]}],
         config={
             "temperature": 0.7,
