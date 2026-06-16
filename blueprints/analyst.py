@@ -107,13 +107,15 @@ def chat():
     Ends with:
     data: [DONE]\n\n
     """
+    # Parse the request HERE, while the request context is still active. The
+    # generator below is consumed by the WSGI server after the context is gone,
+    # so it must not touch `request` (or any other context-local).
+    data = request.get_json(silent=True) or {}
+    user_message = data.get("message", "")
+    conversation_history = data.get("conversation", [])
+
     def generate():
         try:
-            # Parse request
-            data = request.get_json()
-            user_message = data.get("message", "")
-            conversation_history = data.get("conversation", [])
-
             # Check for API key
             api_key = os.getenv("GEMINI_API_KEY")
             if not api_key:
