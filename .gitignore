@@ -9,3 +9,7 @@ Gemini_Generated_Image_*.png
 receipt_*.pdf
 receipt_Customer.pdf
 .claude/
+# Local secrets — never commit; the app reads real secrets from Secret Manager
+secrets
+.secrets.swp
+*.swp
