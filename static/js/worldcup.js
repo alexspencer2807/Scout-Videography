@@ -373,6 +373,20 @@
         var pa = Math.round(s.team_a / s.total * 100);
         var pd = Math.round(s.draw / s.total * 100);
         var pb = Math.max(0, 100 - pa - pd);
+
+        // Chips showing how the top-5 leaderboard fans (incl. Coach Scout) picked.
+        var chips = '';
+        if (s.top_fans && s.top_fans.length) {
+          chips = '<div class="wc-pred-chips-title">Top fans picked</div>' +
+            '<div class="wc-pred-chips">' + s.top_fans.map(function (f) {
+              var label = f.pick === 'A' ? m.a.n : (f.pick === 'B' ? m.b.n : 'Draw');
+              var line = (f.score_a != null && f.score_b != null) ? ' ' + f.score_a + '–' + f.score_b : '';
+              var cls = f.pick === 'A' ? ' chip-a' : (f.pick === 'B' ? ' chip-b' : ' chip-d');
+              return '<span class="wc-pred-chip' + cls + '"><strong>' + esc(f.name) + '</strong> ' +
+                     esc(label) + esc(line) + '</span>';
+            }).join('') + '</div>';
+        }
+
         el.innerHTML =
           '<div class="wc-pred-statbar-title">How fans are picking · ' + s.total + (s.total === 1 ? ' pick' : ' picks') + '</div>' +
           '<div class="wc-pred-statbar">' +
@@ -380,7 +394,8 @@
             (pd > 0 ? '<div class="wc-seg seg-d" style="width:' + pd + '%">' + pd + '%</div>' : '') +
             (pb > 0 ? '<div class="wc-seg seg-b" style="width:' + pb + '%">' + pb + '%</div>' : '') +
           '</div>' +
-          '<div class="wc-pred-statlabels"><span>' + esc(m.a.n) + '</span><span>Draw</span><span>' + esc(m.b.n) + '</span></div>';
+          '<div class="wc-pred-statlabels"><span>' + esc(m.a.n) + '</span><span>Draw</span><span>' + esc(m.b.n) + '</span></div>' +
+          chips;
       })
       .catch(function () { /* leave empty on error */ });
   }

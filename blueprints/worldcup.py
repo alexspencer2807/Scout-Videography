@@ -208,14 +208,18 @@ def store_leaderboard(limit=20):
 
     board = []
     for u in users:
+        pred = u.get("prediction_points", 0) or 0
+        bracket = u.get("bracket_points", 0) or 0
         board.append({
             "name": u.get("name", "Anonymous"),
             "instagram": u.get("instagram", ""),
             "backing": u.get("backing", ""),
-            "prediction_points": u.get("prediction_points", 0),
+            "prediction_points": pred,
             "trivia_best": u.get("trivia_best", 0),
-            "bracket_points": u.get("bracket_points", 0),
-            "total_points": u.get("total_points", 0),
+            "bracket_points": bracket,
+            # Total is computed dynamically (predictions + bracket only) — trivia
+            # never counts toward the leaderboard, regardless of stored totals.
+            "total_points": pred + bracket,
             "is_ai": bool(u.get("is_ai", False)),
         })
     board.sort(key=lambda x: x["total_points"], reverse=True)
@@ -605,9 +609,60 @@ def save_trivia_score():
     return jsonify({"status": "ok"})
 
 
+def _coach_pick_for(mid):
+    """Coach Scout's pick + scoreline for match `mid`, parsed from its forecast."""
+    cp = store_get_coach_prediction(mid)
+    if not cp:
+        return None
+    sc = _parse_scoreline(cp.get("scoreline"))
+    if not sc:
+        return None
+    a, b = sc
+    pick = "A" if a > b else ("B" if a < b else "D")
+    return {"name": COACH_PROFILE["name"], "pick": pick, "score_a": a, "score_b": b}
+
+
+def _top_fan_picks(mid, limit=5):
+    """Picks for match `mid` from the top `limit` leaderboard users (incl. Coach
+    Scout), in leaderboard order. Each entry: name, pick, score_a, score_b."""
+    db = _fs()
+    out = []
+    if db is not None:
+        from google.cloud import firestore
+        top = (db.collection(USERS)
+               .order_by("total_points", direction=firestore.Query.DESCENDING)
+               .limit(limit).stream())
+        for udoc in top:
+            email, u = udoc.id, udoc.to_dict()
+            if email == COACH_EMAIL:
+                entry = _coach_pick_for(mid)
+                if entry:
+                    out.append(entry)
+                continue
+            psnap = db.collection(PREDICTIONS).document(f"{email}_{mid}").get()
+            if psnap.exists:
+                pr = psnap.to_dict()
+                out.append({"name": u.get("name") or email, "pick": pr.get("pick"),
+                            "score_a": pr.get("score_a"), "score_b": pr.get("score_b")})
+    else:
+        top = sorted(_mem_users.items(),
+                     key=lambda kv: kv[1].get("total_points", 0), reverse=True)[:limit]
+        for email, u in top:
+            if email == COACH_EMAIL:
+                entry = _coach_pick_for(mid)
+                if entry:
+                    out.append(entry)
+                continue
+            pr = _mem_preds.get(f"{email}_{mid}")
+            if pr:
+                out.append({"name": u.get("name") or email, "pick": pr.get("pick"),
+                            "score_a": pr.get("score_a"), "score_b": pr.get("score_b")})
+    return out
+
+
 @worldcup_bp.route("/api/worldcup/prediction-stats/<match_id>")
 def prediction_stats(match_id):
-    """Aggregate crowd pick distribution for a match — counts only, no user data."""
+    """Crowd pick distribution for a match + the top 5 fans' picks (no private data)."""
     m = match_by_id(match_id)
     mid = f"M{m['no']}" if m else (match_id or "").strip()
     counts = {"A": 0, "D": 0, "B": 0}
@@ -626,6 +681,7 @@ def prediction_stats(match_id):
     return jsonify({
         "total": counts["A"] + counts["D"] + counts["B"],
         "team_a": counts["A"], "draw": counts["D"], "team_b": counts["B"],
+        "top_fans": _top_fan_picks(mid),
     })
 
 

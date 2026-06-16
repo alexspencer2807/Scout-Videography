@@ -261,6 +261,15 @@
 .wc-pred-statlabels { display: flex; justify-content: space-between; font-size: 11px; color: var(--wc-muted); margin-top: 4px; }
 .wc-pred-statnote { margin-top: 12px; text-align: center; font-size: 12px; color: var(--wc-muted); }
 
+/* Top-5 fan pick chips (revealed with the crowd bar, after the fan predicts) */
+.wc-pred-chips-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--wc-muted); text-align: center; margin: 12px 0 6px; }
+.wc-pred-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.wc-pred-chip { font-size: 11px; line-height: 1.4; padding: 4px 9px; border-radius: 50px; background: var(--wc-card-2); border: 1px solid var(--wc-line); color: var(--wc-muted); }
+.wc-pred-chip strong { color: #fff; font-weight: 700; }
+.wc-pred-chip.chip-a { border-color: rgba(38,201,111,0.5); }
+.wc-pred-chip.chip-d { border-color: rgba(107,125,146,0.6); }
+.wc-pred-chip.chip-b { border-color: rgba(245,197,24,0.5); }
+
 /* ============ TRIVIA ============ */
 .wc-quiz { max-width: 560px; margin: 24px auto 0; background: var(--wc-card); border: 1px solid var(--wc-line); border-radius: 16px; padding: 24px; }
 .wc-quiz-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 50px; overflow: hidden; margin-bottom: 8px; }

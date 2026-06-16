@@ -1,8 +1,51 @@
 import os
 import json
-from flask import Blueprint, render_template, request, Response
+from flask import Blueprint, render_template, request, Response, current_app
 
 analyst_bp = Blueprint("analyst", __name__)
+
+
+# ---------------------------------------------------------------------------
+# World Cup 2026 team/player knowledge — loaded once from the static dataset and
+# folded into the system prompt so Coach Scout can answer player/team questions.
+# ---------------------------------------------------------------------------
+_WC_KNOWLEDGE = None
+
+WC_KNOWLEDGE_INTRO = (
+    "\n\nYou have detailed knowledge of all 48 World Cup 2026 teams and their key players. "
+    "Answer questions about players (club, stats, position, scouting assessment), teams "
+    "(group, coach, style, prospects), and comparisons. Use the web search tool to look up "
+    "current stats and news beyond the data below when helpful."
+    "\n\nWORLD CUP 2026 TEAM & PLAYER DATA:\n"
+)
+
+
+def _wc_knowledge():
+    """Return a condensed, cached text digest of every team and its key players."""
+    global _WC_KNOWLEDGE
+    if _WC_KNOWLEDGE is not None:
+        return _WC_KNOWLEDGE
+    try:
+        path = os.path.join(current_app.static_folder, "data", "worldcup-players.json")
+        with open(path, encoding="utf-8") as f:
+            teams = (json.load(f) or {}).get("teams", {})
+    except Exception:
+        _WC_KNOWLEDGE = ""
+        return _WC_KNOWLEDGE
+
+    lines = []
+    for code, t in teams.items():
+        head = (f"{t.get('name')} [{code}] — Group {t.get('group')}, "
+                f"FIFA #{t.get('fifa_ranking', '?')}, coach {t.get('coach', '?')}.")
+        players = []
+        for p in (t.get("players") or []):
+            players.append(
+                f"{p.get('name')} ({p.get('position')}, {p.get('club')}, age {p.get('age')}, "
+                f"{p.get('caps')} caps, {p.get('goals')} goals — {p.get('scout_note')})"
+            )
+        lines.append(head + (" Players: " + "; ".join(players) if players else ""))
+    _WC_KNOWLEDGE = "\n".join(lines)
+    return _WC_KNOWLEDGE
 
 
 SYSTEM_PROMPT = """You are the Scout AI Analyst — a football performance analysis assistant for Scout Videography Jamaica, based in Kingston & St. Andrew.
@@ -101,16 +144,20 @@ def chat():
                 "parts": [{"text": user_message}]
             })
 
-            # Configure generation
+            # Configure generation. The system prompt carries the full World Cup
+            # team/player knowledge, and the google_search tool grounds answers in
+            # current stats and news beyond the local dataset.
             config = {
                 "temperature": 0.7,
                 "max_output_tokens": 1024,
-                "system_instruction": SYSTEM_PROMPT
+                "system_instruction": SYSTEM_PROMPT + WC_KNOWLEDGE_INTRO + _wc_knowledge(),
+                "tools": [{"google_search": {}}],
             }
 
-            # Stream response
+            # Stream response. Model is env-overridable so a retired model is a
+            # config change, not a redeploy (same GEMINI_MODEL var as the WC module).
             response_stream = client.models.generate_content_stream(
-                model="gemini-2.0-flash-exp",
+                model=os.environ.get("GEMINI_MODEL", "gemini-2.5-flash"),
                 contents=contents,
                 config=config
             )
