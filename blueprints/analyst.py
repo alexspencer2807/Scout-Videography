@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Blueprint, render_template, request, Response, current_app
+from flask import Blueprint, render_template, request, Response
 
 analyst_bp = Blueprint("analyst", __name__)
 
@@ -26,7 +26,10 @@ def _wc_knowledge():
     if _WC_KNOWLEDGE is not None:
         return _WC_KNOWLEDGE
     try:
-        path = os.path.join(current_app.static_folder, "data", "worldcup-players.json")
+        # Resolve from the module location (not current_app) — this runs inside the
+        # SSE streaming generator, which executes outside any request context.
+        path = os.path.join(os.path.dirname(__file__), "..", "static",
+                            "data", "worldcup-players.json")
         with open(path, encoding="utf-8") as f:
             teams = (json.load(f) or {}).get("teams", {})
     except Exception:
