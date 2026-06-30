@@ -161,7 +161,49 @@
     });
   });
 
+  /* ===================== KNOCKOUTS — Round of 32 (real 2026 fixtures) =====================
+     [home, away, no, timeET, dateISO, venue, ra, rb]  (ra/rb only for played games). */
+  var KO_R32 = [
+    ['CAN','RSA',73,'20:00','2026-06-28','Los Angeles',1,0],
+    ['BRA','JPN',74,'13:00','2026-06-29','Houston',2,1],
+    ['GER','PAR',75,'16:30','2026-06-29','Foxborough',1,1],
+    ['NED','MAR',76,'21:00','2026-06-29','Guadalupe',1,1],
+    ['CIV','NOR',77,'13:00','2026-06-30','Arlington'],
+    ['FRA','SWE',78,'17:00','2026-06-30','New York/NJ'],
+    ['MEX','ECU',79,'21:00','2026-06-30','Mexico City'],
+    ['ENG','COD',80,'12:00','2026-07-01','Atlanta'],
+    ['BEL','SEN',81,'16:00','2026-07-01','Seattle'],
+    ['USA','BIH',82,'20:00','2026-07-01','San Francisco'],
+    ['ESP','AUT',83,'15:00','2026-07-02','Los Angeles'],
+    ['POR','CRO',84,'19:00','2026-07-02','Toronto'],
+    ['SUI','ALG',85,'23:00','2026-07-02','Vancouver'],
+    ['AUS','EGY',86,'14:00','2026-07-03','Arlington'],
+    ['ARG','CPV',87,'18:00','2026-07-03','Miami'],
+    ['COL','GHA',88,'21:30','2026-07-03','Kansas City']
+  ];
+  KO_R32.forEach(function (r) {
+    var m = {
+      id: 'M' + r[2], no: r[2], ko: true, round: 'Round of 32',
+      group: 'KO', md: 0, time: r[3], date: r[4], venue: r[5],
+      ca: r[0], cb: r[1], a: TEAM[r[0]], b: TEAM[r[1]],
+      status: r.length > 6 ? 'complete' : 'upcoming'
+    };
+    if (r.length > 6) m.result = { a: r[6], b: r[7] };
+    MATCHES.push(m);
+  });
+
+  // Later knockout rounds — teams decided as the bracket plays out.
+  var KO_ROUNDS = [
+    { name: 'Round of 16', when: 'Jul 4–7' },
+    { name: 'Quarter-finals', when: 'Jul 9–11' },
+    { name: 'Semi-finals', when: 'Jul 14–15' },
+    { name: 'Third-place', when: 'Jul 18 · Miami' },
+    { name: 'Final', when: 'Jul 19 · New York/NJ' }
+  ];
+
   function mdLabel(md) { return 'Matchday ' + md; }
+  // Round label for any match (knockout round, else its matchday).
+  function stageLabel(m) { return m.ko ? m.round : mdLabel(m.md); }
 
   var WC_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var WC_DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -350,7 +392,7 @@
       ? '<div class="wc-pred-stats" data-no="' + m.no + '"></div>' : '';
 
     return '<div class="wc-pred-card">' +
-      '<div class="wc-match-meta"><span>' + fmtTime(m.time) + ' ET · ' + mdLabel(m.md) + '</span><span>Group ' + esc(m.group) + '</span></div>' +
+      '<div class="wc-match-meta"><span>' + fmtTime(m.time) + ' ET · ' + stageLabel(m) + '</span><span>' + (m.ko ? '🏆 ' + esc(m.round) : 'Group ' + esc(m.group)) + '</span></div>' +
       '<div class="wc-pred-top">' +
         '<div class="wc-team wc-team-link" data-team="' + m.ca + '"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
         '<span class="wc-vs">VS</span>' +
@@ -696,15 +738,18 @@
     return mds.length ? Math.min.apply(null, mds) : 1;
   }
 
+  // Section heading for a "group" — knockout matches use their round name.
+  function groupHeading(g) { return g === 'KO' ? 'Round of 32' : 'Group ' + g; }
+
   function buildTabs() {
     var tabsEl = document.getElementById('wcTabs');
     if (!tabsEl) return;
     var groups = [];
     MATCHES.forEach(function (m) { if (groups.indexOf(m.group) === -1) groups.push(m.group); });
-    groups.sort();
+    groups.sort(function (a, b) { return a === 'KO' ? 1 : b === 'KO' ? -1 : (a < b ? -1 : 1); });
 
     var tabs = [{ key: 'all', label: 'All Matches' }];
-    groups.forEach(function (g) { tabs.push({ key: 'group:' + g, label: 'Group ' + g }); });
+    groups.forEach(function (g) { tabs.push({ key: 'group:' + g, label: groupHeading(g) }); });
 
     tabsEl.innerHTML = tabs.map(function (t) {
       return '<button type="button" class="wc-tab' + (t.key === 'all' ? ' active' : '') +
@@ -748,15 +793,14 @@
     if (!el) return;
     var list = matchesForFilter(filter);
 
-    // "All Matches" is collapsed to the next matchday by default to save space;
+    // "All Matches" is collapsed to the next few days by default to save space;
     // a toggle reveals the full fixture list. Group tabs always show in full.
     var collapsible = (filter === 'all');
-    var nmd = nextMatchday();
     var note = '';
     if (collapsible && !scheduleExpanded) {
-      list = list.filter(function (m) { return m.md === nmd; });
-      note = '<p class="wc-sub" style="text-align:center;margin:0 auto 18px">Showing ' +
-             mdLabel(nmd) + ' — the next fixtures up.</p>';
+      var dates = rollingDates();
+      list = list.filter(function (m) { return dates.indexOf(m.date) !== -1; });
+      note = '<p class="wc-sub" style="text-align:center;margin:0 auto 18px">Showing the next few days — tap below for the full schedule.</p>';
     }
 
     if (!list.length) {
@@ -777,7 +821,7 @@
       var matches = byGroup[g].slice().sort(function (x, y) { return x.no - y.no; });
       var cards = matches.map(function (m) {
         return '<div class="wc-match-card">' +
-          '<div class="wc-match-meta"><span>' + mdLabel(m.md) + '</span>' + badgeFor(m) + '</div>' +
+          '<div class="wc-match-meta"><span>' + stageLabel(m) + '</span>' + badgeFor(m) + '</div>' +
           '<div class="wc-match-teams">' +
             '<div class="wc-team wc-team-link" data-team="' + m.ca + '"><span class="wc-flag">' + m.a.f + '</span><span class="wc-team-name">' + esc(m.a.n) + '</span></div>' +
             centerCell(m) +
@@ -786,7 +830,7 @@
           '<div class="wc-match-venue">' + fmtMatchDate(m.date) + ' · ' + esc(m.venue) + '</div>' +
         '</div>';
       }).join('');
-      return '<div class="wc-date-group"><div class="wc-date-head">Group ' + esc(g) + '</div>' +
+      return '<div class="wc-date-group"><div class="wc-date-head">' + esc(groupHeading(g)) + '</div>' +
              '<div class="wc-match-grid">' + cards + '</div></div>';
     }).join('');
 
@@ -794,7 +838,7 @@
     if (collapsible) {
       toggle = '<div class="wc-sched-toggle-wrap">' +
         '<button type="button" class="wc-btn wc-btn--ghost wc-sched-toggle" id="wcSchedToggle">' +
-        (scheduleExpanded ? 'Show less ▲' : 'View all 72 fixtures ▼') + '</button></div>';
+        (scheduleExpanded ? 'Show less ▲' : 'View all fixtures ▼') + '</button></div>';
     }
 
     el.innerHTML = note + groupsHtml + toggle;
@@ -804,6 +848,22 @@
       scheduleExpanded = !scheduleExpanded;
       filterSchedule('all');
     });
+  }
+
+  // Full knockout bracket overview — R32 is live (real fixtures above); later
+  // rounds show their dates until the teams are decided.
+  function renderBracketStrip() {
+    var el = document.getElementById('wcBracket');
+    if (!el) return;
+    el.innerHTML =
+      '<div class="wc-bracket-title">🏆 Knockout Bracket</div>' +
+      '<div class="wc-bracket-rounds">' +
+        '<div class="wc-bracket-round is-live"><span class="wc-br-name">Round of 32</span><span class="wc-br-when">Jun 28 – Jul 3 · live</span></div>' +
+        KO_ROUNDS.map(function (r) {
+          return '<div class="wc-bracket-round"><span class="wc-br-name">' + esc(r.name) + '</span><span class="wc-br-when">' + esc(r.when) + '</span></div>';
+        }).join('') +
+      '</div>' +
+      '<p class="wc-sub" style="text-align:center;margin:12px auto 0;font-size:12px">Teams for later rounds are set as the bracket plays out.</p>';
   }
 
   /* ===================== PLAYERS + MATCH PREVIEW + TEAM MODAL ===================== */
@@ -962,7 +1022,7 @@
         '<span class="wc-mp-vs">VS</span>' +
         '<div class="wc-mp-team wc-team-link" data-team="' + m.cb + '"><span class="wc-mp-flag">' + m.b.f + '</span><span>' + esc(m.b.n) + '</span></div>' +
       '</div>' +
-      '<div class="wc-mp-meta"><strong class="wc-mp-time">' + fmtTime(m.time) + ' ET</strong> · Group ' + esc(m.group) + ' · ' + mdLabel(m.md) + ' · ' + esc(m.venue) + '</div>';
+      '<div class="wc-mp-meta"><strong class="wc-mp-time">' + fmtTime(m.time) + ' ET</strong> · ' + (m.ko ? '🏆 ' + esc(m.round) : 'Group ' + esc(m.group) + ' · ' + mdLabel(m.md)) + ' · ' + esc(m.venue) + '</div>';
 
     // Every match shows Coach Scout's analysis. If we already have it, render it;
     // otherwise drop a placeholder that fillPendingForecasts() fills in on demand.
@@ -1335,6 +1395,7 @@
     handleRegister();
     buildTabs();
     filterSchedule('all');
+    renderBracketStrip();
     loadPredictions();
     renderPredShare();
     initTrivia();

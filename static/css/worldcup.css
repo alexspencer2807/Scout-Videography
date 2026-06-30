@@ -582,6 +582,18 @@
   color: var(--wc-muted); font-size: 12px;
 }
 
+/* ============ KNOCKOUT BRACKET STRIP ============ */
+.wc-bracket { max-width: 820px; margin: 36px auto 0; }
+.wc-bracket-title { font-family: 'Archivo Black', sans-serif; font-size: 15px; color: var(--wc-gold); text-align: center; margin-bottom: 14px; }
+.wc-bracket-rounds { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.wc-bracket-round {
+  flex: 1 1 130px; min-width: 120px; background: var(--wc-card); border: 1px solid var(--wc-line);
+  border-radius: 12px; padding: 12px; text-align: center;
+}
+.wc-bracket-round.is-live { border-color: var(--wc-green); box-shadow: 0 0 0 1px var(--wc-green) inset; }
+.wc-br-name { display: block; font-weight: 800; color: #fff; font-size: 13px; }
+.wc-br-when { display: block; color: var(--wc-muted); font-size: 11px; margin-top: 4px; }
+
 /* ============ ROLLING 3-DAY PREVIEW: collapsible day groups ============ */
 .wc-day-group { border-top: 2px solid var(--wc-line); }
 .wc-day-head {

@@ -94,6 +94,35 @@ for _group, _rows in _SCHED.items():
         }
 
 
+# Knockout stage — Round of 32 (real 2026 fixtures, match nos 73-88). Teams are
+# known; later rounds (R16 -> Final) aren't added until their teams are decided.
+# [home, away, no, time_et, date_iso]
+_KO = [
+    ["CAN", "RSA", 73, "20:00", "2026-06-28"],
+    ["BRA", "JPN", 74, "13:00", "2026-06-29"],
+    ["GER", "PAR", 75, "16:30", "2026-06-29"],
+    ["NED", "MAR", 76, "21:00", "2026-06-29"],
+    ["CIV", "NOR", 77, "13:00", "2026-06-30"],
+    ["FRA", "SWE", 78, "17:00", "2026-06-30"],
+    ["MEX", "ECU", 79, "21:00", "2026-06-30"],
+    ["ENG", "COD", 80, "12:00", "2026-07-01"],
+    ["BEL", "SEN", 81, "16:00", "2026-07-01"],
+    ["USA", "BIH", 82, "20:00", "2026-07-01"],
+    ["ESP", "AUT", 83, "15:00", "2026-07-02"],
+    ["POR", "CRO", 84, "19:00", "2026-07-02"],
+    ["SUI", "ALG", 85, "23:00", "2026-07-02"],
+    ["AUS", "EGY", 86, "14:00", "2026-07-03"],
+    ["ARG", "CPV", 87, "18:00", "2026-07-03"],
+    ["COL", "GHA", 88, "21:30", "2026-07-03"],
+]
+for _home, _away, _no, _t, _iso in _KO:
+    MATCHES_BY_NO[_no] = {
+        "no": _no, "home": _home, "away": _away, "group": "KO", "md": 0,
+        "round": "Round of 32", "date_iso": _iso, "date_label": _date_label(_iso),
+        "time_et": _t, "kickoff_utc": _kickoff_utc(_iso, _t),
+    }
+
+
 def match_by_id(match_id):
     """Resolve "M1" / "1" / "m1" to its fixture dict, or None if unknown."""
     s = str(match_id or "").strip().upper()

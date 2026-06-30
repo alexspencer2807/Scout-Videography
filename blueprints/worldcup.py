@@ -454,12 +454,13 @@ def _team_brief(code, team):
 
 def _prediction_prompt(m, team_a, team_b):
     home, away = m["home"], m["away"]
+    stage = m.get("round") or f"Group {m['group']}, Matchday {m['md']}"
+    knockout = " This is a knockout match — there are no draws (a winner must emerge)." if m.get("round") else ""
     return (
-        "Predict this FIFA World Cup 2026 group-stage match.\n"
+        "Predict this FIFA World Cup 2026 match.\n"
         f"HOME: {_team_brief(home, team_a)}\n"
         f"AWAY: {_team_brief(away, team_b)}\n"
-        f"Fixture: {team_a.get('name')} vs {team_b.get('name')} "
-        f"(Group {m['group']}, Matchday {m['md']}).\n\n"
+        f"Fixture: {team_a.get('name')} vs {team_b.get('name')} ({stage}).{knockout}\n\n"
         "Respond with ONLY a JSON object (no markdown fences) with exactly these keys:\n"
         '{"scoreline": "<Home Name> X-Y <Away Name>", '
         '"confidence": <integer 0-100>, '
