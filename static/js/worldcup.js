@@ -176,12 +176,12 @@
     ['ENG','COD',80,'12:00','2026-07-01','Atlanta',2,1],
     ['BEL','SEN',81,'16:00','2026-07-01','Seattle',3,2],           // after extra time
     ['USA','BIH',82,'20:00','2026-07-01','San Francisco',2,0],
-    ['ESP','AUT',83,'15:00','2026-07-02','Los Angeles'],
-    ['POR','CRO',84,'19:00','2026-07-02','Toronto'],
-    ['SUI','ALG',85,'23:00','2026-07-02','Vancouver'],
-    ['AUS','EGY',86,'14:00','2026-07-03','Arlington'],
-    ['ARG','CPV',87,'18:00','2026-07-03','Miami'],
-    ['COL','GHA',88,'21:30','2026-07-03','Kansas City']
+    ['ESP','AUT',83,'15:00','2026-07-02','Los Angeles',3,0],
+    ['POR','CRO',84,'19:00','2026-07-02','Toronto',2,1],
+    ['SUI','ALG',85,'23:00','2026-07-02','Vancouver',2,0],
+    ['AUS','EGY',86,'14:00','2026-07-03','Arlington',1,1,'EGY'],   // Egypt won on penalties
+    ['ARG','CPV',87,'18:00','2026-07-03','Miami',3,2],             // after extra time
+    ['COL','GHA',88,'21:30','2026-07-03','Kansas City',1,0]
   ];
   KO_R32.forEach(function (r) {
     var played = r.length > 6;
@@ -869,80 +869,97 @@
       '<p class="wc-sub" style="text-align:center;margin:12px auto 0;font-size:12px">Teams for later rounds are set as the bracket plays out.</p>';
   }
 
-  /* ===================== COACH SCOUT: PATH TO THE FINAL =====================
-     A projection: R32 winners come from Coach's match forecasts (or real results
-     once played); later rounds advance the team Coach rates higher (FIFA rank). */
+  /* ===================== KNOCKOUT BRACKET (Round of 16 → Final) =====================
+     Reflects the real tournament: played matches show the actual score and
+     winner (✓); matchups not yet played are projected by Coach Scout on team
+     rating (▸) through to a predicted champion. */
   function fifaRank(code) {
     return (PLAYERS && PLAYERS[code] && PLAYERS[code].fifa_ranking) || 99;
   }
-  function rankPick(a, b) { return fifaRank(a) <= fifaRank(b) ? a : b; }
-
-  function r32Winner(m, fcByNo) {
-    if (m.result) {
-      if (m.result.a > m.result.b) return m.ca;
-      if (m.result.b > m.result.a) return m.cb;
-      return m.adv || rankPick(m.ca, m.cb);   // draw decided on penalties
-    }
-    var f = fcByNo[m.no];
-    if (f && f.scoreline) {
-      var g = String(f.scoreline).match(/(\d+)\D+(\d+)/);
-      if (g) { if (+g[1] > +g[2]) return m.ca; if (+g[2] > +g[1]) return m.cb; }
-    }
-    return rankPick(m.ca, m.cb);
+  function rankPick(a, b) {
+    if (!a) return b; if (!b) return a;
+    return fifaRank(a) <= fifaRank(b) ? a : b;
   }
 
-  function pathTeam(code, win) {
-    var t = TEAM[code] || { n: code, f: '⚽' };
-    return '<div class="wc-path-team' + (win ? ' win' : '') + '">' +
-      '<span class="wc-path-flag">' + t.f + '</span>' +
-      '<span class="wc-path-name">' + esc(t.n) + '</span>' +
-      (win ? '<span class="wc-path-check">✓</span>' : '') +
+  // Real 2026 bracket. r:[home,away] score for played games; adv = penalty winner.
+  // feed:[matchNoA, matchNoB] draws the two teams from earlier winners (QF onward).
+  var KO_TREE = {
+    'Round of 16': [
+      { no: 89, h: 'FRA', a: 'PAR', r: [1, 0] },
+      { no: 90, h: 'MAR', a: 'CAN', r: [3, 0] },
+      { no: 91, h: 'NOR', a: 'BRA', r: [2, 1] },
+      { no: 92, h: 'ENG', a: 'MEX', r: [3, 2] },
+      { no: 93, h: 'POR', a: 'ESP' },
+      { no: 94, h: 'USA', a: 'BEL' },
+      { no: 95, h: 'ARG', a: 'EGY' },
+      { no: 96, h: 'SUI', a: 'COL' }
+    ],
+    'Quarter-finals': [
+      { no: 97, feed: [89, 90] }, { no: 98, feed: [91, 92] },
+      { no: 99, feed: [93, 94] }, { no: 100, feed: [95, 96] }
+    ],
+    'Semi-finals': [
+      { no: 101, feed: [97, 98] }, { no: 102, feed: [99, 100] }
+    ],
+    'Final': [{ no: 104, feed: [101, 102] }]
+  };
+  var _koByNo = {};
+  Object.keys(KO_TREE).forEach(function (rd) { KO_TREE[rd].forEach(function (m) { _koByNo[m.no] = m; }); });
+
+  function koTeams(m) {
+    if (m._h !== undefined) return;
+    m._h = m.h || (function () { var f = _koByNo[m.feed[0]]; koTeams(f); return koWinner(f); })();
+    m._a = m.a || (function () { var f = _koByNo[m.feed[1]]; koTeams(f); return koWinner(f); })();
+  }
+  function koWinner(m) {
+    if (!m) return null;
+    koTeams(m);
+    if (m.r) {
+      if (m.r[0] > m.r[1]) return m._h;
+      if (m.r[1] > m.r[0]) return m._a;
+      return m.adv || rankPick(m._h, m._a);
+    }
+    if (m._h && m._a) return rankPick(m._h, m._a);   // projected by Coach
+    return null;
+  }
+
+  function koTeamRow(code, isWin, score, played) {
+    var t = code ? (TEAM[code] || { n: code, f: '⚽' }) : null;
+    var mark = score != null ? '<span class="wc-path-score">' + score + '</span>'
+             : (isWin ? '<span class="wc-path-check">' + (played ? '✓' : '▸') + '</span>' : '');
+    return '<div class="wc-path-team' + (isWin ? ' win' : '') + (t ? '' : ' tbd') + '">' +
+      '<span class="wc-path-flag">' + (t ? t.f : '⚪') + '</span>' +
+      '<span class="wc-path-name">' + (t ? esc(t.n) : 'TBD') + '</span>' + mark +
+    '</div>';
+  }
+  function koCell(m) {
+    koTeams(m);
+    var played = !!m.r, w = koWinner(m);
+    return '<div class="wc-path-tie' + (played ? ' done' : (w ? ' proj' : '')) + '">' +
+      koTeamRow(m._h, !!w && w === m._h, played ? m.r[0] : null, played) +
+      koTeamRow(m._a, !!w && w === m._a, played ? m.r[1] : null, played) +
     '</div>';
   }
 
   function buildPathToFinal() {
     var host = document.getElementById('wcPath');
     if (!host || !PLAYERS) return;
-    fetch('/api/worldcup/coach-predictions')
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        var fcByNo = {};
-        ((data && data.predictions) || []).forEach(function (p) { fcByNo[p.no] = p; });
+    Object.keys(_koByNo).forEach(function (n) { _koByNo[n]._h = undefined; _koByNo[n]._a = undefined; });
 
-        var r32 = MATCHES.filter(function (m) { return m.ko && m.round === 'Round of 32'; })
-                         .sort(function (a, b) { return a.no - b.no; });
-        if (r32.length < 16) { host.innerHTML = ''; return; }
+    var order = ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final'];
+    var champion = koWinner(_koByNo[104]);
 
-        var rounds = [{ name: 'Round of 32', ties: r32.map(function (m) {
-          return { a: m.ca, b: m.cb, w: r32Winner(m, fcByNo) };
-        }) }];
-
-        var cur = rounds[0].ties.map(function (t) { return t.w; });
-        ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final'].forEach(function (nm) {
-          var ties = [];
-          for (var i = 0; i + 1 < cur.length; i += 2) {
-            ties.push({ a: cur[i], b: cur[i + 1], w: rankPick(cur[i], cur[i + 1]) });
-          }
-          rounds.push({ name: nm, ties: ties });
-          cur = ties.map(function (t) { return t.w; });
-        });
-        var champion = cur[0];
-
-        host.innerHTML =
-          '<div class="wc-path">' +
-            rounds.map(function (rd) {
-              return '<div class="wc-path-col"><div class="wc-path-round">' + rd.name + '</div>' +
-                '<div class="wc-path-ties">' + rd.ties.map(function (t) {
-                  return '<div class="wc-path-tie">' + pathTeam(t.a, t.w === t.a) + pathTeam(t.b, t.w === t.b) + '</div>';
-                }).join('') + '</div>' +
-              '</div>';
-            }).join('') +
-            '<div class="wc-path-col wc-path-champ"><div class="wc-path-round">🏆 Champion</div>' +
-              '<div class="wc-path-ties"><div class="wc-path-tie is-champ">' + pathTeam(champion, true) + '</div></div>' +
-            '</div>' +
+    host.innerHTML =
+      '<div class="wc-path">' +
+        order.map(function (rd) {
+          return '<div class="wc-path-col"><div class="wc-path-round">' + rd + '</div>' +
+            '<div class="wc-path-ties">' + KO_TREE[rd].map(koCell).join('') + '</div>' +
           '</div>';
-      })
-      .catch(function () { host.innerHTML = '<p class="wc-sub" style="text-align:center">Coach Scout is still working out his bracket — check back soon.</p>'; });
+        }).join('') +
+        '<div class="wc-path-col wc-path-champ"><div class="wc-path-round">🏆 Champion</div>' +
+          '<div class="wc-path-ties"><div class="wc-path-tie is-champ">' + koTeamRow(champion, true, null, false) + '</div></div>' +
+        '</div>' +
+      '</div>';
   }
 
   /* ===================== PLAYERS + MATCH PREVIEW + TEAM MODAL ===================== */
@@ -1474,7 +1491,6 @@
     handleRegister();
     buildTabs();
     filterSchedule('all');
-    renderBracketStrip();
     loadPredictions();
     renderPredShare();
     initTrivia();

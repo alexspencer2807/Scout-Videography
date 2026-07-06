@@ -592,9 +592,14 @@
 .wc-path-team { display: flex; align-items: center; gap: 8px; padding: 7px 10px; font-size: 13px; color: var(--wc-muted); }
 .wc-path-team + .wc-path-team { border-top: 1px solid var(--wc-line); }
 .wc-path-team.win { color: #fff; font-weight: 800; background: rgba(38,201,111,0.12); }
+/* projected (not-yet-played) winners use gold instead of green */
+.wc-path-tie.proj .wc-path-team.win { background: rgba(255,215,0,0.12); }
+.wc-path-tie.proj .wc-path-check { color: var(--wc-gold); }
+.wc-path-team.tbd { color: var(--wc-muted); font-style: italic; }
 .wc-path-flag { font-size: 15px; }
 .wc-path-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .wc-path-check { color: var(--wc-green); font-weight: 900; }
+.wc-path-score { font-family: 'Archivo Black', sans-serif; font-size: 13px; color: #fff; }
 .wc-path-champ .wc-path-round { color: var(--wc-gold); }
 .wc-path-tie.is-champ { border-color: var(--wc-gold); box-shadow: 0 0 0 1px var(--wc-gold) inset; }
 .wc-path-tie.is-champ .wc-path-team { background: rgba(255,215,0,0.16); color: #fff; font-weight: 800; }
