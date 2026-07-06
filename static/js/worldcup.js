@@ -161,19 +161,21 @@
     });
   });
 
-  /* ===================== KNOCKOUTS — Round of 32 (real 2026 fixtures) =====================
-     [home, away, no, timeET, dateISO, venue, ra, rb]  (ra/rb only for played games). */
+  /* ===================== KNOCKOUTS — Round of 32 (real 2026 fixtures + results) =====================
+     [home, away, no, timeET, dateISO, venue, ra, rb, adv]
+     ra/rb = final score (only for played games); adv = advancing team code when a
+     draw was decided on penalties. */
   var KO_R32 = [
     ['CAN','RSA',73,'20:00','2026-06-28','Los Angeles',1,0],
     ['BRA','JPN',74,'13:00','2026-06-29','Houston',2,1],
-    ['GER','PAR',75,'16:30','2026-06-29','Foxborough',1,1],
-    ['NED','MAR',76,'21:00','2026-06-29','Guadalupe',1,1],
-    ['CIV','NOR',77,'13:00','2026-06-30','Arlington'],
-    ['FRA','SWE',78,'17:00','2026-06-30','New York/NJ'],
-    ['MEX','ECU',79,'21:00','2026-06-30','Mexico City'],
-    ['ENG','COD',80,'12:00','2026-07-01','Atlanta'],
-    ['BEL','SEN',81,'16:00','2026-07-01','Seattle'],
-    ['USA','BIH',82,'20:00','2026-07-01','San Francisco'],
+    ['GER','PAR',75,'16:30','2026-06-29','Foxborough',1,1,'PAR'],   // Paraguay won on penalties
+    ['NED','MAR',76,'21:00','2026-06-29','Guadalupe',1,1,'MAR'],    // Morocco won on penalties
+    ['CIV','NOR',77,'13:00','2026-06-30','Arlington',1,2],
+    ['FRA','SWE',78,'17:00','2026-06-30','New York/NJ',3,0],
+    ['MEX','ECU',79,'21:00','2026-06-30','Mexico City',2,0],
+    ['ENG','COD',80,'12:00','2026-07-01','Atlanta',2,1],
+    ['BEL','SEN',81,'16:00','2026-07-01','Seattle',3,2],           // after extra time
+    ['USA','BIH',82,'20:00','2026-07-01','San Francisco',2,0],
     ['ESP','AUT',83,'15:00','2026-07-02','Los Angeles'],
     ['POR','CRO',84,'19:00','2026-07-02','Toronto'],
     ['SUI','ALG',85,'23:00','2026-07-02','Vancouver'],
@@ -182,13 +184,14 @@
     ['COL','GHA',88,'21:30','2026-07-03','Kansas City']
   ];
   KO_R32.forEach(function (r) {
+    var played = r.length > 6;
     var m = {
       id: 'M' + r[2], no: r[2], ko: true, round: 'Round of 32',
       group: 'KO', md: 0, time: r[3], date: r[4], venue: r[5],
       ca: r[0], cb: r[1], a: TEAM[r[0]], b: TEAM[r[1]],
-      status: r.length > 6 ? 'complete' : 'upcoming'
+      status: played ? 'complete' : 'upcoming'
     };
-    if (r.length > 6) m.result = { a: r[6], b: r[7] };
+    if (played) { m.result = { a: r[6], b: r[7] }; if (r[8]) m.adv = r[8]; }
     MATCHES.push(m);
   });
 
@@ -866,6 +869,82 @@
       '<p class="wc-sub" style="text-align:center;margin:12px auto 0;font-size:12px">Teams for later rounds are set as the bracket plays out.</p>';
   }
 
+  /* ===================== COACH SCOUT: PATH TO THE FINAL =====================
+     A projection: R32 winners come from Coach's match forecasts (or real results
+     once played); later rounds advance the team Coach rates higher (FIFA rank). */
+  function fifaRank(code) {
+    return (PLAYERS && PLAYERS[code] && PLAYERS[code].fifa_ranking) || 99;
+  }
+  function rankPick(a, b) { return fifaRank(a) <= fifaRank(b) ? a : b; }
+
+  function r32Winner(m, fcByNo) {
+    if (m.result) {
+      if (m.result.a > m.result.b) return m.ca;
+      if (m.result.b > m.result.a) return m.cb;
+      return m.adv || rankPick(m.ca, m.cb);   // draw decided on penalties
+    }
+    var f = fcByNo[m.no];
+    if (f && f.scoreline) {
+      var g = String(f.scoreline).match(/(\d+)\D+(\d+)/);
+      if (g) { if (+g[1] > +g[2]) return m.ca; if (+g[2] > +g[1]) return m.cb; }
+    }
+    return rankPick(m.ca, m.cb);
+  }
+
+  function pathTeam(code, win) {
+    var t = TEAM[code] || { n: code, f: '⚽' };
+    return '<div class="wc-path-team' + (win ? ' win' : '') + '">' +
+      '<span class="wc-path-flag">' + t.f + '</span>' +
+      '<span class="wc-path-name">' + esc(t.n) + '</span>' +
+      (win ? '<span class="wc-path-check">✓</span>' : '') +
+    '</div>';
+  }
+
+  function buildPathToFinal() {
+    var host = document.getElementById('wcPath');
+    if (!host || !PLAYERS) return;
+    fetch('/api/worldcup/coach-predictions')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var fcByNo = {};
+        ((data && data.predictions) || []).forEach(function (p) { fcByNo[p.no] = p; });
+
+        var r32 = MATCHES.filter(function (m) { return m.ko && m.round === 'Round of 32'; })
+                         .sort(function (a, b) { return a.no - b.no; });
+        if (r32.length < 16) { host.innerHTML = ''; return; }
+
+        var rounds = [{ name: 'Round of 32', ties: r32.map(function (m) {
+          return { a: m.ca, b: m.cb, w: r32Winner(m, fcByNo) };
+        }) }];
+
+        var cur = rounds[0].ties.map(function (t) { return t.w; });
+        ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final'].forEach(function (nm) {
+          var ties = [];
+          for (var i = 0; i + 1 < cur.length; i += 2) {
+            ties.push({ a: cur[i], b: cur[i + 1], w: rankPick(cur[i], cur[i + 1]) });
+          }
+          rounds.push({ name: nm, ties: ties });
+          cur = ties.map(function (t) { return t.w; });
+        });
+        var champion = cur[0];
+
+        host.innerHTML =
+          '<div class="wc-path">' +
+            rounds.map(function (rd) {
+              return '<div class="wc-path-col"><div class="wc-path-round">' + rd.name + '</div>' +
+                '<div class="wc-path-ties">' + rd.ties.map(function (t) {
+                  return '<div class="wc-path-tie">' + pathTeam(t.a, t.w === t.a) + pathTeam(t.b, t.w === t.b) + '</div>';
+                }).join('') + '</div>' +
+              '</div>';
+            }).join('') +
+            '<div class="wc-path-col wc-path-champ"><div class="wc-path-round">🏆 Champion</div>' +
+              '<div class="wc-path-ties"><div class="wc-path-tie is-champ">' + pathTeam(champion, true) + '</div></div>' +
+            '</div>' +
+          '</div>';
+      })
+      .catch(function () { host.innerHTML = '<p class="wc-sub" style="text-align:center">Coach Scout is still working out his bracket — check back soon.</p>'; });
+  }
+
   /* ===================== PLAYERS + MATCH PREVIEW + TEAM MODAL ===================== */
   var PLAYERS = null;
 
@@ -1402,7 +1481,7 @@
     updateLeaderboard();
     initTeamModal();
     initCoachAsk();
-    loadPlayers().then(loadCoachPredictions); // render preview, then layer in AI predictions
+    loadPlayers().then(function () { loadCoachPredictions(); buildPathToFinal(); }); // preview + AI predictions + projected bracket
     checkRegistration(); // gate last (after content is rendered)
     setInterval(updateLeaderboard, 30000); // keep the shared board fresh
   });
