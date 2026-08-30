@@ -742,7 +742,20 @@
   }
 
   // Section heading for a "group" — knockout matches use their round name.
-  function groupHeading(g) { return g === 'KO' ? 'Round of 32' : 'Group ' + g; }
+  function groupHeading(g) { return g === 'KO' ? 'Knockouts' : 'Group ' + g; }
+
+  // Schedule grouping: group-stage fixtures group by their letter; knockout
+  // fixtures group by round so each stage gets its own heading in order.
+  var STAGE_ORDER = ['Round of 32', 'Round of 16', 'Quarter-finals', 'Semi-finals', 'Third-place', 'Final'];
+  function schedKey(m) { return m.ko ? m.round : m.group; }
+  function schedHeading(k) { return STAGE_ORDER.indexOf(k) !== -1 ? k : 'Group ' + k; }
+  function schedKeyCmp(a, b) {
+    var ai = STAGE_ORDER.indexOf(a), bi = STAGE_ORDER.indexOf(b);
+    if (ai === -1 && bi === -1) return a < b ? -1 : (a > b ? 1 : 0);  // group letters, alpha
+    if (ai === -1) return -1;                                        // groups before knockouts
+    if (bi === -1) return 1;
+    return ai - bi;                                                  // knockout rounds in order
+  }
 
   function buildTabs() {
     var tabsEl = document.getElementById('wcTabs');
@@ -811,14 +824,15 @@
       return;
     }
 
-    // Group fixtures by group letter; order each group by matchday / match number.
+    // Group fixtures by group letter (or knockout round); order each by match number.
     var byGroup = {};
     var order = [];
     list.forEach(function (m) {
-      if (!byGroup[m.group]) { byGroup[m.group] = []; order.push(m.group); }
-      byGroup[m.group].push(m);
+      var k = schedKey(m);
+      if (!byGroup[k]) { byGroup[k] = []; order.push(k); }
+      byGroup[k].push(m);
     });
-    order.sort();
+    order.sort(schedKeyCmp);
 
     var groupsHtml = order.map(function (g) {
       var matches = byGroup[g].slice().sort(function (x, y) { return x.no - y.no; });
@@ -833,7 +847,7 @@
           '<div class="wc-match-venue">' + fmtMatchDate(m.date) + ' · ' + esc(m.venue) + '</div>' +
         '</div>';
       }).join('');
-      return '<div class="wc-date-group"><div class="wc-date-head">' + esc(groupHeading(g)) + '</div>' +
+      return '<div class="wc-date-group"><div class="wc-date-head">' + esc(schedHeading(g)) + '</div>' +
              '<div class="wc-match-grid">' + cards + '</div></div>';
     }).join('');
 
@@ -883,26 +897,32 @@
 
   // Real 2026 bracket. r:[home,away] score for played games; adv = penalty winner.
   // feed:[matchNoA, matchNoB] draws the two teams from earlier winners (QF onward).
+  // d/t/v = official FIFA 2026 knockout date (ISO) / kickoff (ET) / host city.
   var KO_TREE = {
     'Round of 16': [
-      { no: 89, h: 'FRA', a: 'PAR', r: [1, 0] },
-      { no: 90, h: 'MAR', a: 'CAN', r: [3, 0] },
-      { no: 91, h: 'NOR', a: 'BRA', r: [2, 1] },
-      { no: 92, h: 'ENG', a: 'MEX', r: [3, 2] },
-      { no: 93, h: 'POR', a: 'ESP' },
-      { no: 94, h: 'USA', a: 'BEL' },
-      { no: 95, h: 'ARG', a: 'EGY' },
-      { no: 96, h: 'SUI', a: 'COL' }
+      { no: 89, h: 'FRA', a: 'PAR', r: [1, 0], d: '2026-07-04', t: '16:00', v: 'Philadelphia' },
+      { no: 90, h: 'MAR', a: 'CAN', r: [3, 0], d: '2026-07-04', t: '20:00', v: 'Houston' },
+      { no: 91, h: 'NOR', a: 'BRA', r: [2, 1], d: '2026-07-05', t: '15:00', v: 'Arlington' },
+      { no: 92, h: 'ENG', a: 'MEX', r: [3, 2], d: '2026-07-05', t: '19:00', v: 'Seattle' },
+      { no: 93, h: 'POR', a: 'ESP', d: '2026-07-06', t: '16:00', v: 'Atlanta' },
+      { no: 94, h: 'USA', a: 'BEL', d: '2026-07-06', t: '20:00', v: 'Vancouver' },
+      { no: 95, h: 'ARG', a: 'EGY', d: '2026-07-07', t: '16:00', v: 'Miami' },
+      { no: 96, h: 'SUI', a: 'COL', d: '2026-07-07', t: '20:00', v: 'Kansas City' }
     ],
     'Quarter-finals': [
-      { no: 97, feed: [89, 90] }, { no: 98, feed: [91, 92] },
-      { no: 99, feed: [93, 94] }, { no: 100, feed: [95, 96] }
+      { no: 97, feed: [89, 90], d: '2026-07-09', t: '16:00', v: 'Foxborough' },
+      { no: 98, feed: [91, 92], d: '2026-07-09', t: '20:00', v: 'Los Angeles' },
+      { no: 99, feed: [93, 94], d: '2026-07-10', t: '16:00', v: 'Kansas City' },
+      { no: 100, feed: [95, 96], d: '2026-07-11', t: '16:00', v: 'Miami' }
     ],
     'Semi-finals': [
-      { no: 101, feed: [97, 98] }, { no: 102, feed: [99, 100] }
+      { no: 101, feed: [97, 98], d: '2026-07-14', t: '20:00', v: 'Arlington' },
+      { no: 102, feed: [99, 100], d: '2026-07-15', t: '20:00', v: 'Atlanta' }
     ],
-    'Final': [{ no: 104, feed: [101, 102] }]
+    'Final': [{ no: 104, feed: [101, 102], d: '2026-07-19', t: '15:00', v: 'New York/NJ' }]
   };
+  // Third-place play-off — losers of the two semi-finals (not part of the bracket path).
+  var KO_THIRD = { no: 103, d: '2026-07-18', t: '15:00', v: 'Miami' };
   var _koByNo = {};
   Object.keys(KO_TREE).forEach(function (rd) { KO_TREE[rd].forEach(function (m) { _koByNo[m.no] = m; }); });
 
@@ -921,6 +941,13 @@
     }
     if (m._h && m._a) return rankPick(m._h, m._a);   // projected by Coach
     return null;
+  }
+  // The beaten team — needed for the third-place play-off.
+  function koLoser(m) {
+    if (!m) return null;
+    var w = koWinner(m);
+    if (!w) return null;
+    return w === m._h ? m._a : (w === m._a ? m._h : null);
   }
 
   function koTeamRow(code, isWin, score, played) {
@@ -962,6 +989,47 @@
       '</div>';
   }
 
+  // Build a MATCHES-style fixture from a KO_TREE entry once both teams are known
+  // (real for R16, projected for later rounds). Returns null while a team is TBD.
+  function koFixture(m, round) {
+    koTeams(m);
+    if (!m._h || !m._a) return null;
+    var fx = {
+      id: 'M' + m.no, no: m.no, ko: true, round: round,
+      group: 'KO', md: 0, time: m.t, date: m.d, venue: m.v,
+      ca: m._h, cb: m._a, a: TEAM[m._h], b: TEAM[m._a],
+      status: m.r ? 'complete' : 'upcoming'
+    };
+    if (m.r) { fx.result = { a: m.r[0], b: m.r[1] }; if (m.adv) fx.adv = m.adv; }
+    return fx;
+  }
+
+  // Fold the live knockout bracket (Round of 16 → Final, plus the third-place
+  // play-off) into MATCHES so the Match Day Preview and Ask-Coach tool surface
+  // the remaining fixtures. Idempotent — safe to re-run as projections settle.
+  function syncKnockoutMatches() {
+    for (var i = MATCHES.length - 1; i >= 0; i--) {
+      if (MATCHES[i].ko && MATCHES[i].round !== 'Round of 32') MATCHES.splice(i, 1);
+    }
+    Object.keys(_koByNo).forEach(function (n) { _koByNo[n]._h = undefined; _koByNo[n]._a = undefined; });
+
+    ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final'].forEach(function (rd) {
+      KO_TREE[rd].forEach(function (m) {
+        var fx = koFixture(m, rd);
+        if (fx) MATCHES.push(fx);
+      });
+    });
+
+    var lA = koLoser(_koByNo[101]), lB = koLoser(_koByNo[102]);
+    if (lA && lB) {
+      MATCHES.push({
+        id: 'M' + KO_THIRD.no, no: KO_THIRD.no, ko: true, round: 'Third-place',
+        group: 'KO', md: 0, time: KO_THIRD.t, date: KO_THIRD.d, venue: KO_THIRD.v,
+        ca: lA, cb: lB, a: TEAM[lA], b: TEAM[lB], status: 'upcoming'
+      });
+    }
+  }
+
   /* ===================== PLAYERS + MATCH PREVIEW + TEAM MODAL ===================== */
   var PLAYERS = null;
 
@@ -989,6 +1057,8 @@
     var url = window.WC_PLAYERS_URL || '/static/data/worldcup-players.json';
     return fetch(url).then(function (r) { return r.json(); }).then(function (data) {
       PLAYERS = data.teams || {};
+      syncKnockoutMatches();   // fold R16→Final (+ third place) into the fixtures list
+      buildCoachItems();       // rebuild the Ask-Coach combo now the knockout games exist
       renderMatchPreview();
     }).catch(function () {
       var el = document.getElementById('wcMatchPreviewBody');
